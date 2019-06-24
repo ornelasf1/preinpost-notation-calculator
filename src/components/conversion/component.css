@@ -1,0 +1,44 @@
+.conversion-comp {
+    background: red;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.component {
+    text-align: center;
+    margin: 10px;
+    width: 512px;
+    height: 256px;
+    background: whitesmoke;
+    border-radius: 10px;
+}
+
+.input-comp{
+    display: inline-block;
+    margin-top: 20px;
+    width: 80%;
+    height: 50px;
+    border: none;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.input-comp:focus{
+    outline: none;
+}
+
+/* + is selecting an element right after another - sibling*/
+.input-comp + span{
+    margin: auto;
+    width: 80%;
+    display: block;
+    border-bottom-left-radius: 50px; 
+    border-bottom-right-radius: 50px; 
+    border-bottom: 3px solid gray;
+    transform: scaleX(0);
+    transition: transform 150ms ease-in-out;
+}
+.input-comp:focus + span{
+    transform: scaleX(1);
+}
