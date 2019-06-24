@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import {conversionNotat} from './components/conversion/ConversionReducer';
 import './App.css';
 import { NotationCalc } from './components/NotationCalc';
-import { NotationConv } from './components/conversion/NotationConv';
+import NotationConv from './components/conversion/NotationConv';
 
 const rootReducers = {
   conversionNotat,
