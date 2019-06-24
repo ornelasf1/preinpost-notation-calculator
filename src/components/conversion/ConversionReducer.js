@@ -1,16 +1,23 @@
 
-import {UPDATE_EXPRESSION} from './ConversionActionTypes';
+import {UPDATE_INFIX_EXPRESSION, UPDATE_POSTFIX_EXPRESSION, UPDATE_PREFIX_EXPRESSION} from './ConversionActionTypes';
 
 export const defaultState = {
-    expression: ''
+    postfixexpr: '',
+    infixexpr: '',
+    prefixexpr: '',
 }
 
 export const conversionNotat = (state = defaultState, action) => {
     switch(action.type){
-        case UPDATE_EXPRESSION:
+        case UPDATE_INFIX_EXPRESSION:
             return {
                 ...state,
-                expression: action.payload 
+                infixexpr: action.payload 
+            };
+        case UPDATE_POSTFIX_EXPRESSION:
+            return {
+                ...state,
+                postfixexpr: action.payload 
             };
         default:
             return state;
