@@ -21,7 +21,6 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <NotationConv></NotationConv>
-        <NotationCalc></NotationCalc>
       </Provider>
     </div>
   );
