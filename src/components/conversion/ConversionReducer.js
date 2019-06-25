@@ -9,6 +9,11 @@ export const defaultState = {
 
 export const conversionNotat = (state = defaultState, action) => {
     switch(action.type){
+        case UPDATE_PREFIX_EXPRESSION:
+            return {
+                ...state,
+                prefixexpr: action.payload 
+            };
         case UPDATE_INFIX_EXPRESSION:
             return {
                 ...state,

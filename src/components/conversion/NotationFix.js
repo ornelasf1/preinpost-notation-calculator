@@ -5,12 +5,6 @@ import './component.css';
 
 
 export class NotationFix extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            expr: ''
-        }
-    }
 
     render = () => {
         return (
@@ -20,7 +14,7 @@ export class NotationFix extends React.Component{
                     <input 
                         name={this.props.type}
                         className='input-comp' 
-                        onKeyDown={this.props.onKeyDown} 
+                        onKeyDown={this.props.handleKeyDown} 
                         onChange={this.props.handleChange} 
                         value={this.props.expr}/>
                     <span className='input-underline'></span>

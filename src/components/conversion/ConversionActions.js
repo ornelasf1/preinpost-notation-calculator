@@ -18,6 +18,11 @@ export const actionUpdateInExpr = expression => ({
 });
 
 
+export const updatePrefixExpr = expr => dispatch => {
+    console.log(`dispatch action with ${expr}`);
+    dispatch(actionUpdatePreExpr(expr));
+}
+
 export const updateInfixExpr = expr => dispatch => {
     console.log(`dispatch action with ${expr}`);
     dispatch(actionUpdateInExpr(expr));
