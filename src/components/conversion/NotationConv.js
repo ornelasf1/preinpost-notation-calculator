@@ -10,23 +10,23 @@ export class NotationConv extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            infix_expr: '',
-            prefix_expr: '',
-            postfix_expr: '',
+            infix: '',
+            prefix: '',
+            postfix: '',
         };
     }
 
 
 
-    onChange = event => {
-        this.setState({expression: event.target.value + ' '});
+    handleChange = event => {
+        this.setState({[event.target.name]: event.target.value + ' '});
     };
 
     handleKeyDown = event => {
         let value = event.target.value;
         console.log(value);
         if (value !== '' && event.key === 'Backspace'){
-            this.setState({expression: value.substr(0, value.length - 1)});
+            this.setState({[event.target.name]: value.substr(0, value.length - 1)});
         }
     };
 
@@ -49,15 +49,9 @@ export class NotationConv extends React.Component{
     render = () => {
         return (
             <div className='conversion-comp'>
-                <Prefix
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
-                <Infix 
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
-                <Postfix 
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
+                <NotationFix type='Prefix'/>
+                <NotationFix type='Infix' submitExpr={this.props.updateInfixExpr} expr={this.state.infix} handleChange={this.handleChange} handleKeyDown={this.handleKeyDown}/>
+                <NotationFix type='Postfix'/>
             </div>
         );
     };
