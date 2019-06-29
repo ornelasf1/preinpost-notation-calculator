@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { setInfixToPostfixSeq } from './ConversionAlgoActions';
 
 
@@ -6,6 +7,27 @@ import { setInfixToPostfixSeq } from './ConversionAlgoActions';
 export class NotationCalc{
     
 }
+
+const InfixAlgorithm = ({toPostfix, toPrefix}) => {
+
+    if (toPostfix){
+        return (
+            <div></div>
+        );
+    } else if(toPrefix){
+        return (
+            <div></div>
+        );
+    }
+};
+
+const mapDispatchToPros = (dispatch, ownProps) => {
+    return {
+
+    };
+};
+
+// export const connect()(InfixAlgorithm);
 
 const divInstrWrapper = comp => {
     return (<div className='instruction'>{comp}</div>);
@@ -54,12 +76,12 @@ export const infixToPostfixInstructions = [
     '\t\t\tPush the selected token to the operator stack',
     '\t\tIf the selected token has a lower or equal precedence than the token on the top of the operator stack',
     '\t\t\tPop the token from the top of the operator stack and output it',
-    '\t\t\tWhile the operator stack is not empty and the selected token has a lower or equal precedence than the token on the top of the operator stack',
+    '\t\t\tWhile the operator stack is not empty and the top of the operator stack is not a \'(\' and the selected token has a lower or equal precedence than the token on the top of the operator stack',
     '\t\t\t\tPop the token from the top of the operator stack and output it',
     '\t\t\tPush the selected token to the operator stack',
     '\tIf the token is an operand:',
     '\t\tOutput the selected token',
-    'Output all remaining tokens from the operator stack'
+    'Output all remaining tokens from the operator stack when out of tokens'
 ];
 
 export const infixToPostfix = infix => {
@@ -67,16 +89,16 @@ export const infixToPostfix = infix => {
     let infixTokens = toTokens(infix).reverse();
 
     const stack = [];
-    let postfixExpr = '';
+    let postfixExpr = [];
 
     console.log('Tokens: ', infixTokens);
 
-    seq.push(0);
     while (infixTokens.length > 0) {
+        seq.push(0);
         const token = infixTokens.pop();
         seq.push(1);
-        seq.push(2);
         if (prec(token) > 0) {
+            seq.push(2);
             let topToken = stack.length !== 0? stack[stack.length - 1] : '';
             
             if (stack.length === 0 || topToken === '(') {
@@ -92,9 +114,12 @@ export const infixToPostfix = infix => {
                 while (topToken !== '(') {
                     seq.push(8);
                     seq.push(9);
-                    postfixExpr += stack.pop();
+                    postfixExpr.push(stack.pop());
                     topToken = stack.length !== 0? stack[stack.length - 1] : '';
-                    if (stack.length === 0) return '';
+                    if (stack.length === 0){
+                        seq.map(instr => console.log(infixToPostfixInstructions[instr]));
+                        return '';
+                    }
                 }
                 seq.push(10);
                 stack.pop();
@@ -105,12 +130,13 @@ export const infixToPostfix = infix => {
             } else if (prec(token) <= prec(topToken)) {
                 seq.push(13);
                 seq.push(14);
-                postfixExpr += stack.pop();
+                postfixExpr.push(stack.pop());
                 topToken = stack.length !== 0? stack[stack.length - 1] : '';
-                while (stack.length > 0 && prec(token) <= prec(topToken)) {
+                while (stack.length > 0 && topToken !== '(' && prec(token) <= prec(topToken)) {
                     seq.push(15);
                     seq.push(16);
-                    postfixExpr += stack.pop();
+                    postfixExpr.push(stack.pop());
+                    topToken = stack.length !== 0? stack[stack.length - 1] : '';
                 }
                 seq.push(17);
                 stack.push(token);
@@ -118,18 +144,20 @@ export const infixToPostfix = infix => {
         } else {
             seq.push(18);
             seq.push(19);
-            postfixExpr += token;
+            postfixExpr.push(token);
         }
 
-        seq.push(20);
         if(infixTokens.length === 0){
+            seq.push(20);
             while(stack.length > 0) {
-                postfixExpr += stack.pop();
+                postfixExpr.push(stack.pop());
             }
         }
 
     }
     setInfixToPostfixSeq(seq);
+
+    seq.map(instr => console.log(infixToPostfixInstructions[instr]));
     
-    return postfixExpr.split('').join(' ');
+    return postfixExpr.join(' ');
 };
