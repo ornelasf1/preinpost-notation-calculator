@@ -18,9 +18,16 @@ export class NotationConv extends React.Component{
         };
     }
 
+
     handleChange = event => {
-        this.setState({[event.target.name.toLowerCase()]: event.target.value});
-        // console.log('Postfix: ' + infixToPostfix(event.target.value));
+        const notationFix = event.target.name.toLowerCase();
+        this.setState({[notationFix]: event.target.value});
+
+        if (notationFix === 'infix') {
+            this.setState({postfix: infixToPostfix(event.target.value)});
+        }
+        this.setState({}, () => this.props.updateExpressions(this.state));
+
     };
 
     handleKeyDown = event => {
@@ -29,6 +36,7 @@ export class NotationConv extends React.Component{
             this.setState({[event.target.name.toLowerCase()]: value.substr(0, value.length - 2)});
         }
     };
+
 
     render = () => {
         return (
