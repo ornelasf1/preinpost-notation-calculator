@@ -3,6 +3,7 @@
     border-radius: 20px;
     display: flex;
     justify-content: space-evenly;
+    height: 30%;
 }
 
 .component {
