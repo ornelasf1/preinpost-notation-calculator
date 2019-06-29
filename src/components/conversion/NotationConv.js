@@ -4,19 +4,38 @@ import {connect} from 'react-redux';
 import * as ConversionActions from './ConversionActions';
 import { Postfix, Prefix } from './Postfix';
 import {Infix} from './Infix';
+import {NotationFix} from './NotationFix';
+import {infixToPostfix} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
 
     constructor(props){
         super(props);
         this.state = {
-            infix_expr: '',
-            prefix_expr: '',
-            postfix_expr: '',
+            infix: '',
+            prefix: '',
+            postfix: '',
         };
     }
 
 
+    handleChange = event => {
+        const notationFix = event.target.name.toLowerCase();
+        this.setState({[notationFix]: event.target.value});
+
+        if (notationFix === 'infix') {
+            this.setState({postfix: infixToPostfix(event.target.value)});
+        }
+        this.setState({}, () => this.props.updateExpressions(this.state));
+
+    };
+
+    handleKeyDown = event => {
+        let value = event.target.value;
+        if (value !== '' && event.key === 'Backspace'){
+            this.setState({[event.target.name.toLowerCase()]: value.substr(0, value.length - 2)});
+        }
+    };
 
     onChange = event => {
         this.setState({expression: event.target.value + ' '});
@@ -49,15 +68,9 @@ export class NotationConv extends React.Component{
     render = () => {
         return (
             <div className='conversion-comp'>
-                <Prefix
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
-                <Infix 
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
-                <Postfix 
-                    onSubmit={this.handleSubmit} 
-                    onKeyDown={this.handleKeyDown}/>
+                <NotationFix type='Prefix' submitExpr={this.props.updatePrefixExpr} expr={this.state.prefix} handleChange={this.handleChange}/>
+                <NotationFix type='Infix' submitExpr={this.props.updateInfixExpr} expr={this.state.infix} handleChange={this.handleChange}/>
+                <NotationFix type='Postfix' submitExpr={this.props.updatePostfixExpr} expr={this.state.postfix} handleChange={this.handleChange}/>
             </div>
         );
     };

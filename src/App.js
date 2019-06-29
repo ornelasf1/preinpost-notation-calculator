@@ -3,12 +3,14 @@ import {Provider} from 'react-redux';
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import {conversionNotat} from './components/conversion/ConversionReducer';
+import {algorithmInstructions} from './components/ConversionAlgoReducer';
 import './App.css';
-import { NotationCalc } from './components/NotationCalc';
 import NotationConv from './components/conversion/NotationConv';
+import { ConversionAlgorithm } from './components/ConversionAlgorithm';
 
 const rootReducers = {
   conversionNotat,
+  algorithmInstructions
 };
 
 const store = createStore(
@@ -21,7 +23,7 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <NotationConv></NotationConv>
-        <NotationCalc></NotationCalc>
+        <ConversionAlgorithm></ConversionAlgorithm>
       </Provider>
     </div>
   );
