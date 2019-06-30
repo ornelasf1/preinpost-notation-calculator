@@ -2,8 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import * as ConversionActions from './ConversionActions';
-import { Postfix, Prefix } from './Postfix';
-import {Infix} from './Infix';
 import {NotationFix} from './NotationFix';
 import {infixToPostfix} from '../NotationCalc';
 
@@ -26,15 +24,10 @@ export class NotationConv extends React.Component{
         if (notationFix === 'infix') {
             this.setState({postfix: infixToPostfix(event.target.value)});
         }
+
+        this.props.updateSelectedNotation(notationFix);
         this.setState({}, () => this.props.updateExpressions(this.state));
 
-    };
-
-    handleKeyDown = event => {
-        let value = event.target.value;
-        if (value !== '' && event.key === 'Backspace'){
-            this.setState({[event.target.name.toLowerCase()]: value.substr(0, value.length - 2)});
-        }
     };
 
     onChange = event => {
@@ -46,22 +39,6 @@ export class NotationConv extends React.Component{
         console.log(value);
         if (value !== '' && event.key === 'Backspace'){
             this.setState({expression: value.substr(0, value.length - 1)});
-        }
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-        switch(event.target.name){
-            case 'infix':
-                this.props.updateInfixExpr(event.target.input.value);
-                break;
-            case 'postfix':
-                this.props.updatePostfixExpr(event.target.input.value);
-                break;
-            case 'prefix':
-                break;
-            default:
-                break;
         }
     };
 
