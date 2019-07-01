@@ -16,11 +16,31 @@ export const InfixAlgorithm = props => {
     );
 };
 
+
+
 const toTokens = input => {
     if(typeof input !== 'string') return '';
     let tokens = input.trim();
-    tokens = tokens.split(/(\s+)/);
-    tokens = tokens.filter(s => s.trim().length > 0);
+
+    tokens = tokens.split('').reduce((acc, curr) => {
+        if (acc.length === 0) {
+            acc.push(curr);
+        } else {
+            const top = acc[acc.length - 1];
+            if (prec(top) === prec(curr)){
+                acc[acc.length - 1] = top + curr;
+            } else {
+                acc.push(curr);
+            }
+        }
+        return acc;
+    }, []);
+
+    tokens = tokens.map(s => s.trim()).filter(s => s.trim().length > 0);
+
+    // tokens = tokens.split(/(\s+)/);
+    // tokens = tokens.filter(s => s.trim().length > 0);
+
     return tokens;
 };
 
@@ -45,9 +65,9 @@ const prec = operator => {
 
 const captureState = (index, tokens, operator_stack, output_stack) => ({
     index,
-    tokens,
-    operator_stack,
-    output_stack,
+    tokens: [...tokens],
+    operator_stack: [...operator_stack],
+    output_stack: [...output_stack],
 });
 
 export const infixToPostfix = (infix, seq = []) => {
