@@ -21,7 +21,6 @@ class ConversionAlgorithm extends React.Component {
     }
 
     calculateSequences = () => {
-        console.log('here');
         let sequence = [];
         infixToPostfix(this.props.conversion.expressions.infix, sequence);
         this.props.setInfixToPostfixSeq(sequence);
@@ -30,7 +29,6 @@ class ConversionAlgorithm extends React.Component {
     beginSequence = () => {
         new Promise(resolve => resolve(this.calculateSequences()))
             .then(() => {
-                console.log('and here');
                 const { toPostInstr } = this.props.algorithm.infixInstr;
                 const time = 1000 * toPostInstr.length;
                 var instrIndex = 0;
