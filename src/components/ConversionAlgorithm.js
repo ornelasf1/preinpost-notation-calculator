@@ -1,16 +1,84 @@
 
 import React from 'react';
+import {connect} from 'react-redux';
+
+import * as ConversionAlgoActions from './ConversionAlgoActions';
 
 import './ConversionAlgorithm.css';
+import { InfixAlgorithm, infixToPostfix } from './NotationCalc';
+import { infixToPostfixInstructions, instructionIndents, getInstructionSet } from './NotationCalcInstructions';
 
-export class ConversionAlgorithm extends React.Component {
+class ConversionAlgorithm extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            toNotation: '',
+            instructions: []
+        };
+    }
+
+    calculateSequences = () => {
+        let sequence = [];
+        infixToPostfix(this.props.conversion.expressions.infix, sequence);
+        this.props.setInfixToPostfixSeq(sequence);
+    };
+
+    handleNotationButtons = (_, selected, toNotation) => {
+        this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
+    }
+
     render = () => {
+
+        const {selectedNotation} = this.props.conversion;
+        const instructions = this.state.instructions.map((instr, i) => (<Instruction key={i} selected={false}>{instr}</Instruction>));
+
         return (
             <div className='display'>
-                <div className='algorithm-display'>
-
-                </div>
+                {selectedNotation !== '' && <ToNotationButtons selected={selectedNotation} toNotation={this.state.toNotation} handleClick={this.handleNotationButtons}/>}
+                {this.state.toNotation !== '' && 
+                <div className='body'>
+                    <div className='algorithm-display' >
+                        {instructions}
+                    </div>
+                    <div className='canvas'>
+                        <button name='convert' >Convert</button>
+                    </div>
+                </div>}
             </div>
         );
     };
 }
+
+const Instruction = props => {
+    const selectedStyle = props.selected? '-selected' : '';
+    const indents = instructionIndents(props.children);
+    const pad = {
+        "paddingLeft": (10 + indents * 15) + 'px'
+    }
+    
+    return (
+        <div className={'instruction' + selectedStyle} style={pad}>
+            {props.children.substr(indents)}
+        </div>
+    );
+};
+
+const ToNotationButtons = props => {
+    let notations = ['prefix', 'infix', 'postfix'];
+    notations = notations.filter(fix => fix !== props.selected);
+    
+    return (
+        <div className='toNotation-buttons'>
+            <button onClick={(e => props.handleClick(e, props.selected, notations[0]))}>To {notations[0]}</button>
+            <button onClick={(e => props.handleClick(e, props.selected, notations[1]))}>To {notations[1]}</button>
+        </div>
+    );
+};
+
+const mapStateToProps = state => ({
+    algorithm: state.algorithmInstructions,
+    conversion: state.conversionNotat,
+});
+
+export default connect(mapStateToProps, ConversionAlgoActions)(ConversionAlgorithm);

@@ -6,7 +6,7 @@ import {conversionNotat} from './components/conversion/ConversionReducer';
 import {algorithmInstructions} from './components/ConversionAlgoReducer';
 import './App.css';
 import NotationConv from './components/conversion/NotationConv';
-import { ConversionAlgorithm } from './components/ConversionAlgorithm';
+import ConversionAlgorithm from './components/ConversionAlgorithm';
 
 const rootReducers = {
   conversionNotat,

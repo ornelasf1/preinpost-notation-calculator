@@ -1,11 +1,15 @@
 .display {
     position: absolute;
-    background-color: darkcyan;
+    background-color: #133337;
     margin: 10px;
     height: 70%;
     width: 100%;
     border-radius: 10px;
     overflow: auto;
+}
+
+.body {
+    display: flex;
 }
 
 .algorithm-display {
@@ -15,4 +19,63 @@
     height: 90%;
     width: 40%;
     border-radius: 10px;
+}
+
+.canvas {
+    background-color: cornflowerblue;
+    margin: 10px;
+    width: 60%;
+    display: flex;
+}
+
+.canvas button {
+    height: 10%;
+    width: 50%;
+    margin: 20px auto;
+    
+    font-weight: 600;
+    font-size: 50px;
+    
+}
+
+.toNotation-buttons {
+    background-color: cadetblue;
+    display: flex;
+    height: auto;
+}
+
+.toNotation-buttons button{
+    text-align: center;
+    background-color: #133337;
+    margin: 0 auto;
+    padding: 5px 0;
+    width: 50%;
+    border-top-right-radius: 10px;
+    outline-width: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 40px;
+}
+
+.toNotation-buttons button selected{
+    background-color: red;
+}
+
+.toNotation-buttons button:hover{
+    background-color: #133337ee;
+}
+
+.instruction {
+    background-color: darkslategrey;
+    padding: 3px 10px;
+    color: white;
+}
+
+.instruction-selected {
+    background-color: rgb(65, 107, 107);
+}
+
+.instruction:nth-child(even) {
+    
+    background-color: rgb(37, 59, 59);
 }
