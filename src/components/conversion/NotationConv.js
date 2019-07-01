@@ -34,14 +34,6 @@ export class NotationConv extends React.Component{
         this.setState({expression: event.target.value + ' '});
     };
 
-    handleKeyDown = event => {
-        let value = event.target.value;
-        console.log(value);
-        if (value !== '' && event.key === 'Backspace'){
-            this.setState({expression: value.substr(0, value.length - 1)});
-        }
-    };
-
     render = () => {
         return (
             <div className='conversion-comp'>

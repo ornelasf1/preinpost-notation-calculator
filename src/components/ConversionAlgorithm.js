@@ -7,6 +7,7 @@ import * as ConversionAlgoActions from './ConversionAlgoActions';
 import './ConversionAlgorithm.css';
 import { InfixAlgorithm, infixToPostfix } from './NotationCalc';
 import { infixToPostfixInstructions, instructionIndents, getInstructionSet } from './NotationCalcInstructions';
+import { ConversionPlayer } from './ConversionPlayer';
 
 class ConversionAlgorithm extends React.Component {
 
@@ -14,14 +15,34 @@ class ConversionAlgorithm extends React.Component {
         super(props);
         this.state = {
             toNotation: '',
-            instructions: []
+            instructions: [],
+            selectedInstruction: {}
         };
     }
 
     calculateSequences = () => {
+        console.log('here');
         let sequence = [];
         infixToPostfix(this.props.conversion.expressions.infix, sequence);
         this.props.setInfixToPostfixSeq(sequence);
+    };
+
+    beginSequence = () => {
+        new Promise(resolve => resolve(this.calculateSequences()))
+            .then(() => {
+                console.log('and here');
+                const { toPostInstr } = this.props.algorithm.infixInstr;
+                const time = 1000 * toPostInstr.length;
+                var instrIndex = 0;
+
+                var playSeq = setInterval(() => {
+                    this.setState({selectedInstruction: toPostInstr[instrIndex]});
+                    instrIndex++;
+                }, 1000);
+                
+                setTimeout(() => {clearTimeout(playSeq)}, time);
+            });
+        
     };
 
     handleNotationButtons = (_, selected, toNotation) => {
@@ -31,7 +52,7 @@ class ConversionAlgorithm extends React.Component {
     render = () => {
 
         const {selectedNotation} = this.props.conversion;
-        const instructions = this.state.instructions.map((instr, i) => (<Instruction key={i} selected={false}>{instr}</Instruction>));
+        const instructions = this.state.instructions.map((instr, i) => (<Instruction key={i} uniqueKey={i} selected={this.state.selectedInstruction.index}>{instr}</Instruction>));
 
         return (
             <div className='display'>
@@ -42,7 +63,8 @@ class ConversionAlgorithm extends React.Component {
                         {instructions}
                     </div>
                     <div className='canvas'>
-                        <button name='convert' >Convert</button>
+                        <button name='convert' onClick={this.beginSequence}>Convert</button>
+                        <ConversionPlayer className='player' selectedInstr={this.state.selectedInstruction}></ConversionPlayer>
                     </div>
                 </div>}
             </div>
@@ -51,7 +73,7 @@ class ConversionAlgorithm extends React.Component {
 }
 
 const Instruction = props => {
-    const selectedStyle = props.selected? '-selected' : '';
+    const selectedStyle = props.selected === props.uniqueKey? '-selected' : '';
     const indents = instructionIndents(props.children);
     const pad = {
         "paddingLeft": (10 + indents * 15) + 'px'

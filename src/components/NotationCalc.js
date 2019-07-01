@@ -63,8 +63,9 @@ const prec = operator => {
     }
 };
 
-const captureState = (index, tokens, operator_stack, output_stack) => ({
+const captureState = (index, selectedToken, tokens, operator_stack, output_stack) => ({
     index,
+    selectedToken,
     tokens: [...tokens],
     operator_stack: [...operator_stack],
     output_stack: [...output_stack],
@@ -79,26 +80,26 @@ export const infixToPostfix = (infix, seq = []) => {
     console.log('Tokens: ', infixTokens);
 
     while (infixTokens.length > 0) {
-        seq.push(captureState(0, infixTokens, stack, postfixExpr));
+        seq.push(captureState(0, '', infixTokens, stack, postfixExpr));
         const token = infixTokens.pop();
-        seq.push(captureState(1, infixTokens, stack, postfixExpr));
+        seq.push(captureState(1, token, infixTokens, stack, postfixExpr));
         if (prec(token) > 0) {
-            seq.push(captureState(2, infixTokens, stack, postfixExpr));
+            seq.push(captureState(2, token, infixTokens, stack, postfixExpr));
             let topToken = stack.length !== 0? stack[stack.length - 1] : '';
             
             if (stack.length === 0 || topToken === '(') {
-                seq.push(captureState(3, infixTokens, stack, postfixExpr));
-                seq.push(captureState(4, infixTokens, stack, postfixExpr));
+                seq.push(captureState(3, token, infixTokens, stack, postfixExpr));
+                seq.push(captureState(4, token, infixTokens, stack, postfixExpr));
                 stack.push(token);
             } else if (token === '(') {
-                seq.push(captureState(5, infixTokens, stack, postfixExpr));
-                seq.push(captureState(6, infixTokens, stack, postfixExpr));
+                seq.push(captureState(5, token, infixTokens, stack, postfixExpr));
+                seq.push(captureState(6, token, infixTokens, stack, postfixExpr));
                 stack.push(token);
             } else if (token === ')') {
-                seq.push(captureState(7, infixTokens, stack, postfixExpr));
+                seq.push(captureState(7, token, infixTokens, stack, postfixExpr));
                 while (topToken !== '(') {
-                    seq.push(captureState(8, infixTokens, stack, postfixExpr));
-                    seq.push(captureState(9, infixTokens, stack, postfixExpr));
+                    seq.push(captureState(8, token, infixTokens, stack, postfixExpr));
+                    seq.push(captureState(9, token, infixTokens, stack, postfixExpr));
                     postfixExpr.push(stack.pop());
                     topToken = stack.length !== 0? stack[stack.length - 1] : '';
                     if (stack.length === 0){
@@ -106,43 +107,40 @@ export const infixToPostfix = (infix, seq = []) => {
                         return '';
                     }
                 }
-                seq.push(captureState(10, infixTokens, stack, postfixExpr));
+                seq.push(captureState(10, token, infixTokens, stack, postfixExpr));
                 stack.pop();
             } else if (prec(token) > prec(topToken)) {
-                seq.push(captureState(11, infixTokens, stack, postfixExpr));
-                seq.push(captureState(12, infixTokens, stack, postfixExpr));
+                seq.push(captureState(11, token, infixTokens, stack, postfixExpr));
+                seq.push(captureState(12, token, infixTokens, stack, postfixExpr));
                 stack.push(token);
             } else if (prec(token) <= prec(topToken)) {
-                seq.push(captureState(13, infixTokens, stack, postfixExpr));
-                seq.push(captureState(14, infixTokens, stack, postfixExpr));
+                seq.push(captureState(13, token, infixTokens, stack, postfixExpr));
+                seq.push(captureState(14, token, infixTokens, stack, postfixExpr));
                 postfixExpr.push(stack.pop());
                 topToken = stack.length !== 0? stack[stack.length - 1] : '';
                 while (stack.length > 0 && topToken !== '(' && prec(token) <= prec(topToken)) {
-                    seq.push(captureState(15, infixTokens, stack, postfixExpr));
-                    seq.push(captureState(16, infixTokens, stack, postfixExpr));
+                    seq.push(captureState(15, token, infixTokens, stack, postfixExpr));
+                    seq.push(captureState(16, token, infixTokens, stack, postfixExpr));
                     postfixExpr.push(stack.pop());
                     topToken = stack.length !== 0? stack[stack.length - 1] : '';
                 }
-                seq.push(captureState(17, infixTokens, stack, postfixExpr));
+                seq.push(captureState(17, token, infixTokens, stack, postfixExpr));
                 stack.push(token);
             }
         } else {
-            seq.push(captureState(18, infixTokens, stack, postfixExpr));
-            seq.push(captureState(19, infixTokens, stack, postfixExpr));
+            seq.push(captureState(18, token, infixTokens, stack, postfixExpr));
+            seq.push(captureState(19, token, infixTokens, stack, postfixExpr));
             postfixExpr.push(token);
         }
 
         if(infixTokens.length === 0){
-            seq.push(captureState(20, infixTokens, stack, postfixExpr));
+            seq.push(captureState(20, token, infixTokens, stack, postfixExpr));
             while(stack.length > 0) {
                 postfixExpr.push(stack.pop());
             }
+            seq.push(captureState(-1, '', infixTokens, stack, postfixExpr));
         }
-
     }
-    setInfixToPostfixSeq(seq);
-
-    seq.map(instr => console.log(instr['operator_stack']));
     
     return postfixExpr.join(' ');
 };

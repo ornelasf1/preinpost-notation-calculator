@@ -26,6 +26,7 @@
     margin: 10px;
     width: 60%;
     display: flex;
+    flex-direction: column;
 }
 
 .canvas button {
@@ -36,6 +37,10 @@
     font-weight: 600;
     font-size: 50px;
     
+}
+
+.canvas.player {
+    background-color: cyan;
 }
 
 .toNotation-buttons {
@@ -72,7 +77,9 @@
 }
 
 .instruction-selected {
-    background-color: rgb(65, 107, 107);
+    background-color: rgb(76, 124, 124);
+    padding: 3px 10px;
+    color: white;
 }
 
 .instruction:nth-child(even) {
