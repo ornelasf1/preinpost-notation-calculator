@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import * as ConversionAlgoActions from './ConversionAlgoActions';
 
 import './ConversionAlgorithm.css';
-import { InfixAlgorithm, infixToPostfix } from './NotationCalc';
-import { infixToPostfixInstructions, instructionIndents, getInstructionSet } from './NotationCalcInstructions';
+import { infixToPostfix } from './NotationCalc';
+import { instructionIndents, getInstructionSet } from './NotationCalcInstructions';
 import { ConversionPlayer } from './ConversionPlayer';
 
 class ConversionAlgorithm extends React.Component {

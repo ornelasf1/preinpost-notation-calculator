@@ -1,21 +1,5 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import { setInfixToPostfixSeq } from './ConversionAlgoActions';
+
 import { infixToPostfixInstructions } from './NotationCalcInstructions';
-
-
-
-export class NotationCalc{
-    
-}
-
-export const InfixAlgorithm = props => {
-
-    return (
-        <div></div>
-    );
-};
-
 
 
 const toTokens = input => {

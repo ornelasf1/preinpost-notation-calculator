@@ -1,7 +1,6 @@
 
 import React from 'react';
 import _ from 'underscore';
-import {connect} from 'react-redux';
 import './ConversionPlayer.css';
 
 export class ConversionPlayer extends React.Component {
@@ -29,7 +28,8 @@ export class ConversionPlayer extends React.Component {
         }
         else if (!_.isEmpty(prevProps.selectedInstr) && !_.isEmpty(this.props.selectedInstr) && 
                 prevProps.selectedInstr.tokens.length !== this.props.selectedInstr.tokens.length) {
-            this.setState({selectedTokenIndex: this.state.selectedTokenIndex+=1}, () => {console.log("Updated: ", this.state); this.updateTokenCursor(this.state.selectedTokenIndex);});
+            const nextTokenIdx = this.state.selectedTokenIndex + 1;
+            this.setState({selectedTokenIndex: nextTokenIdx}, () => this.updateTokenCursor(this.state.selectedTokenIndex));
         } else if (Object.keys(this.props.selectedInstr) !== 0 && this.props.selectedInstr.index === -1 
                 && this.state.selectedTokenIndex !== -1) {
             this.setState({selectedTokenIndex: -1}, () => this.updateTokenCursor(this.state.selectedTokenIndex));
@@ -60,26 +60,24 @@ export class ConversionPlayer extends React.Component {
     }
 
     render = () => {
-        const divTokens = this.state.tokens.map((token, idx) => <div key={idx} id={"token-"+idx}>{token}</div>);
+        const divInputTokens = this.state.tokens.map((token, idx) => <div key={idx} id={"token-"+idx}>{token}</div>);
+
+        const divOutputTokens = [];
 
 
         return (
             <div className='player'>
                 <div id='tokenCursor'></div>
                 <div id='tokens'>
-                    {divTokens}
+                    {divInputTokens}
                 </div>
                 <div id='structures'>
-                    <div id='stack'></div>
+                    <div id='stack'>
+                        {divOutputTokens}
+                    </div>
                     <div id='output'></div>
                 </div>
             </div>
         );
     };
 }
-
-// const mapStateToProps = (state) => ({
-//     algorithm: state.algorithmInstructions,
-// });
-
-// export default connect(mapStateToProps)(ConversionPlayer);
