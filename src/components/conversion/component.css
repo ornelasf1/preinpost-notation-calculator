@@ -3,14 +3,13 @@
     border-radius: 20px;
     display: flex;
     justify-content: space-evenly;
-    height: 30%;
 }
 
 .component {
     text-align: center;
     margin: 10px;
     width: 512px;
-    height: 256px;
+    height: 200px;
     background: whitesmoke;
     border-radius: 10px;
 }
