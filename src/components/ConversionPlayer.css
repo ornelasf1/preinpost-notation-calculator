@@ -1,5 +1,5 @@
 .player{
-    background-color: cyan;
+    background-color: white;
     text-align: center;
     height: 100%;
     flex-direction: column;
@@ -36,4 +36,26 @@
     position: absolute;
     transition: 1s;
     display: none;
+}
+
+#structures {
+    margin-top: 80px;
+}
+
+#stack {
+    display: inline-block;
+    width: 50px;
+    height: 140px;
+    border: 5px solid black;
+    border-top-color: white;
+    margin-left: 60px;
+}
+
+#output {
+    display: inline-block;
+    margin-top: 150px;
+    width: 300px;
+    height: 5px;
+    background-color: black;
+    border-radius: 10px;
 }

@@ -69,6 +69,10 @@ export class ConversionPlayer extends React.Component {
                 <div id='tokens'>
                     {divTokens}
                 </div>
+                <div id='structures'>
+                    <div id='stack'></div>
+                    <div id='output'></div>
+                </div>
             </div>
         );
     };

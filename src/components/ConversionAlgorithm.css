@@ -22,7 +22,7 @@
 }
 
 .canvas {
-    background-color: cornflowerblue;
+    background-color: 133337;
     margin: 10px;
     width: 60%;
     display: flex;
@@ -36,7 +36,6 @@
     
     font-weight: 600;
     font-size: 50px;
-    
 }
 
 .canvas.player {

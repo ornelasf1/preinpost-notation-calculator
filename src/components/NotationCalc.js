@@ -38,9 +38,6 @@ const toTokens = input => {
 
     tokens = tokens.map(s => s.trim()).filter(s => s.trim().length > 0);
 
-    // tokens = tokens.split(/(\s+)/);
-    // tokens = tokens.filter(s => s.trim().length > 0);
-
     return tokens;
 };
 
