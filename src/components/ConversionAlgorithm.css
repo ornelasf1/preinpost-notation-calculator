@@ -33,9 +33,15 @@
     height: 10%;
     width: 50%;
     margin: 20px auto;
-    
     font-weight: 600;
     font-size: 50px;
+    border: none;
+    color: white;
+    background-color: #1a484e;
+}
+
+.canvas button:hover {
+    background-color: #205961;
 }
 
 .canvas.player {
@@ -43,30 +49,31 @@
 }
 
 .toNotation-buttons {
-    background-color: cadetblue;
     display: flex;
     height: auto;
 }
 
 .toNotation-buttons button{
     text-align: center;
-    background-color: #133337;
+    border: none;
+    text-decoration: none;
+    background-color: #1a484e;
     margin: 0 auto;
     padding: 5px 0;
     width: 50%;
-    border-top-right-radius: 10px;
+    border-top-right-radius: 20px;
     outline-width: 0;
     color: white;
     font-weight: 600;
     font-size: 40px;
 }
 
-.toNotation-buttons button selected{
-    background-color: red;
+.toNotation-buttons button:focus {
+    background-color: #133337;
 }
 
 .toNotation-buttons button:hover{
-    background-color: #133337ee;
+    background-color: #205961;
 }
 
 .instruction {

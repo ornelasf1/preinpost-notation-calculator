@@ -45,6 +45,11 @@ class ConversionAlgorithm extends React.Component {
 
     handleNotationButtons = (_, selected, toNotation) => {
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
+        const notationComps = document.getElementById('conversion-comp');
+        if (notationComps.style.animationName === '') {
+            notationComps.style.animationName = 'elevateBoxes';
+            console.log('add animation');
+        }
     }
 
     render = () => {

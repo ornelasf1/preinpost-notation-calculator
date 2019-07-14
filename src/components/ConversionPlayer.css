@@ -19,6 +19,7 @@
     display: inline-block;
     font-size: 35px;
     font-weight: 600;
+    width: 25px;
 }
 
 #selectedToken {
@@ -61,8 +62,15 @@
     display: inline-block;
     margin-top: 150px;
     width: 300px;
-    height: 5px;
-    background-color: black;
+    height: 50px;
+    border-bottom: 5px solid black;
     border-radius: 10px;
     margin-left: 20px;
+}
+
+#output > div {
+    display: inline-block;
+    font-size: 35px;
+    font-weight: 600;
+    width: 25px;
 }

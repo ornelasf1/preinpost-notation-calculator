@@ -36,7 +36,7 @@ export class NotationConv extends React.Component{
 
     render = () => {
         return (
-            <div className='conversion-comp'>
+            <div id='conversion-comp'>
                 <NotationFix type='Prefix' submitExpr={this.props.updatePrefixExpr} expr={this.state.prefix} handleChange={this.handleChange}/>
                 <NotationFix type='Infix' submitExpr={this.props.updateInfixExpr} expr={this.state.infix} handleChange={this.handleChange}/>
                 <NotationFix type='Postfix' submitExpr={this.props.updatePostfixExpr} expr={this.state.postfix} handleChange={this.handleChange}/>
