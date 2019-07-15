@@ -46,6 +46,7 @@ class ConversionAlgorithm extends React.Component {
     handleNotationButtons = (_, selected, toNotation) => {
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
         const notationComps = document.getElementById('conversion-comp');
+        const body = document.getElementById('body');
         if (notationComps.style.animationName === '') {
             notationComps.style.animationName = 'elevateBoxes';
             console.log('add animation');
@@ -61,7 +62,7 @@ class ConversionAlgorithm extends React.Component {
             <div className='display'>
                 {selectedNotation !== '' && <ToNotationButtons selected={selectedNotation} toNotation={this.state.toNotation} handleClick={this.handleNotationButtons}/>}
                 {this.state.toNotation !== '' && 
-                <div className='body'>
+                <div id='body' style={selectedNotation !== '' && {animationName: 'dropdownBody'}}>
                     <div className='algorithm-display' >
                         {instructions}
                     </div>

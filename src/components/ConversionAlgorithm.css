@@ -7,8 +7,23 @@
     /* overflow: auto; */
 }
 
-.body {
+#body {
     display: flex;
+    overflow: hidden;
+    max-height: 0px;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-delay: .25s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes dropdownBody {
+    from {
+        max-height: 0px;
+    }
+    to {
+        max-height: 5000px;
+    }
 }
 
 .algorithm-display {
