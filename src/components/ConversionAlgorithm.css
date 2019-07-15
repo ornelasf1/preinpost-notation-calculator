@@ -48,12 +48,29 @@
     background-color: cyan;
 }
 
-.toNotation-buttons {
+#toNotation-buttons {
     display: flex;
     height: auto;
+    overflow: hidden;
 }
 
-.toNotation-buttons button{
+#toNotation-buttons {
+    animation-duration: .5s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-name: dropdownButtons;
+}
+
+@keyframes dropdownButtons {
+    from {
+        height: 0px;
+    }
+    to {
+        height: 50px;
+    }
+}
+
+#toNotation-buttons button{
     text-align: center;
     border: none;
     text-decoration: none;
@@ -61,18 +78,18 @@
     margin: 0 auto;
     padding: 5px 0;
     width: 50%;
-    border-top-right-radius: 20px;
+    border-radius: 20px;
     outline-width: 0;
     color: white;
     font-weight: 600;
     font-size: 40px;
 }
 
-.toNotation-buttons button:focus {
+#toNotation-buttons button:focus {
     background-color: #133337;
 }
 
-.toNotation-buttons button:hover{
+#toNotation-buttons button:hover{
     background-color: #205961;
 }
 

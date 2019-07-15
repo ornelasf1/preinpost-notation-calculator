@@ -94,7 +94,7 @@ const ToNotationButtons = props => {
     notations = notations.filter(fix => fix !== props.selected);
     
     return (
-        <div className='toNotation-buttons'>
+        <div id='toNotation-buttons'>
             <button onClick={(e => props.handleClick(e, props.selected, notations[0]))}>To {notations[0]}</button>
             <button onClick={(e => props.handleClick(e, props.selected, notations[1]))}>To {notations[1]}</button>
         </div>
