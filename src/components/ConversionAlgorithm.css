@@ -1,6 +1,6 @@
 .display {
     /* position: absolute; */
-    background-color: #133337;
+    background-color: var(--primary-color);
     margin: 10px;
     /* height: 70%; */
     border-radius: 10px;
@@ -44,7 +44,7 @@
     flex-direction: column;
 }
 
-.canvas button {
+.canvas > button {
     height: 10%;
     width: 50%;
     margin: 20px auto;
@@ -52,11 +52,11 @@
     font-size: 50px;
     border: none;
     color: white;
-    background-color: #1a484e;
+    background-color: var(--alt-colo);
 }
 
-.canvas button:hover {
-    background-color: #205961;
+.canvas > button:hover {
+    background-color: var(--activity-color);
 }
 
 .canvas.player {
@@ -89,7 +89,7 @@
     text-align: center;
     border: none;
     text-decoration: none;
-    background-color: #1a484e;
+    background-color: var(--alt-colo);
     margin: 0 auto;
     padding: 5px 0;
     width: 50%;
@@ -101,15 +101,15 @@
 }
 
 #toNotation-buttons button:focus {
-    background-color: #133337;
+    background-color: var(--primary-color);
 }
 
 #toNotation-buttons button:hover{
-    background-color: #205961;
+    background-color: var(--activity-color);
 }
 
 .instruction {
-    background-color: darkslategrey;
+    background-color: var(--instruction-color-1);
     padding: 3px 10px;
     color: white;
 }
@@ -122,5 +122,5 @@
 
 .instruction:nth-child(even) {
     
-    background-color: rgb(37, 59, 59);
+    background-color: var(--instruction-color-2);
 }

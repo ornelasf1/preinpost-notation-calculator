@@ -1,7 +1,7 @@
 
 html {
   height: 100%;
-  background-color: #143c41;
+  background-color: var(--secondary-color);
 }
 
 h1 {
@@ -10,4 +10,13 @@ h1 {
 
 button {
   cursor: pointer;
+}
+
+:root{
+  --primary-color: #133337;
+  --secondary-color: #143c41;
+  --alt-color: #1a484e;
+  --activity-color: #205961;
+  --instruction-color-1: darkslategrey;
+  --instruction-color-2: rgb(37, 59, 59);
 }

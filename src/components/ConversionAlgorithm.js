@@ -7,7 +7,8 @@ import * as ConversionAlgoActions from './ConversionAlgoActions';
 import './ConversionAlgorithm.css';
 import { infixToPostfix } from './NotationCalc';
 import { instructionIndents, getInstructionSet } from './NotationCalcInstructions';
-import { ConversionPlayer } from './ConversionPlayer';
+import { ConversionPlayer } from './player/ConversionPlayer';
+import { ConversionPlayBar } from './player/ConversionPlayBar';
 
 class ConversionAlgorithm extends React.Component {
 
@@ -46,10 +47,8 @@ class ConversionAlgorithm extends React.Component {
     handleNotationButtons = (_, selected, toNotation) => {
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
         const notationComps = document.getElementById('conversion-comp');
-        const body = document.getElementById('body');
         if (notationComps.style.animationName === '') {
             notationComps.style.animationName = 'elevateBoxes';
-            console.log('add animation');
         }
     }
 
@@ -67,7 +66,8 @@ class ConversionAlgorithm extends React.Component {
                         {instructions}
                     </div>
                     <div className='canvas'>
-                        <button name='convert' onClick={this.beginSequence}>Convert</button>
+                        {/* <button name='convert' onClick={this.beginSequence}>Convert</button> */}
+                        <ConversionPlayBar />
                         <ConversionPlayer className='player' selectedInstr={this.state.selectedInstruction}></ConversionPlayer>
                     </div>
                 </div>}
