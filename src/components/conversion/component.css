@@ -1,5 +1,5 @@
 #conversion-comp {
-    background:#133337;
+    background: var(--primary-color);
     border-radius: 20px;
     display: flex;
     justify-content: space-evenly;

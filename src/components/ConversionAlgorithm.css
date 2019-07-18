@@ -52,7 +52,7 @@
     font-size: 50px;
     border: none;
     color: white;
-    background-color: var(--alt-colo);
+    background-color: var(--alt-color);
 }
 
 .canvas > button:hover {
@@ -89,7 +89,7 @@
     text-align: center;
     border: none;
     text-decoration: none;
-    background-color: var(--alt-colo);
+    background-color: var(--alt-color);
     margin: 0 auto;
     padding: 5px 0;
     width: 50%;
