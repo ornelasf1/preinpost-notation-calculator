@@ -24,6 +24,7 @@ export class ConversionPlayer extends React.Component {
     }
 
     componentDidUpdate = prevProps => {
+        console.log('Update Covnersion Player');
         this.updateInputTokens(prevProps);
         this.updateStackTokens(prevProps);
         this.updateOutputTokens(prevProps);
@@ -44,7 +45,7 @@ export class ConversionPlayer extends React.Component {
                 this.setState({inputTokens: this.props.selectedInstr.tokens.reverse()});
         }
         else if (!_.isEmpty(prevProps.selectedInstr) && !_.isEmpty(this.props.selectedInstr) && 
-                prevProps.selectedInstr.tokens.length !== this.props.selectedInstr.tokens.length) {
+                prevProps.selectedInstr.tokens.length !== this.props.selectedInstr.tokens.length && prevProps.selectedInstr.index !== -1) {
             const nextTokenIdx = this.state.selectedTokenIndex + 1;
             this.setState({selectedTokenIndex: nextTokenIdx}, () => this.updateTokenCursor(this.state.selectedTokenIndex));
         } else if (Object.keys(this.props.selectedInstr) !== 0 && this.props.selectedInstr.index === -1 
@@ -82,7 +83,8 @@ export class ConversionPlayer extends React.Component {
     }
 
     render = () => {
-        const divInputTokens = this.state.inputTokens.map((token, idx) => <div key={idx} id={"token-"+idx}>{token}</div>);
+        const expressionTokens = this.props.expression.split('');
+        const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"token-"+idx}>{token}</div>);
         const divStackTokens = this.state.stackTokens.map((token, idx) => <div key={idx}>{token}</div>);
         const divOutputTokens = this.state.outputTokens.map((token, idx) => <div key={idx}>{token}</div>);
 

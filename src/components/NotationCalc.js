@@ -2,7 +2,7 @@
 import { infixToPostfixInstructions } from './NotationCalcInstructions';
 
 
-const toTokens = input => {
+export const toTokens = input => {
     if(typeof input !== 'string') return '';
     let tokens = input.trim();
 

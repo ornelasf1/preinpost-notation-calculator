@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import * as ConversionActions from './ConversionActions';
 import {NotationFix} from './NotationFix';
-import {infixToPostfix} from '../NotationCalc';
+import {infixToPostfix, toTokens} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
 
@@ -19,7 +19,8 @@ export class NotationConv extends React.Component{
 
     handleChange = event => {
         const notationFix = event.target.name.toLowerCase();
-        this.setState({[notationFix]: event.target.value});
+        const inputValue = toTokens(event.target.value).join('');
+        this.setState({[notationFix]: inputValue});
 
         if (notationFix === 'infix') {
             this.setState({postfix: infixToPostfix(event.target.value)});
@@ -28,10 +29,6 @@ export class NotationConv extends React.Component{
         this.props.updateSelectedNotation(notationFix);
         this.setState({}, () => this.props.updateExpressions(this.state));
 
-    };
-
-    onChange = event => {
-        this.setState({expression: event.target.value + ' '});
     };
 
     render = () => {

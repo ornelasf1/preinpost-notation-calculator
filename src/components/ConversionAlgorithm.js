@@ -8,7 +8,7 @@ import './ConversionAlgorithm.css';
 import { infixToPostfix } from './NotationCalc';
 import { instructionIndents, getInstructionSet } from './NotationCalcInstructions';
 import { ConversionPlayer } from './player/ConversionPlayer';
-import { ConversionPlayBar } from './player/ConversionPlayBar';
+import ConversionPlayBar from './player/ConversionPlayBar';
 
 class ConversionAlgorithm extends React.Component {
 
@@ -44,31 +44,48 @@ class ConversionAlgorithm extends React.Component {
         
     };
 
+    updateSelectedInstruction = selectedInstruction => {
+        this.setState({selectedInstruction});
+    }
+
     handleNotationButtons = (_, selected, toNotation) => {
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
+        this.calculateSequences();
         const notationComps = document.getElementById('conversion-comp');
         if (notationComps.style.animationName === '') {
             notationComps.style.animationName = 'elevateBoxes';
         }
     }
 
-    render = () => {
+    getResultExpression = () => {
+        if (this.state.toNotation === 'postfix') {
+            return this.props.conversion.expressions.postfix;
+        } else if (this.state.toNotation === 'infix') {
+            return this.props.conversion.expressions.infix;
+        } else if (this.state.toNotation === 'infix') {
+            return this.props.conversion.expressions.prefix;
+        } else {
+            return '';
+        }
+    }
 
-        const {selectedNotation} = this.props.conversion;
+    render = () => {
+        const {selectedNotation, expressions} = this.props.conversion;
+        const {toNotation} = this.state;
+
         const instructions = this.state.instructions.map((instr, i) => (<Instruction key={i} uniqueKey={i} selected={this.state.selectedInstruction.index}>{instr}</Instruction>));
 
         return (
             <div className='display'>
-                {selectedNotation !== '' && <ToNotationButtons selected={selectedNotation} toNotation={this.state.toNotation} handleClick={this.handleNotationButtons}/>}
+                {selectedNotation !== '' && <ToNotationButtons selected={selectedNotation} toNotation={toNotation} handleClick={this.handleNotationButtons}/>}
                 {this.state.toNotation !== '' && 
                 <div id='body' style={selectedNotation !== '' && {animationName: 'dropdownBody'}}>
                     <div className='algorithm-display' >
                         {instructions}
                     </div>
                     <div className='canvas'>
-                        {/* <button name='convert' onClick={this.beginSequence}>Convert</button> */}
-                        <ConversionPlayBar />
-                        <ConversionPlayer className='player' selectedInstr={this.state.selectedInstruction}></ConversionPlayer>
+                        <ConversionPlayBar updateSelectedInstruction={this.updateSelectedInstruction}/>
+                        <ConversionPlayer className='player' expression={expressions[selectedNotation]} selectedInstr={this.state.selectedInstruction} />
                     </div>
                 </div>}
             </div>
