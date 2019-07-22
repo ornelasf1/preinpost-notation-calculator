@@ -10,7 +10,7 @@ export class NotationFix extends React.Component{
         return (
             <div className='component'>
                 <h1>{this.props.type}</h1>
-                <form name={this.props.type} onSubmit={e => e.preventDefault}>
+                <form name={this.props.type} onSubmit={e => e.preventDefault()}>
                     <input 
                         name={this.props.type}
                         className='input-comp' 

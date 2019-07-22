@@ -17,7 +17,14 @@ class ConversionAlgorithm extends React.Component {
         this.state = {
             toNotation: '',
             instructions: [],
-            selectedInstruction: {}
+            selectedInstruction: {
+                index: -1,
+                selectedToken: '',
+                selectedTokenIndex: -1,
+                inputTokens: [],
+                outputTokens: [],
+                stackTokens: [],
+            }
         };
     }
 
@@ -27,25 +34,9 @@ class ConversionAlgorithm extends React.Component {
         this.props.setInfixToPostfixSeq(sequence);
     };
 
-    beginSequence = () => {
-        new Promise(resolve => resolve(this.calculateSequences()))
-            .then(() => {
-                const { toPostInstr } = this.props.algorithm.infixInstr;
-                const time = 1000 * toPostInstr.length;
-                var instrIndex = 0;
-
-                var playSeq = setInterval(() => {
-                    this.setState({selectedInstruction: toPostInstr[instrIndex]});
-                    instrIndex++;
-                }, 1000);
-                
-                setTimeout(() => {clearTimeout(playSeq)}, time);
-            });
-        
-    };
-
-    updateSelectedInstruction = selectedInstruction => {
-        this.setState({selectedInstruction});
+    updateSelectedInstruction = selectedInstructionIndex => {
+        const { toPostInstr } = this.props.algorithm.infixInstr;
+        this.setState({selectedInstruction: toPostInstr[selectedInstructionIndex]});
     }
 
     handleNotationButtons = (_, selected, toNotation) => {

@@ -1,8 +1,8 @@
 .player{
     background-color: white;
-    text-align: center;
     height: 100%;
     flex-direction: column;
+    text-align: center;
 }
 
 #tokens {
@@ -15,26 +15,20 @@
 }
 
 
-#tokens > div {
+.token {
     display: inline-block;
     font-size: 35px;
     font-weight: 600;
-    width: 25px;
-}
-
-#selectedToken {
-    border-bottom: 3px solid black;
-    transition: 1s;
-    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    width: 60px;
 }
 
 #tokenCursor {
     background-color: black;
+    margin: auto;
     width: 20px;
     height: 5px;
     top: 0;
-    left: 0;
-    position: absolute;
+    right: 0;
     transition: 1s;
     display: none;
 }

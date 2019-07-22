@@ -8,6 +8,15 @@
     height: 50px;
 }
 
+#slider {
+  height: auto;
+  flex: 1;
+}
+
+#slider > #track {
+  background-color: red;
+}
+
 .meter {
   flex: 1;
     height: 20px;

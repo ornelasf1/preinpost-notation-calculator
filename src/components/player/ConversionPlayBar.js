@@ -11,7 +11,7 @@ class ConversionPlayBar extends React.Component {
         super(props);
         this.state = {
             isPlaying: false,
-            instructionIndex: 11,
+            instructionIndex: 0,
         }
         this.playSeq = undefined;
     }
@@ -24,7 +24,7 @@ class ConversionPlayBar extends React.Component {
             console.log('Initiated');
             this.playSeq = new Timer(() => {
                 console.log('RUNNING');
-                this.props.updateSelectedInstruction(toPostInstr[this.state.instructionIndex]);
+                this.props.updateSelectedInstruction(this.state.instructionIndex);
                 this.setState({instructionIndex: this.state.instructionIndex + 1}, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
@@ -61,13 +61,27 @@ class ConversionPlayBar extends React.Component {
                     {isPlaying? <PauseIcon /> : <PlayIcon />}
                 </button>
                 <Slider 
+                    id='slider'
                     axis="x"
                     xstep={1}
                     xmin={0}
-                    xmax={toPostInstr.length}
+                    xmax={toPostInstr.length - 1}
                     x={this.state.instructionIndex}
                     onChange={({x}) => {
-                        this.setState({isPlaying: false, instructionIndex: x})
+                        this.setState({isPlaying: false, instructionIndex: x}, this.props.updateSelectedInstruction(this.state.instructionIndex))
+                    }}
+                    styles={{
+                        track: {
+                            backgroundColor: 'blue'
+                          },
+                          active: {
+                            backgroundColor: 'red'
+                          },
+                          thumb: {
+                            width: 10,
+                            height: 10,
+                            top: '50%',
+                          }
                     }}
                     />
             </div>

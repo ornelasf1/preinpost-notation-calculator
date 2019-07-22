@@ -13,21 +13,16 @@ export class ConversionPlayer extends React.Component {
             outputTokens: [],
             stackTokens: [],
             selectedTokenIndex: -1,
+            tokenCursorLocations: [],
         };
     }
 
     componentDidMount = () => {
-        const cursorPos = this.getCoords(document.getElementById('tokens'));
-        const cursor = document.getElementById('tokenCursor');
-        cursor.style.left = cursorPos.left + 'px';
-        cursor.style.top = cursorPos.top + cursorPos.height + 'px';
+        console.log('component did mount')
     }
 
     componentDidUpdate = prevProps => {
-        console.log('Update Covnersion Player');
-        this.updateInputTokens(prevProps);
-        this.updateStackTokens(prevProps);
-        this.updateOutputTokens(prevProps);
+        this.updateTokenCursor(this.props.selectedInstr.selectedTokenIndex);
     }
 
     getCoords = elem => {
@@ -39,61 +34,46 @@ export class ConversionPlayer extends React.Component {
         };
     }
 
-    updateInputTokens = prevProps => {
-        if (prevProps.selectedInstr.tokens !== this.props.selectedInstr.tokens
-            && this.state.inputTokens.length === 0) {
-                this.setState({inputTokens: this.props.selectedInstr.tokens.reverse()});
-        }
-        else if (!_.isEmpty(prevProps.selectedInstr) && !_.isEmpty(this.props.selectedInstr) && 
-                prevProps.selectedInstr.tokens.length !== this.props.selectedInstr.tokens.length && prevProps.selectedInstr.index !== -1) {
-            const nextTokenIdx = this.state.selectedTokenIndex + 1;
-            this.setState({selectedTokenIndex: nextTokenIdx}, () => this.updateTokenCursor(this.state.selectedTokenIndex));
-        } else if (Object.keys(this.props.selectedInstr) !== 0 && this.props.selectedInstr.index === -1 
-                && this.state.selectedTokenIndex !== -1) {
-            this.setState({selectedTokenIndex: -1}, () => this.updateTokenCursor(this.state.selectedTokenIndex));
-        }
-    }
-
-    updateStackTokens = prevProps => {
-        if ((!_.isUndefined(this.props.selectedInstr.operator_stack) && !_.isUndefined(prevProps.selectedInstr.operator_stack))
-            && prevProps.selectedInstr.operator_stack.length !== this.props.selectedInstr.operator_stack.length) {
-                this.setState({stackTokens: this.props.selectedInstr.operator_stack});
-            }
-    }
-
-    updateOutputTokens = prevProps => {
-        if ((!_.isUndefined(this.props.selectedInstr.output_stack) && !_.isUndefined(prevProps.selectedInstr.output_stack))
-            && prevProps.selectedInstr.output_stack.length !== this.props.selectedInstr.output_stack.length) {
-                this.setState({outputTokens: this.props.selectedInstr.output_stack});
-            }
-    }
-
-    updateTokenCursor = (index) => {
+    updateTokenCursor = index => {
+        const { tokenCursorLocations } = this.state;
         const tokenCursor = document.getElementById('tokenCursor');
-        if (index === 0) {
-            tokenCursor.style.display = 'block';
-        }else if (index === -1) {
-            tokenCursor.style.display = 'none';
+        if (tokenCursor === undefined) {
             return;
         }
-        const nextCursorLocation = document.getElementById("token-"+index);
-        const nextCursorCoords = this.getCoords(nextCursorLocation);
-        tokenCursor.style.left = nextCursorCoords.left + "px";
-        tokenCursor.style.top = (nextCursorCoords.top + nextCursorCoords.height) + "px";
+        if (index === -1) {
+            tokenCursor.style.display = 'none';
+            document.getElementById('tokens').appendChild(tokenCursor);
+            return;
+        }else {
+            tokenCursor.style.display = 'block';
+        }
+        document.getElementById('token-'+index).appendChild(tokenCursor);
     }
+
+    updateTokenCursorLocations = () => {
+        const cursorLocations = [];
+        for (var idx = 0; idx < this.props.expression.length; idx++){
+            const divToken = document.getElementById('token-'+idx);
+            const nextCursorCoords = this.getCoords(divToken);
+            cursorLocations.push({
+                left: nextCursorCoords.left + 'px',
+                top: (nextCursorCoords.top + nextCursorCoords.height) + 'px',
+            });
+        };
+        this.setState({tokenCursorLocations: cursorLocations});
+    };
 
     render = () => {
         const expressionTokens = this.props.expression.split('');
-        const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"token-"+idx}>{token}</div>);
-        const divStackTokens = this.state.stackTokens.map((token, idx) => <div key={idx}>{token}</div>);
-        const divOutputTokens = this.state.outputTokens.map((token, idx) => <div key={idx}>{token}</div>);
-
+        const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"token-"+idx} className='token'>{token}</div>);
+        const divStackTokens = this.props.selectedInstr.stackTokens.map((token, idx) => <div key={idx}>{token}</div>);
+        const divOutputTokens = this.props.selectedInstr.outputTokens.map((token, idx) => <div key={idx}>{token}</div>);
 
         return (
             <div className='player'>
-                <div id='tokenCursor'></div>
                 <div id='tokens'>
                     {divInputTokens}
+                    <div id='tokenCursor'></div>
                 </div>
                 <div id='structures'>
                     <div id='stack'>
