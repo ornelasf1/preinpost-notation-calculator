@@ -53,7 +53,7 @@ class ConversionAlgorithm extends React.Component {
             return this.props.conversion.expressions.postfix;
         } else if (this.state.toNotation === 'infix') {
             return this.props.conversion.expressions.infix;
-        } else if (this.state.toNotation === 'infix') {
+        } else if (this.state.toNotation === 'prefix') {
             return this.props.conversion.expressions.prefix;
         } else {
             return '';
