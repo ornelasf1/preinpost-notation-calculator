@@ -72,10 +72,10 @@ class ConversionPlayBar extends React.Component {
                     }}
                     styles={{
                         track: {
-                            backgroundColor: 'blue'
+                            backgroundColor: '#143c41'
                           },
                           active: {
-                            backgroundColor: 'red'
+                            backgroundColor: '#1a484e'
                           },
                           thumb: {
                             width: 10,

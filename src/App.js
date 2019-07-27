@@ -25,7 +25,7 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
 function App() {
-  initializeReactGA();
+  //initializeReactGA();
   return (
     <div className="App">
       <Provider store={store}>
