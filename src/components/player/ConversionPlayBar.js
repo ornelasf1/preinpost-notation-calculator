@@ -16,11 +16,34 @@ class ConversionPlayBar extends React.Component {
         this.playSeq = undefined;
     }
 
+    resetPlayer = () => {
+        this.playSeq = undefined;
+        this.setState({
+            isPlaying: false,
+            instructionIndex: 0,
+        });
+    }
+
+    getInstructionSequence = (fromNotation, toNotation) => {
+        const instructionSetName = fromNotation + 'Instr';
+        const notationSequences = this.props.algorithm[instructionSetName];
+
+        if (toNotation === 'prefix') {
+            return notationSequences.toPreInstr;
+        }else if (toNotation === 'infix') {
+            return notationSequences.toInInstr;
+        }else if (toNotation === 'postfix') {
+            return notationSequences.toPostInstr;
+        }
+    }
+
     handlePlayBtn = () => {
+        const { selectedNotation, toNotation } = this.props;
+        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
+
         this.setState({isPlaying: !this.state.isPlaying});
 
         if (this.playSeq === undefined) {
-            const { toPostInstr } = this.props.algorithm.infixInstr;
             console.log('Initiated');
             this.playSeq = new Timer(() => {
                 console.log('RUNNING');
@@ -28,8 +51,8 @@ class ConversionPlayBar extends React.Component {
                 this.setState({instructionIndex: this.state.instructionIndex + 1}, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
-                        console.log('Compare outside: ', this.playSeq.getIndex(), toPostInstr.length);
-                        if (this.playSeq.getIndex() === toPostInstr.length) {
+                        console.log('Compare outside: ', this.playSeq.getIndex(), instructionSequence.length);
+                        if (this.playSeq.getIndex() === instructionSequence.length) {
                             console.log('reset');
                             this.setState({isPlaying: false, instructionIndex: 0});
                             this.playSeq = undefined;
@@ -38,7 +61,7 @@ class ConversionPlayBar extends React.Component {
                     }
                     console.log('State updated: ', this.state.instructionIndex);
                 });
-            }, toPostInstr.length, this.state.instructionIndex, 1000);
+            }, instructionSequence.length, this.state.instructionIndex, 1000);
 
         } else {
             if (this.state.isPlaying) {
@@ -53,22 +76,30 @@ class ConversionPlayBar extends React.Component {
 
     render = () => {
         const { isPlaying } = this.state;
-        const { toPostInstr } = this.props.algorithm.infixInstr;
+        const { selectedNotation, toNotation,  conversion: { valid }} = this.props;
+        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
+        if (this.playSeq && !isPlaying) {
+            this.playSeq.pause();
+        }
 
         return (
             <div id='progressBar'>
-                <button id='playBtn' onClick={this.handlePlayBtn}>
+                <button disabled={!valid} id='playBtn' onClick={this.handlePlayBtn}>
                     {isPlaying? <PauseIcon /> : <PlayIcon />}
                 </button>
                 <Slider 
                     id='slider'
+                    disabled={!valid}
                     axis="x"
                     xstep={1}
                     xmin={0}
-                    xmax={toPostInstr.length - 1}
+                    xmax={instructionSequence.length - 1}
                     x={this.state.instructionIndex}
                     onChange={({x}) => {
-                        this.setState({isPlaying: false, instructionIndex: x}, this.props.updateSelectedInstruction(this.state.instructionIndex))
+                        this.setState({
+                            isPlaying: false, 
+                            instructionIndex: x}, 
+                            this.props.updateSelectedInstruction(this.state.instructionIndex))
                     }}
                     styles={{
                         track: {
