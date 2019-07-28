@@ -2,6 +2,18 @@
 import { infixToPostfixInstructions } from './NotationCalcInstructions';
 
 
+export const validateExpression = (notation, expression) => {
+    if (notation === 'infix') {
+        const infixToPostfixResult = infixToPostfix(expression);
+        const infixDelimitedBySpaces = toTokens(expression).join(' ');
+        return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces;
+    } else if (notation === 'postfix') {
+
+    } else if (notation === 'prefix') {
+        
+    }
+}
+
 export const toTokens = input => {
     if(typeof input !== 'string') return '';
     let tokens = input.trim();
@@ -53,14 +65,14 @@ const captureState = (index, selectedToken, selectedTokenIndex, inputTokens, ope
     outputTokens: [...outputTokens],
 });
 
+//Input: string infix expression. doesn't have to be delimited by space
+//Output: string delimimted by spaces
 export const infixToPostfix = (infix, seq = []) => {
     let infixTokens = toTokens(infix).reverse();
 
     var tokenIndex = -1;
     const stack = [];
     let postfixExpr = [];
-
-    console.log('Tokens: ', infixTokens);
 
     while (infixTokens.length > 0) {
         seq.push(captureState(0, '', tokenIndex, infixTokens, stack, postfixExpr));
@@ -125,6 +137,34 @@ export const infixToPostfix = (infix, seq = []) => {
             seq.push(captureState(-1, '', tokenIndex, infixTokens, stack, postfixExpr));
         }
     }
-    
+    postfixToInfix(postfixExpr.join(' '));
     return postfixExpr.join(' ');
+};
+
+//Input: string postfix expression. has to be delimited by a space
+//Output: string delimimted by spaces
+export const postfixToInfix = postfix => {
+    const postfixTokens = postfix.split(' ').reverse();
+    const stack = [];
+    let infixExpr = [];
+
+    console.log('converting: ', postfixTokens);
+    while (postfixTokens.length > 0) {
+        const token = postfixTokens.pop();
+        if (prec(token) > 0) {
+            const secondOperand = stack.pop();
+            infixExpr.push(secondOperand);
+
+            infixExpr.push(token);
+
+            const firstOperand = stack.pop();
+            infixExpr.push(firstOperand);
+            stack.push(firstOperand + ' ' + token + ' ' + secondOperand);
+            infixExpr = [];
+        } else {
+            stack.push(token);
+        }
+    }
+    console.log('postfix to infix result: ', stack.reverse().join(' '));
+    return stack.reverse().join(' ');
 };
