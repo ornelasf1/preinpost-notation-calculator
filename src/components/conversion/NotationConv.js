@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import * as ConversionActions from './ConversionActions';
+import * as ConversionAlgoActions from '../ConversionAlgoActions';
 import {NotationFix} from './NotationFix';
-import {infixToPostfix} from '../NotationCalc';
+import {infixToPostfix, postfixToInfix, toTokens, validateExpression} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
 
@@ -16,13 +17,20 @@ export class NotationConv extends React.Component{
         };
     }
 
-
     handleChange = event => {
         const notationFix = event.target.name.toLowerCase();
         this.setState({[notationFix]: event.target.value});
-
+        let sequence = [];
         if (notationFix === 'infix') {
-            this.setState({postfix: infixToPostfix(event.target.value)});
+            //Valdation of infix expression
+            if (validateExpression(notationFix, event.target.value)) {
+                this.props.updateNotationValidation(true);
+                this.setState({postfix: infixToPostfix(event.target.value, sequence)},
+                    this.props.setInfixToPostfixSeq(sequence));
+            } else {
+                this.props.updateNotationValidation(false);
+                this.setState({postfix: ''});
+            }
         }
 
         this.props.updateSelectedNotation(notationFix);
@@ -33,9 +41,18 @@ export class NotationConv extends React.Component{
     render = () => {
         return (
             <div id='conversion-comp'>
-                <NotationFix type='Prefix' submitExpr={this.props.updatePrefixExpr} expr={this.state.prefix} handleChange={this.handleChange}/>
-                <NotationFix type='Infix' submitExpr={this.props.updateInfixExpr} expr={this.state.infix} handleChange={this.handleChange}/>
-                <NotationFix type='Postfix' submitExpr={this.props.updatePostfixExpr} expr={this.state.postfix} handleChange={this.handleChange}/>
+                <NotationFix 
+                    type='Prefix' 
+                    expr={this.state.prefix} 
+                    handleChange={this.handleChange}/>
+                <NotationFix 
+                    type='Infix' 
+                    expr={this.state.infix} 
+                    handleChange={this.handleChange}/>
+                <NotationFix 
+                    type='Postfix' 
+                    expr={this.state.postfix} 
+                    handleChange={this.handleChange}/>
             </div>
         );
     };
@@ -46,4 +63,9 @@ export const mapStateToProps = state => ({
     conversion: state.conversionNotat
 });
 
-export default connect(mapStateToProps, ConversionActions)(NotationConv);
+export const actionCreators = {
+    ...ConversionActions,
+    ...ConversionAlgoActions,
+}
+
+export default connect(mapStateToProps, actionCreators)(NotationConv);
