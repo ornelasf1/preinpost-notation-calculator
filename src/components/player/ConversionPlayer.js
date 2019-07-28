@@ -64,7 +64,8 @@ export class ConversionPlayer extends React.Component {
     };
 
     render = () => {
-        const expressionTokens = this.props.expression.split('');
+        //Expects all expressions in state to be demilimited by spaces
+        const expressionTokens = this.props.expression.split(' ');
         const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"token-"+idx} className='token'>{token}</div>);
         const divStackTokens = this.props.selectedInstr.stackTokens.map((token, idx) => <div key={idx}>{token}</div>);
         const divOutputTokens = this.props.selectedInstr.outputTokens.map((token, idx) => <div key={idx}>{token}</div>);
