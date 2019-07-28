@@ -28,11 +28,6 @@ class ConversionAlgorithm extends React.Component {
         };
     }
 
-    calculateSequences = () => {
-        let sequence = [];
-        infixToPostfix(this.props.conversion.expressions.infix, sequence);
-        this.props.setInfixToPostfixSeq(sequence);
-    };
 
     updateSelectedInstruction = selectedInstructionIndex => {
         const { toPostInstr } = this.props.algorithm.infixInstr;
@@ -41,7 +36,6 @@ class ConversionAlgorithm extends React.Component {
 
     handleNotationButtons = (_, selected, toNotation) => {
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
-        this.calculateSequences();
         const notationComps = document.getElementById('conversion-comp');
         if (notationComps.style.animationName === '') {
             notationComps.style.animationName = 'elevateBoxes';
@@ -61,22 +55,40 @@ class ConversionAlgorithm extends React.Component {
     }
 
     render = () => {
-        const {selectedNotation, expressions} = this.props.conversion;
+        const {selectedNotation, expressions, valid} = this.props.conversion;
         const {toNotation} = this.state;
 
-        const instructions = this.state.instructions.map((instr, i) => (<Instruction key={i} uniqueKey={i} selected={this.state.selectedInstruction.index}>{instr}</Instruction>));
+        const instructions = this.state.instructions.map(
+            (instr, i) => (
+                <Instruction 
+                    key={i} 
+                    uniqueKey={i} 
+                    selected={this.state.selectedInstruction.index}>
+                {instr}
+                </Instruction>));
 
         return (
-            <div className='display'>
-                {selectedNotation !== '' && <ToNotationButtons selected={selectedNotation} toNotation={toNotation} handleClick={this.handleNotationButtons}/>}
+            <div className='display' style={!valid ? {opacity: '0.1'} : {}}>
+                {selectedNotation !== '' && 
+                <ToNotationButtons 
+                    selected={selectedNotation}
+                    disabled={!valid} 
+                    toNotation={toNotation} 
+                    handleClick={this.handleNotationButtons}/>}
                 {this.state.toNotation !== '' && 
                 <div id='body' style={selectedNotation !== '' && {animationName: 'dropdownBody'}}>
                     <div className='algorithm-display' >
                         {instructions}
                     </div>
                     <div className='canvas'>
-                        <ConversionPlayBar updateSelectedInstruction={this.updateSelectedInstruction}/>
-                        <ConversionPlayer className='player' expression={expressions[selectedNotation]} selectedInstr={this.state.selectedInstruction} />
+                        <ConversionPlayBar 
+                            updateSelectedInstruction={this.updateSelectedInstruction}
+                            selectedNotation={selectedNotation}
+                            toNotation={toNotation}/>
+                        <ConversionPlayer 
+                            className='player' 
+                            expression={expressions[selectedNotation]} 
+                            selectedInstr={this.state.selectedInstruction} />
                     </div>
                 </div>}
             </div>
@@ -104,8 +116,16 @@ const ToNotationButtons = props => {
     
     return (
         <div id='toNotation-buttons'>
-            <button onClick={(e => props.handleClick(e, props.selected, notations[0]))}>To {notations[0]}</button>
-            <button onClick={(e => props.handleClick(e, props.selected, notations[1]))}>To {notations[1]}</button>
+            <button 
+                disabled={props.disabled} 
+                onClick={(e => props.handleClick(e, props.selected, notations[0]))}>
+                    To {notations[0]}
+            </button>
+            <button 
+                disabled={props.disabled} 
+                onClick={(e => props.handleClick(e, props.selected, notations[1]))}>
+                    To {notations[1]}
+            </button>
         </div>
     );
 };

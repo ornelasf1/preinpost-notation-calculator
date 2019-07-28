@@ -5,6 +5,7 @@
     /* height: 70%; */
     border-radius: 10px;
     /* overflow: auto; */
+    transition: opacity .5s ease-in-out;
 }
 
 #body {
