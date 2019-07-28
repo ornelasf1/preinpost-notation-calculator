@@ -16,6 +16,14 @@ class ConversionPlayBar extends React.Component {
         this.playSeq = undefined;
     }
 
+    componentDidUpdate = (prevProps) => {
+        const { selectedNotation } = this.props;
+        if (prevProps.conversion.expressions[selectedNotation]
+            !== this.props.conversion.expressions[selectedNotation]) {
+                this.resetPlayer();
+            }
+    }
+
     resetPlayer = () => {
         this.playSeq = undefined;
         this.setState({
