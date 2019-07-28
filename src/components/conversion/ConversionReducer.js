@@ -1,5 +1,5 @@
 
-import {UPDATE_EXPRESSIONS, UPDATE_SELECTED_NOTATION} from './ConversionActionTypes';
+import {UPDATE_EXPRESSIONS, UPDATE_SELECTED_NOTATION, UDPATE_NOTATION_VALIDATION} from './ConversionActionTypes';
 
 export const defaultState = {
     expressions: {
@@ -7,7 +7,8 @@ export const defaultState = {
         infixexpr: '',
         prefixexpr: '',
     },
-    selectedNotation: ''
+    selectedNotation: '',
+    valid: false,
 }
 
 export const conversionNotat = (state = defaultState, action) => {
@@ -24,6 +25,11 @@ export const conversionNotat = (state = defaultState, action) => {
                 ...state,
                 selectedNotation: action.payload,
             };
+        case UDPATE_NOTATION_VALIDATION:
+            return {
+                ...state,
+                valid: action.payload,
+            }
         default:
             return state;
     }

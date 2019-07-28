@@ -1,14 +1,19 @@
-import {UPDATE_EXPRESSIONS, UPDATE_SELECTED_NOTATION} from './ConversionActionTypes';
+import {UPDATE_EXPRESSIONS, UPDATE_SELECTED_NOTATION, UDPATE_NOTATION_VALIDATION} from './ConversionActionTypes';
 
 
-export const actionUpdateExprs = expressions => ({
+const actionUpdateExprs = expressions => ({
     type: UPDATE_EXPRESSIONS,
     payload: expressions
 })
 
-export const actionUpdateSelected = notation => ({
+const actionUpdateSelected = notation => ({
     type: UPDATE_SELECTED_NOTATION,
     payload: notation,
+});
+
+const actionUpdateNotationValidation = valid => ({
+    type: UDPATE_NOTATION_VALIDATION,
+    payload: valid,
 });
 
 export const updateExpressions = exprs => dispatch => {
@@ -18,3 +23,7 @@ export const updateExpressions = exprs => dispatch => {
 export const updateSelectedNotation = notation => dispatch => {
     dispatch(actionUpdateSelected(notation));
 };
+
+export const updateNotationValidation = validity => dispatch => {
+    dispatch(actionUpdateNotationValidation(validity));
+}
