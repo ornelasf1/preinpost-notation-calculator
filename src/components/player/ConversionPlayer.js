@@ -22,7 +22,11 @@ export class ConversionPlayer extends React.Component {
     }
 
     componentDidUpdate = prevProps => {
-        this.updateTokenCursor(this.props.selectedInstr.selectedTokenIndex);
+        if (prevProps.selectedInstr.selectedTokenIndex !==
+            this.props.selectedInstr.selectedTokenIndex 
+            || this.props.selectedInstr.selectedTokenIndex === -1) {
+                this.updateTokenStyle(this.props.selectedInstr.selectedTokenIndex);
+            }
     }
 
     getCoords = elem => {
@@ -40,14 +44,14 @@ export class ConversionPlayer extends React.Component {
         if (tokenCursor === undefined) {
             return;
         }
-        if (index === -1) {
+        console.log('Appending child to token-', index);
+        if (index !== -1 && index < this.props.expression.length) {
+            tokenCursor.style.display = 'block';
+            document.getElementById('token-'+index).appendChild(tokenCursor);
+        }else {
             tokenCursor.style.display = 'none';
             document.getElementById('tokens').appendChild(tokenCursor);
-            return;
-        }else {
-            tokenCursor.style.display = 'block';
         }
-        document.getElementById('token-'+index).appendChild(tokenCursor);
     }
 
     updateTokenCursorLocations = () => {
@@ -63,6 +67,23 @@ export class ConversionPlayer extends React.Component {
         this.setState({tokenCursorLocations: cursorLocations});
     };
 
+    updateTokenStyle = index => {
+        const tokenCursor = document.getElementById('tokenCursor');
+        if (tokenCursor === undefined) {
+            return;
+        }
+        if (index !== -1 && index < this.props.expression.length) {
+            const tokenElem = document.getElementById('token-'+index);
+            const tokenParentElemLeftPadding = parseFloat(window.getComputedStyle(tokenElem.parentElement).paddingLeft.replace('px',''));
+            tokenCursor.style.left = (tokenElem.offsetLeft - tokenParentElemLeftPadding) + 'px';
+            tokenCursor.style.width = tokenElem.offsetWidth + 'px';
+            tokenCursor.style.opacity = 1;
+        }else {
+            tokenCursor.style.left = '0px';
+            tokenCursor.style.opacity = 0;
+        }
+    }
+
     render = () => {
         //Expects all expressions in state to be demilimited by spaces
         const expressionTokens = this.props.expression.split(' ');
@@ -72,7 +93,7 @@ export class ConversionPlayer extends React.Component {
 
         return (
             <div className='player'>
-                <div id='tokens'>
+                <div id='tokens' className='contentBox'>
                     {divInputTokens}
                     <div id='tokenCursor'></div>
                 </div>
