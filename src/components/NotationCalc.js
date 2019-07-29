@@ -138,6 +138,7 @@ export const infixToPostfix = (infix, seq = []) => {
             seq.push(captureState(20, token, tokenIndex, infixTokens, stack, postfixExpr));
             while(stack.length > 0) {
                 postfixExpr.push(stack.pop());
+                seq.push(captureState(20, token, tokenIndex, infixTokens, stack, postfixExpr));
             }
             seq.push(captureState(-1, '', tokenIndex, infixTokens, stack, postfixExpr));
         }
