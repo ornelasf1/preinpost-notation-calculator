@@ -5,7 +5,7 @@ import { infixToPostfixInstructions } from './NotationCalcInstructions';
 export const validateExpression = (notation, expression) => {
     if (notation === 'infix') {
         const infixToPostfixResult = infixToPostfix(expression);
-        const infixDelimitedBySpaces = toTokens(expression).join(' ');
+        const infixDelimitedBySpaces = toTokens(expression).filter(token => token !== '(' && token !== ')').join(' ');
         return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces;
     } else if (notation === 'postfix') {
 
@@ -23,7 +23,9 @@ export const toTokens = input => {
             acc.push(curr);
         } else {
             const top = acc[acc.length - 1];
-            if (prec(top) === prec(curr)){
+            if (prec(top) === 4 && prec(curr) === 4){
+                acc.push(curr);
+            } else if (prec(top) === prec(curr)){
                 acc[acc.length - 1] = top + curr;
             } else {
                 acc.push(curr);
@@ -41,9 +43,12 @@ const prec = operator => {
     switch(operator){
         case '+':
         case '-':
+        case '−':
             return 1;
         case '*':
+        case '×':
         case '/':
+        case '÷':
             return 2;
         case '^':
             return 3;
@@ -148,7 +153,7 @@ export const postfixToInfix = postfix => {
     const stack = [];
     let infixExpr = [];
 
-    console.log('converting: ', postfixTokens);
+    console.log('postfix being converted: ', postfixTokens);
     while (postfixTokens.length > 0) {
         const token = postfixTokens.pop();
         if (prec(token) > 0) {
