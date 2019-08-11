@@ -14,6 +14,8 @@ export class ConversionPlayer extends React.Component {
             stackTokens: [],
             selectedTokenIndex: -1,
             tokenCursorLocations: [],
+            divStackTokens: [],
+            divOutputTokens: [],
         };
     }
 
@@ -27,6 +29,7 @@ export class ConversionPlayer extends React.Component {
             || this.props.selectedInstr.selectedTokenIndex === -1) {
                 this.updateTokenStyle(this.props.selectedInstr.selectedTokenIndex);
             }
+        this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
     }
 
     getCoords = elem => {
@@ -84,9 +87,58 @@ export class ConversionPlayer extends React.Component {
         }
     }
 
+    // Relative to #player
+    moveNodeFromOriginToDestination = (item, origin, destination) => {
+        // inputToken.style.top  = originLocation.parentNode.offsetTop + 'px';
+        // inputToken.style.left = (originLocation.offsetLeft + document.getElementById('tokens').offsetLeft - parseFloat(getComputedStyle(inputToken).marginLeft.replace('px',''))) + 'px'
+
+        // inputToken.style.left = stackToken.offsetLeft + 3 + 'px'
+        // inputToken.style.top = stackToken.offsetTop + 'px'
+    }
+
+    animateTokens = (prevSelectedInstr, currSelectedInstr) => {
+        if (prevSelectedInstr.stackTokens.length < currSelectedInstr.stackTokens.length) {
+            const playerScreen = document.getElementById('tokens').parentNode;
+            const originLocation = document.getElementById('inputtoken-'+currSelectedInstr.selectedTokenIndex);
+            const tokenToMove = originLocation.cloneNode(true);
+
+            tokenToMove.style.position = 'absolute';
+            tokenToMove.className += ' animatedToken';
+
+            tokenToMove.style.top  = originLocation.parentNode.offsetTop + 'px';
+            tokenToMove.style.left = (originLocation.offsetLeft + 
+                                    document.getElementById('tokens').offsetLeft - 
+                                    parseFloat(getComputedStyle(originLocation).marginLeft.replace('px',''))) + 'px';
+            playerScreen.append(tokenToMove);
+
+            const topIndex = currSelectedInstr.stackTokens.length - 1;
+            const topStackToken = document.getElementById('stacktoken-'+topIndex);
+            const tokenAnimationDuration = parseFloat(getComputedStyle(tokenToMove).transitionDuration.replace('s',''));
+            
+            topStackToken.style.opacity = 0;
+            tokenToMove.style.top = topStackToken.offsetTop + 'px';
+            tokenToMove.style.left = (topStackToken.offsetLeft + 3) + 'px';
+            
+            setTimeout(() => {
+                topStackToken.style.opacity = 1;
+                tokenToMove.remove();
+                console.log('delete temp token and reappear stack token');
+            }, tokenAnimationDuration * 1000);
+        } else if (prevSelectedInstr.stackTokens.length - 1 === currSelectedInstr.stackTokens.length &&
+            prevSelectedInstr.outputTokens.length === currSelectedInstr.outputTokens.length - 1) {
+
+        }
+    }
+
     render = () => {
+        const { selectedInstr, expression } = this.props;
+        // const { divStackTokens, divOutputTokens } = this.state;
+
         //Expects all expressions in state to be demilimited by spaces
+        const expressionTokens = expression.split(' ');
         const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"inputtoken-"+idx} className='inputtoken'>{token}</div>);
+        const divStackTokens = selectedInstr.stackTokens.map((token, idx) => <div key={idx} id={"stacktoken-"+idx} className='stacktoken'>{token}</div>);
+        const divOutputTokens = selectedInstr.outputTokens.map((token, idx) => <div key={idx} id={"outputtoken-"+idx} className='outputtoken'>{token}</div>);
 
         return (
             <div className='player'>

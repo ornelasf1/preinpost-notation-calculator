@@ -3,6 +3,9 @@
     height: 100%;
     flex-direction: column;
     text-align: center;
+
+    /* Position relative in order to have children to be absolute positioned */
+    position: relative;
 }
 
 .contentBox {
@@ -50,6 +53,11 @@
     transition-property: left, opacity;
     transition: 1s;
     /* animation: moveCursor .25s ease-in-out; */
+}
+
+.animatedToken {
+    transition-property: left, top;
+    transition: .25s;
 }
 
 @keyframes moveCursor {
