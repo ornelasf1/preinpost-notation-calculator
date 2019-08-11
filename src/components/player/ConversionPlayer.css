@@ -29,7 +29,7 @@
 }
 
 
-.token {
+.inputtoken {
     display: inline-block;
     font-size: 35px;
     font-weight: 600;
@@ -67,13 +67,16 @@
 
 #stack {
     width: 50px;
-    height: 140px;
+    min-height: 140px;
+    height: auto;
     margin-top: auto;
     border: 5px solid black;
     border-top-color: white;
     margin-right: 20px;
     display: flex;
     flex-direction: column-reverse;
+    transition-property: height;
+    transition: 1s ease-in-out;
 }
 
 #stack > div {

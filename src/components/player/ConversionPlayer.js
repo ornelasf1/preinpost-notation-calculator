@@ -47,7 +47,7 @@ export class ConversionPlayer extends React.Component {
         console.log('Appending child to token-', index);
         if (index !== -1 && index < this.props.expression.length) {
             tokenCursor.style.display = 'block';
-            document.getElementById('token-'+index).appendChild(tokenCursor);
+            document.getElementById('inputtoken-'+index).appendChild(tokenCursor);
         }else {
             tokenCursor.style.display = 'none';
             document.getElementById('tokens').appendChild(tokenCursor);
@@ -57,7 +57,7 @@ export class ConversionPlayer extends React.Component {
     updateTokenCursorLocations = () => {
         const cursorLocations = [];
         for (var idx = 0; idx < this.props.expression.length; idx++){
-            const divToken = document.getElementById('token-'+idx);
+            const divToken = document.getElementById('inputtoken-'+idx);
             const nextCursorCoords = this.getCoords(divToken);
             cursorLocations.push({
                 left: nextCursorCoords.left + 'px',
@@ -73,7 +73,7 @@ export class ConversionPlayer extends React.Component {
             return;
         }
         if (index !== -1 && index < this.props.expression.length) {
-            const tokenElem = document.getElementById('token-'+index);
+            const tokenElem = document.getElementById('inputtoken-'+index);
             const tokenParentElemLeftPadding = parseFloat(window.getComputedStyle(tokenElem.parentElement).paddingLeft.replace('px',''));
             tokenCursor.style.left = (tokenElem.offsetLeft - tokenParentElemLeftPadding) + 'px';
             tokenCursor.style.width = tokenElem.offsetWidth + 'px';
@@ -86,10 +86,7 @@ export class ConversionPlayer extends React.Component {
 
     render = () => {
         //Expects all expressions in state to be demilimited by spaces
-        const expressionTokens = this.props.expression.split(' ');
-        const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"token-"+idx} className='token'>{token}</div>);
-        const divStackTokens = this.props.selectedInstr.stackTokens.map((token, idx) => <div key={idx}>{token}</div>);
-        const divOutputTokens = this.props.selectedInstr.outputTokens.map((token, idx) => <div key={idx}>{token}</div>);
+        const divInputTokens = expressionTokens.map((token, idx) => <div key={idx} id={"inputtoken-"+idx} className='inputtoken'>{token}</div>);
 
         return (
             <div className='player'>
