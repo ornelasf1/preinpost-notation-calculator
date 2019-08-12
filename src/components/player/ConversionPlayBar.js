@@ -69,7 +69,7 @@ class ConversionPlayBar extends React.Component {
                     }
                     console.log('State updated: ', this.state.instructionIndex);
                 });
-            }, instructionSequence.length, this.state.instructionIndex, 200);
+            }, instructionSequence.length, this.state.instructionIndex, 500);
 
         } else {
             if (this.state.isPlaying) {
