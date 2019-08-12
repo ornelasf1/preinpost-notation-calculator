@@ -84,8 +84,8 @@ export const infixToPostfix = (infix, seq = []) => {
         const token = infixTokens.pop();
         tokenIndex++;
         seq.push(captureState(1, token, tokenIndex, infixTokens, stack, postfixExpr));
+        seq.push(captureState(2, token, tokenIndex, infixTokens, stack, postfixExpr));
         if (prec(token) > 0) {
-            seq.push(captureState(2, token, tokenIndex, infixTokens, stack, postfixExpr));
             let topToken = stack.length !== 0? stack[stack.length - 1] : '';
             
             if (stack.length === 0 || topToken === '(') {
