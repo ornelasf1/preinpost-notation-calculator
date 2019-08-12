@@ -3,7 +3,7 @@
 }
 
 
-#progressBar > button {
+#playBtn {
     width: 50px;
     height: 50px;
 }
@@ -47,4 +47,21 @@
       inset 0 -2px 6px rgba(0,0,0,0.4);
     position: relative;
     overflow: hidden;
+}
+
+#playerToolbar {
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.toolbarBtn {
+  width: 25%;
+  margin: 10px 20px;
+}
+
+.toolbarBtn > * {
+  width: 25%;
+  height: 25px;
 }

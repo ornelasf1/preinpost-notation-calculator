@@ -5,6 +5,8 @@ import Slider from 'react-input-slider';
 import './ConversionPlayBar.css';
 import {ReactComponent as PlayIcon} from '../../play.svg';
 import {ReactComponent as PauseIcon} from '../../pause.svg';
+import {ReactComponent as ForwardIcon} from '../../../src/imgs/forward_arrow.svg';
+import {ReactComponent as RewindIcon} from '../../../src/imgs/rewind_arrow.svg';
 
 class ConversionPlayBar extends React.Component {
     constructor(props){
@@ -82,6 +84,26 @@ class ConversionPlayBar extends React.Component {
         }
     }
 
+    handleForwardBtn = () => {
+        const { selectedNotation, toNotation} = this.props;
+        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
+        const instructionSequenceLimit = instructionSequence.length;
+        const newInstructionIndex = this.state.instructionIndex + 1 < instructionSequenceLimit?
+            this.state.instructionIndex + 1 : 0;
+        this.setState({
+            isPlaying: false,
+            instructionIndex: newInstructionIndex,
+        }, this.props.updateSelectedInstruction(newInstructionIndex));
+    }
+
+    handleRewindBtn = () => {
+        const newInstructionIndex = this.state.instructionIndex - 1 >= 0? this.state.instructionIndex - 1 : 0;
+        this.setState({
+            isPlaying: false,
+            instructionIndex: newInstructionIndex,
+        }, this.props.updateSelectedInstruction(newInstructionIndex));
+    }
+
     render = () => {
         const { isPlaying } = this.state;
         const { selectedNotation, toNotation,  conversion: { valid }} = this.props;
@@ -91,38 +113,48 @@ class ConversionPlayBar extends React.Component {
         }
 
         return (
-            <div id='progressBar'>
-                <button disabled={!valid} id='playBtn' onClick={this.handlePlayBtn}>
-                    {isPlaying? <PauseIcon /> : <PlayIcon />}
-                </button>
-                <Slider 
-                    id='slider'
-                    disabled={!valid}
-                    axis="x"
-                    xstep={1}
-                    xmin={0}
-                    xmax={instructionSequence.length - 1}
-                    x={this.state.instructionIndex}
-                    onChange={({x}) => {
-                        this.setState({
-                            isPlaying: false, 
-                            instructionIndex: x}, 
-                            this.props.updateSelectedInstruction(this.state.instructionIndex))
-                    }}
-                    styles={{
-                        track: {
-                            backgroundColor: '#143c41'
-                          },
-                          active: {
-                            backgroundColor: '#1a484e'
-                          },
-                          thumb: {
-                            width: 10,
-                            height: 10,
-                            top: '50%',
-                          }
-                    }}
-                    />
+            <div>
+                <div id='progressBar'>
+                    <button disabled={!valid} id='playBtn' onClick={this.handlePlayBtn}>
+                        {isPlaying? <PauseIcon /> : <PlayIcon />}
+                    </button>
+                    <Slider 
+                        id='slider'
+                        disabled={!valid}
+                        axis="x"
+                        xstep={1}
+                        xmin={0}
+                        xmax={instructionSequence.length - 1}
+                        x={this.state.instructionIndex}
+                        onChange={({x}) => {
+                            this.setState({
+                                isPlaying: false, 
+                                instructionIndex: x}, 
+                                this.props.updateSelectedInstruction(this.state.instructionIndex))
+                        }}
+                        styles={{
+                            track: {
+                                backgroundColor: '#143c41'
+                              },
+                              active: {
+                                backgroundColor: '#1a484e'
+                              },
+                              thumb: {
+                                width: 10,
+                                height: 10,
+                                top: '50%',
+                              }
+                        }}
+                        />
+                </div>
+                <div id="playerToolbar">
+                      <button id='rewindBtn' className='toolbarBtn' onClick={this.handleRewindBtn}>
+                          <RewindIcon />
+                      </button>
+                      <button id='forwardBtn' className='toolbarBtn' onClick={this.handleForwardBtn}>
+                          <ForwardIcon />
+                          </button>  
+                </div>
             </div>
         );
     }
