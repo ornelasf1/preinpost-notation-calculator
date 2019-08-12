@@ -14,6 +14,8 @@ class ConversionPlayBar extends React.Component {
         this.state = {
             isPlaying: false,
             instructionIndex: 0,
+            disableRewind: true,
+            disableForward: false,
         }
         this.playSeq = undefined;
     }
@@ -89,9 +91,11 @@ class ConversionPlayBar extends React.Component {
         const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
         const instructionSequenceLimit = instructionSequence.length;
         const newInstructionIndex = this.state.instructionIndex + 1 < instructionSequenceLimit?
-            this.state.instructionIndex + 1 : 0;
+            this.state.instructionIndex + 1 : this.state.instructionIndex;
         this.setState({
             isPlaying: false,
+            disableForward: newInstructionIndex + 1 === instructionSequenceLimit,
+            disableRewind: false,
             instructionIndex: newInstructionIndex,
         }, this.props.updateSelectedInstruction(newInstructionIndex));
     }
@@ -100,12 +104,14 @@ class ConversionPlayBar extends React.Component {
         const newInstructionIndex = this.state.instructionIndex - 1 >= 0? this.state.instructionIndex - 1 : 0;
         this.setState({
             isPlaying: false,
+            disableRewind: newInstructionIndex === 0,
+            disableForward: false,
             instructionIndex: newInstructionIndex,
         }, this.props.updateSelectedInstruction(newInstructionIndex));
     }
 
     render = () => {
-        const { isPlaying } = this.state;
+        const { isPlaying, disableForward, disableRewind } = this.state;
         const { selectedNotation, toNotation,  conversion: { valid }} = this.props;
         const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
         if (this.playSeq && !isPlaying) {
@@ -148,10 +154,18 @@ class ConversionPlayBar extends React.Component {
                         />
                 </div>
                 <div id="playerToolbar">
-                      <button id='rewindBtn' className='toolbarBtn' onClick={this.handleRewindBtn}>
+                      <button 
+                        id='rewindBtn' 
+                        className={'toolbarBtn' + (disableRewind? ' disableBtn' : '')}
+                        onClick={this.handleRewindBtn} 
+                        disabled={disableRewind}>
                           <RewindIcon />
                       </button>
-                      <button id='forwardBtn' className='toolbarBtn' onClick={this.handleForwardBtn}>
+                      <button 
+                        id='forwardBtn' 
+                        className={'toolbarBtn' + (disableForward? ' disableBtn' : '')}
+                        onClick={this.handleForwardBtn} 
+                        disabled={disableForward}>
                           <ForwardIcon />
                           </button>  
                 </div>
