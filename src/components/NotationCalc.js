@@ -143,7 +143,7 @@ export const infixToPostfix = (infix, seq = []) => {
             seq.push(captureState(-1, '', tokenIndex, infixTokens, stack, postfixExpr));
         }
     }
-    postfixToInfix(postfixExpr.join(' '));
+
     return postfixExpr.join(' ');
 };
 
