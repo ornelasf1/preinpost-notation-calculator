@@ -134,7 +134,9 @@ class ConversionPlayBar extends React.Component {
                         x={this.state.instructionIndex}
                         onChange={({x}) => {
                             this.setState({
-                                isPlaying: false, 
+                                isPlaying: false,
+                                disableRewind: x === 0,
+                                disableForward: x === instructionSequence.length - 1,
                                 instructionIndex: x}, 
                                 this.props.updateSelectedInstruction(this.state.instructionIndex))
                         }}
