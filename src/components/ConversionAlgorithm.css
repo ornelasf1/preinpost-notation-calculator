@@ -119,6 +119,16 @@
     background-color: rgb(76, 124, 124);
     padding: 3px 10px;
     color: white;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+@keyframes pulse{
+    0%, 100%{
+        background-color: rgb(76, 124, 124);
+    }
+    50%{
+        background-color: rgb(97, 151, 151);
+    }
 }
 
 .instruction:nth-child(even) {
