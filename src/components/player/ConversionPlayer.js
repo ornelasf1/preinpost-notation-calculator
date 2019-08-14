@@ -9,14 +9,6 @@ export class ConversionPlayer extends React.Component {
         super(props);
 
         this.lastestTopStack = {};
-
-        this.state = {
-            inputTokens: [],
-            outputTokens: [],
-            stackTokens: [],
-            selectedTokenIndex: -1,
-            tokenCursorLocations: [],
-        };
     }
 
     getSnapshotBeforeUpdate = prevProps => {

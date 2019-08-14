@@ -134,6 +134,7 @@ export const infixToPostfix = (infix, seq = []) => {
                 postfixExpr.push(stack.pop());
                 cs(20);
             }
+            tokenIndex = -1;
             cs(-1, '');
         }
     }
