@@ -90,7 +90,7 @@ export const infixToPostfix = (infix, seq = []) => {
         if (cs(2) && prec(token) > 0) {
             let topToken = stack.length !== 0? stack[stack.length - 1] : '';
             
-            if (cs(3) && stack.length === 0 || topToken === '(') {
+            if (cs(3) && (stack.length === 0 || topToken === '(')) {
                 cs(4);
                 stack.push(token);
             } else if (cs(5) && token === '(') {

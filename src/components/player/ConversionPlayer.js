@@ -1,6 +1,5 @@
 
 import React from 'react';
-import _ from 'underscore';
 import './ConversionPlayer.css';
 
 export class ConversionPlayer extends React.Component {

@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import * as ConversionAlgoActions from './ConversionAlgoActions';
 
 import './ConversionAlgorithm.css';
-import { infixToPostfix } from './NotationCalc';
 import { instructionIndents, getInstructionSet } from './NotationCalcInstructions';
 import { ConversionPlayer } from './player/ConversionPlayer';
 import ConversionPlayBar from './player/ConversionPlayBar';

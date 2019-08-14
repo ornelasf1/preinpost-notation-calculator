@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as ConversionActions from './ConversionActions';
 import * as ConversionAlgoActions from '../ConversionAlgoActions';
 import {NotationFix} from './NotationFix';
-import {infixToPostfix, postfixToInfix, toTokens, validateExpression} from '../NotationCalc';
+import {infixToPostfix, toTokens, validateExpression} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
 
