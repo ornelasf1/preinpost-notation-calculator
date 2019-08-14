@@ -30,7 +30,11 @@ export class ConversionPlayer extends React.Component {
             || this.props.selectedInstr.selectedTokenIndex === -1) {
                 this.updateTokenStyle(this.props.selectedInstr.selectedTokenIndex);
             }
-        this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
+        try{
+            this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
+        } catch(e) {
+            console.log("Uh oh breaky", e);
+        }
     }
 
     getCoords = elem => {
