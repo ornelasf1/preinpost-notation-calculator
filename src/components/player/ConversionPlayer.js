@@ -50,35 +50,6 @@ export class ConversionPlayer extends React.Component {
         };
     }
 
-    updateTokenCursor = index => {
-        const { tokenCursorLocations } = this.state;
-        const tokenCursor = document.getElementById('tokenCursor');
-        if (tokenCursor === undefined) {
-            return;
-        }
-        console.log('Appending child to token-', index);
-        if (index !== -1 && index < this.props.expression.length) {
-            tokenCursor.style.display = 'block';
-            document.getElementById('inputtoken-'+index).appendChild(tokenCursor);
-        }else {
-            tokenCursor.style.display = 'none';
-            document.getElementById('tokens').appendChild(tokenCursor);
-        }
-    }
-
-    updateTokenCursorLocations = () => {
-        const cursorLocations = [];
-        for (var idx = 0; idx < this.props.expression.length; idx++){
-            const divToken = document.getElementById('inputtoken-'+idx);
-            const nextCursorCoords = this.getCoords(divToken);
-            cursorLocations.push({
-                left: nextCursorCoords.left + 'px',
-                top: (nextCursorCoords.top + nextCursorCoords.height) + 'px',
-            });
-        };
-        this.setState({tokenCursorLocations: cursorLocations});
-    };
-
     updateTokenStyle = index => {
         const tokenCursor = document.getElementById('tokenCursor');
         if (tokenCursor === undefined) {
@@ -87,8 +58,8 @@ export class ConversionPlayer extends React.Component {
         if (index !== -1 && index < this.props.expression.length) {
             const tokenElem = document.getElementById('inputtoken-'+index);
             const tokenParentElemLeftPadding = parseFloat(window.getComputedStyle(tokenElem.parentElement).paddingLeft.replace('px',''));
-            tokenCursor.style.left = (tokenElem.offsetLeft - tokenParentElemLeftPadding) + 'px';
-            tokenCursor.style.width = tokenElem.offsetWidth + 'px';
+            const widthOfCursor = parseFloat(getComputedStyle(tokenCursor).backgroundSize.split(' ')[0].replace('px',''));
+            tokenCursor.style.left = (tokenElem.offsetLeft + (tokenElem.offsetWidth / 2) - tokenParentElemLeftPadding - (widthOfCursor/2)) + 'px';
             tokenCursor.style.opacity = 1;
         }else {
             tokenCursor.style.left = '0px';

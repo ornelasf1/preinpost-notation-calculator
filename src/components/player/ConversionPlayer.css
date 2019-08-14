@@ -13,6 +13,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
     padding-bottom: 10px;
+    overflow: visible;
 }
 
 
@@ -41,18 +42,18 @@
 }
 
 #tokenCursor {
-    background-color: black;
-    /* margin: auto; */
+    background: url(../../imgs/chevron-arrow-up.svg);
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
     position: relative;
-    width: 20px;
-    height: 5px;
+    height: inherit;
     top: 0;
     right: 0;
-    /* display: none; */
     opacity: 0;
     transition-property: left, opacity;
     transition: 1s;
-    /* animation: moveCursor .25s ease-in-out; */
+    animation: hoverCursor 1s ease-in-out;
+    animation-iteration-count: infinite;
 }
 
 .animatedToken {
@@ -60,10 +61,12 @@
     transition: 1s;
 }
 
-@keyframes moveCursor {
-    from {
-        position: absolute;
-        transform: translateX(-30px);
+@keyframes hoverCursor {
+    0%, 100% {
+        transform: translateY(-5px);
+    }
+    50% {
+        transform: translateY(0px);
     }
 }
 
