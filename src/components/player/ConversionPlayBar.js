@@ -53,20 +53,30 @@ class ConversionPlayBar extends React.Component {
         const { selectedNotation, toNotation } = this.props;
         const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
 
-        this.setState({isPlaying: !this.state.isPlaying});
+        this.setState({
+            isPlaying: !this.state.isPlaying,
+            disableRewind: this.state.instructionIndex === 0,
+        });
 
         if (this.playSeq === undefined) {
             console.log('Initiated');
             this.playSeq = new Timer(() => {
                 console.log('RUNNING');
                 this.props.updateSelectedInstruction(this.state.instructionIndex);
-                this.setState({instructionIndex: this.state.instructionIndex + 1}, () => {
+                this.setState({
+                    instructionIndex: this.state.instructionIndex + 1,
+                    disableRewind: this.state.instructionIndex === 0,
+                }, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
                         console.log('Compare outside: ', this.playSeq.getIndex(), instructionSequence.length);
                         if (this.playSeq.getIndex() === instructionSequence.length) {
                             console.log('reset');
-                            this.setState({isPlaying: false, instructionIndex: 0});
+                            this.setState({
+                                isPlaying: false, 
+                                instructionIndex: 0,
+                                disableRewind: true,
+                            });
                             this.playSeq = undefined;
                         }
 
