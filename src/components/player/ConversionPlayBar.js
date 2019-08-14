@@ -76,6 +76,7 @@ class ConversionPlayBar extends React.Component {
                                 isPlaying: false, 
                                 instructionIndex: 0,
                                 disableRewind: true,
+                                disableForward: false,
                             });
                             this.playSeq = undefined;
                         }
