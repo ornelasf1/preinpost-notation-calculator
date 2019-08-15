@@ -13,7 +13,7 @@ class ConversionPlayBar extends React.Component {
         super(props);
         this.state = {
             isPlaying: false,
-            instructionIndex: 0,
+            instructionIndex: -1,
             disableRewind: true,
             disableForward: false,
         }
@@ -32,7 +32,7 @@ class ConversionPlayBar extends React.Component {
         this.playSeq = undefined;
         this.setState({
             isPlaying: false,
-            instructionIndex: 0,
+            instructionIndex: -1,
         });
     }
 
@@ -62,7 +62,9 @@ class ConversionPlayBar extends React.Component {
             console.log('Initiated');
             this.playSeq = new Timer(() => {
                 console.log('RUNNING');
-                this.props.updateSelectedInstruction(this.state.instructionIndex);
+                const newInstructionIndex = this.state.instructionIndex + 1 < instructionSequence.length?
+                    this.state.instructionIndex + 1 : this.state.instructionIndex;
+                this.props.updateSelectedInstruction(newInstructionIndex);
                 this.setState({
                     instructionIndex: this.state.instructionIndex + 1,
                     disableRewind: this.state.instructionIndex === 0,
