@@ -1,3 +1,14 @@
+
+import React from 'react';
+
+const helperMessages = {
+    inputTokensMsg: (data = {}) => <div>Have all the input tokens been scanned through?</div>,
+    tokenTypeMsg: (data = {}) => <div>Is <div className="helpItem">{data.selectedToken}</div> an OPERATOR or an OPERAND?</div>,
+    comparePrecMsg: (data = {}) => <div>Does <div className="helpItem">{data.selectedToken}</div> have a greater precendence than <div className="helpItem">{data.topOfStack}</div>?</div>,
+};
+
+
+
 export const infixToPostfixInstructions = [
     'Is the list of tokens empty?',
     'XConsider token from the set of tokens',
@@ -21,6 +32,22 @@ export const infixToPostfixInstructions = [
     'XXOutput the selected token',
     'Output all remaining tokens from the operator stack when out of tokens'
 ];
+export const helpmsgInfixMappings = {
+    inputTokensMsg: [0],
+    tokenTypeMsg: [1, 2, 18],
+    comparePrecMsg: [11, 12, 13],
+};
+
+
+export const lookupHelperMsgs = (instructionIndex, helpmsgMappings) => {
+    var selectedMsg = null;
+    Object.keys(helpmsgMappings).forEach(msg => {
+        if (helpmsgMappings[msg].includes(instructionIndex)) {
+            selectedMsg = msg;
+        }
+    });
+    return selectedMsg !== null ? helperMessages[selectedMsg] : null;
+}
 
 export const instructionIndents = instr => {
     let indents = 0;

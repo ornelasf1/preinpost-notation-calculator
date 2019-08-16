@@ -114,3 +114,23 @@
     width: auto;
     padding-left: 10px;
 }
+
+#helpWindow {
+    background-color: rgb(211, 211, 211);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+    width: auto;
+    min-height: 60px;
+}
+
+#helpWindow > div {
+    font-size: 30px;
+}
+
+.helpItem {
+    display: inline;
+    font-size: 40px;
+    margin: 0 5px;
+    font-weight: bold;
+}

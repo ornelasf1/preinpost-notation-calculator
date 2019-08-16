@@ -1,6 +1,7 @@
 
 import React from 'react';
 import './ConversionPlayer.css';
+import { lookupHelperMsgs, helpmsgInfixMappings } from '../NotationCalcInstructions';
 
 export class ConversionPlayer extends React.Component {
 
@@ -8,6 +9,10 @@ export class ConversionPlayer extends React.Component {
         super(props);
 
         this.lastestTopStack = {};
+
+        this.state = {
+            helperMessage: null,
+        };
     }
 
     getSnapshotBeforeUpdate = prevProps => {
@@ -33,6 +38,10 @@ export class ConversionPlayer extends React.Component {
             this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
         } catch(e) {
             console.log("Uh oh breaky", e);
+        }
+
+        if (prevProps.selectedInstr.index !== this.props.selectedInstr.index) {
+            // this.setState({helperMessage: });
         }
     }
 
@@ -154,6 +163,9 @@ export class ConversionPlayer extends React.Component {
         const divStackTokens = selectedInstr.stackTokens.map((token, idx) => <div key={idx} id={"stacktoken-"+idx} className='stacktoken'>{token}</div>);
         const divOutputTokens = selectedInstr.outputTokens.map((token, idx) => <div key={idx} id={"outputtoken-"+idx} className='outputtoken'>{token}</div>);
 
+        // TODO: Generalize for all type of conversions
+        const helpMsgFn = lookupHelperMsgs(selectedInstr.index, helpmsgInfixMappings);
+
         return (
             <div className='player'>
                 <div id='tokens' className='contentBox'>
@@ -168,6 +180,12 @@ export class ConversionPlayer extends React.Component {
                         {divOutputTokens}
                     </div>
                 </div>
+                {helpMsgFn && <div id='helpWindow'>
+                    {helpMsgFn({
+                        selectedToken: expressionTokens[selectedInstr.selectedTokenIndex],
+                        topOfStack: selectedInstr.stackTokens[selectedInstr.stackTokens.length - 1],
+                    })}
+                </div>}
             </div>
         );
     };
