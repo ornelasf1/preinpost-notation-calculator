@@ -1,9 +1,10 @@
 
 import React from 'react';
+import { prec } from './NotationCalc';
 
 const helperMessages = {
     inputTokensMsg: (data = {}) => <div>Have all the input tokens been scanned through?</div>,
-    tokenTypeMsg: (data = {}) => <div>Is <div className="helpItem">{data.selectedToken}</div> an OPERATOR or an OPERAND?</div>,
+    tokenTypeMsg: (data = {}) => <div>Is <div className="helpItem">{data.selectedToken}<span className="helpText"><span>Prec</span>{prec(data.selectedToken)}</span></div> an OPERATOR or an OPERAND?</div>,
     comparePrecMsg: (data = {}) => <div>Does <div className="helpItem">{data.selectedToken}</div> have a greater precendence than <div className="helpItem">{data.topOfStack}</div>?</div>,
 };
 

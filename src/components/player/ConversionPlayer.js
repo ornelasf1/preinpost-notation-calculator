@@ -9,6 +9,7 @@ export class ConversionPlayer extends React.Component {
         super(props);
 
         this.lastestTopStack = {};
+        this.helpMsg = null;
 
         this.state = {
             helperMessage: null,
@@ -23,12 +24,14 @@ export class ConversionPlayer extends React.Component {
             top: topStackToken ? topStackToken.offsetTop : 0,
             node: topStackToken,
         };
-
+        
         const topOutputIndex = prevProps.selectedInstr.outputTokens.length - 1;
         this.lastTopOutputToken = document.getElementById('outputtoken-'+topOutputIndex);
+        return null;
     }
-
+    
     componentDidUpdate = prevProps => {
+        this.animateRemoveHelpMsg(prevProps);
         if (prevProps.selectedInstr.selectedTokenIndex !==
             this.props.selectedInstr.selectedTokenIndex 
             || this.props.selectedInstr.selectedTokenIndex === -1) {
@@ -154,6 +157,15 @@ export class ConversionPlayer extends React.Component {
         }
     }
 
+    animateRemoveHelpMsg = prevProps => {
+        const helpWindow = document.getElementById('helpWindow');
+        if (this.helpMsg === null) {
+            helpWindow.style.opacity = 0;
+        } else {
+            helpWindow.style.opacity = 1;
+        }
+    };
+
     render = () => {
         const { selectedInstr, expression } = this.props;
 
@@ -165,6 +177,7 @@ export class ConversionPlayer extends React.Component {
 
         // TODO: Generalize for all type of conversions
         const helpMsgFn = lookupHelperMsgs(selectedInstr.index, helpmsgInfixMappings);
+        this.helpMsg = helpMsgFn;
 
         return (
             <div className='player'>
@@ -181,12 +194,12 @@ export class ConversionPlayer extends React.Component {
                         {divOutputTokens}
                     </div>
                 </div>
-                {helpMsgFn && <div id='helpWindow'>
-                    {helpMsgFn({
+                <div id='helpWindow'>
+                    {helpMsgFn && helpMsgFn({
                         selectedToken: expressionTokens[selectedInstr.selectedTokenIndex],
                         topOfStack: selectedInstr.stackTokens[selectedInstr.stackTokens.length - 1],
                     })}
-                </div>}
+                </div>
             </div>
         );
     };
@@ -197,8 +210,12 @@ const PrecendenceTable = () => {
         <table id='precTable'>
             <tbody>
                 <tr>
-                    <th>Operator</th>
+                    <th>Token</th>
                     <th>Precedence</th>
+                </tr>
+                <tr>
+                    <td style={{fontSize: '15px', fontWeight: 'normal'}}>Operand</td>
+                    <td>0</td>
                 </tr>
                 <tr>
                     <td>-  +</td>

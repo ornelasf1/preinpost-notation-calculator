@@ -39,7 +39,7 @@ export const toTokens = input => {
     return tokens;
 };
 
-const prec = operator => {
+export const prec = operator => {
     switch(operator){
         case '+':
         case '-':
