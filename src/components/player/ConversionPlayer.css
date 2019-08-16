@@ -134,3 +134,29 @@
     margin: 0 5px;
     font-weight: bold;
 }
+
+#precTable {
+    background-color: white;
+}
+
+th {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+td {
+    padding-bottom: 8px;
+    color: white;
+    font-size: 30px;
+}
+td:nth-child(odd) {
+    font-weight: bold;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--instruction-color-1);
+}
+tr:nth-child(even) {
+    background-color: var(--instruction-color-2);
+}

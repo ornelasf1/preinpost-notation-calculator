@@ -168,6 +168,7 @@ export class ConversionPlayer extends React.Component {
 
         return (
             <div className='player'>
+                <PrecendenceTable />
                 <div id='tokens' className='contentBox'>
                     {divInputTokens}
                     <div id='tokenCursor'></div>
@@ -190,3 +191,32 @@ export class ConversionPlayer extends React.Component {
         );
     };
 }
+
+const PrecendenceTable = () => {
+    return (
+        <table id='precTable'>
+            <tbody>
+                <tr>
+                    <th>Operator</th>
+                    <th>Precedence</th>
+                </tr>
+                <tr>
+                    <td>-  +</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>×  /</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>^</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>(  )</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
+    );
+};
