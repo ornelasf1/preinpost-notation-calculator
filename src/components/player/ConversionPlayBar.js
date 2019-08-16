@@ -21,11 +21,16 @@ class ConversionPlayBar extends React.Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const { selectedNotation } = this.props;
+        const { selectedNotation, toNotation } = this.props;
         if (prevProps.conversion.expressions[selectedNotation]
             !== this.props.conversion.expressions[selectedNotation]) {
                 this.resetPlayer();
             }
+
+        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
+        const newInstructionIndex = this.state.instructionIndex < instructionSequence.length?
+            this.state.instructionIndex : 0;
+        this.props.updateSelectedInstruction(newInstructionIndex);
     }
 
     resetPlayer = () => {
@@ -62,9 +67,6 @@ class ConversionPlayBar extends React.Component {
             console.log('Initiated');
             this.playSeq = new Timer(() => {
                 console.log('RUNNING');
-                const newInstructionIndex = this.state.instructionIndex + 1 < instructionSequence.length?
-                    this.state.instructionIndex + 1 : this.state.instructionIndex;
-                this.props.updateSelectedInstruction(newInstructionIndex);
                 this.setState({
                     instructionIndex: this.state.instructionIndex + 1,
                     disableRewind: this.state.instructionIndex === 0,
@@ -84,7 +86,6 @@ class ConversionPlayBar extends React.Component {
                         }
 
                     }
-                    console.log('State updated: ', this.state.instructionIndex);
                 });
             }, instructionSequence.length, this.state.instructionIndex, 500);
 
@@ -110,7 +111,7 @@ class ConversionPlayBar extends React.Component {
             disableForward: newInstructionIndex + 1 === instructionSequenceLimit,
             disableRewind: false,
             instructionIndex: newInstructionIndex,
-        }, this.props.updateSelectedInstruction(newInstructionIndex));
+        });
     }
 
     handleRewindBtn = () => {
@@ -120,7 +121,7 @@ class ConversionPlayBar extends React.Component {
             disableRewind: newInstructionIndex === 0,
             disableForward: false,
             instructionIndex: newInstructionIndex,
-        }, this.props.updateSelectedInstruction(newInstructionIndex));
+        });
     }
 
     render = () => {
@@ -150,8 +151,7 @@ class ConversionPlayBar extends React.Component {
                                 isPlaying: false,
                                 disableRewind: x === 0,
                                 disableForward: x === instructionSequence.length - 1,
-                                instructionIndex: x}, 
-                                this.props.updateSelectedInstruction(this.state.instructionIndex))
+                                instructionIndex: x})
                         }}
                         styles={{
                             track: {
