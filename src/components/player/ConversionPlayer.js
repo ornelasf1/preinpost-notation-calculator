@@ -7,27 +7,24 @@ export class ConversionPlayer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.lastestTopStack = {};
+        this.latestTopStack = {};
     }
 
     getSnapshotBeforeUpdate = prevProps => {
         const topStackIndex = prevProps.selectedInstr.stackTokens.length - 1;
         const topStackToken = document.getElementById('stacktoken-'+topStackIndex);
-        this.lastestTopStack = {
+        this.latestTopStack = {
             left: topStackToken ? topStackToken.offsetLeft : 0,
             top: topStackToken ? topStackToken.offsetTop : 0,
             node: topStackToken,
         };
-
-        const topOutputIndex = prevProps.selectedInstr.outputTokens.length - 1;
-        this.lastTopOutputToken = document.getElementById('outputtoken-'+topOutputIndex);
     }
 
     componentDidUpdate = prevProps => {
         if (prevProps.selectedInstr.selectedTokenIndex !==
             this.props.selectedInstr.selectedTokenIndex 
             || this.props.selectedInstr.selectedTokenIndex === -1) {
-                this.updateTokenStyle(this.props.selectedInstr.selectedTokenIndex);
+                this.animateTokenCursor(this.props.selectedInstr.selectedTokenIndex);
             }
         try{
             this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
@@ -36,16 +33,7 @@ export class ConversionPlayer extends React.Component {
         }
     }
 
-    getCoords = elem => {
-        let box = elem.getBoundingClientRect();
-        return {
-            top: box.top + window.pageYOffset,
-            left: box.left + window.pageXOffset,
-            height: box.height,
-        };
-    }
-
-    updateTokenStyle = index => {
+    animateTokenCursor = index => {
         const tokenCursor = document.getElementById('tokenCursor');
         if (tokenCursor === undefined) {
             return;
@@ -93,14 +81,14 @@ export class ConversionPlayer extends React.Component {
             }, tokenAnimationDuration * 1000);
         } else if (prevSelectedInstr.stackTokens.length - 1 === currSelectedInstr.stackTokens.length &&
             prevSelectedInstr.outputTokens.length === currSelectedInstr.outputTokens.length - 1) {
-                const originLocation = this.lastestTopStack.node;
+                const originLocation = this.latestTopStack.node;
                 const tokenToMove = originLocation.cloneNode(true);
 
                 tokenToMove.style.position = 'absolute';
                 tokenToMove.className += ' animatedToken';
 
-                tokenToMove.style.top  = this.lastestTopStack.top + 'px';
-                tokenToMove.style.left = (this.lastestTopStack.left + 3) + 'px';
+                tokenToMove.style.top  = this.latestTopStack.top + 'px';
+                tokenToMove.style.left = (this.latestTopStack.left + 3) + 'px';
                 playerScreen.append(tokenToMove);
 
                 const topOutputIndex = currSelectedInstr.outputTokens.length - 1;
