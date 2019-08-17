@@ -13,24 +13,29 @@ class ConversionAlgorithm extends React.Component {
 
     constructor(props){
         super(props);
+        this.defaultSelectedInstr = {
+            index: -1,
+            selectedToken: '',
+            selectedTokenIndex: -1,
+            inputTokens: [],
+            outputTokens: [],
+            stackTokens: [],
+        };
         this.state = {
             toNotation: '',
             instructions: [],
-            selectedInstruction: {
-                index: -1,
-                selectedToken: '',
-                selectedTokenIndex: -1,
-                inputTokens: [],
-                outputTokens: [],
-                stackTokens: [],
-            }
+            selectedInstruction: this.defaultSelectedInstr,
         };
     }
 
 
     updateSelectedInstruction = selectedInstructionIndex => {
         const { toPostInstr } = this.props.algorithm.infixInstr;
-        this.setState({selectedInstruction: toPostInstr[selectedInstructionIndex]});
+        if (selectedInstructionIndex === -1) {
+            this.setState({selectedInstruction: this.defaultSelectedInstr});
+        } else {
+            this.setState({selectedInstruction: toPostInstr[selectedInstructionIndex]});
+        }
     }
 
     handleNotationButtons = (_, selected, toNotation) => {

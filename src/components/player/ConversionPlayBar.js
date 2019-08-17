@@ -60,7 +60,7 @@ class ConversionPlayBar extends React.Component {
 
         this.setState({
             isPlaying: !this.state.isPlaying,
-            disableRewind: this.state.instructionIndex === 0,
+            disableRewind: this.state.instructionIndex === -1,
         });
 
         if (this.playSeq === undefined) {
@@ -69,7 +69,7 @@ class ConversionPlayBar extends React.Component {
                 console.log('RUNNING');
                 this.setState({
                     instructionIndex: this.state.instructionIndex + 1,
-                    disableRewind: this.state.instructionIndex === 0,
+                    disableRewind: this.state.instructionIndex === -1,
                 }, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
@@ -78,7 +78,7 @@ class ConversionPlayBar extends React.Component {
                             console.log('reset');
                             this.setState({
                                 isPlaying: false, 
-                                instructionIndex: 0,
+                                instructionIndex: -1,
                                 disableRewind: true,
                                 disableForward: false,
                             });
@@ -115,10 +115,10 @@ class ConversionPlayBar extends React.Component {
     }
 
     handleRewindBtn = () => {
-        const newInstructionIndex = this.state.instructionIndex - 1 >= 0? this.state.instructionIndex - 1 : 0;
+        const newInstructionIndex = this.state.instructionIndex - 1 <= -1? -1: this.state.instructionIndex - 1;
         this.setState({
             isPlaying: false,
-            disableRewind: newInstructionIndex === 0,
+            disableRewind: newInstructionIndex === -1,
             disableForward: false,
             instructionIndex: newInstructionIndex,
         });
@@ -143,13 +143,13 @@ class ConversionPlayBar extends React.Component {
                         disabled={!valid}
                         axis="x"
                         xstep={1}
-                        xmin={0}
+                        xmin={-1}
                         xmax={instructionSequence.length - 1}
                         x={this.state.instructionIndex}
                         onChange={({x}) => {
                             this.setState({
                                 isPlaying: false,
-                                disableRewind: x === 0,
+                                disableRewind: x === -1,
                                 disableForward: x === instructionSequence.length - 1,
                                 instructionIndex: x})
                         }}
