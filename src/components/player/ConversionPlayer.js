@@ -208,7 +208,9 @@ export class ConversionPlayer extends React.Component {
                 <div id='helpWindow'>
                     {helpMsgFn && helpMsgFn({
                         selectedToken: expressionTokens[selectedInstr.selectedTokenIndex],
+                        seectedTokenIndex: selectedInstr.selectedTokenIndex, 
                         topOfStack: selectedInstr.stackTokens[selectedInstr.stackTokens.length - 1],
+                        topOfStackIndex: selectedInstr.stackTokens.length - 1,
                     })}
                 </div>
             </div>
