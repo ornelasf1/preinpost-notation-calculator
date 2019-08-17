@@ -115,6 +115,20 @@
     padding-left: 10px;
 }
 
+.activeStructure {
+    animation: glow .5s alternate infinite ease-in-out;
+}
+@keyframes glow {
+    from {
+        box-shadow: 0 0 3mm 3px var(--activity-color);
+    }
+    to {
+        box-shadow: 0 0 5mm 5px var(--activity-color)
+    }
+}
+
+
+
 #helpWindow {
     background-color: rgb(211, 211, 211);
     border-radius: 10px;

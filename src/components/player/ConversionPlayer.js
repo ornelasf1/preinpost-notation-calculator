@@ -31,7 +31,8 @@ export class ConversionPlayer extends React.Component {
     }
     
     componentDidUpdate = prevProps => {
-        this.animateRemoveHelpMsg(prevProps);
+        this.resetActiveStructureAnimation();
+        this.animateRemoveHelpMsg();
         if (prevProps.selectedInstr.selectedTokenIndex !==
             this.props.selectedInstr.selectedTokenIndex 
             || this.props.selectedInstr.selectedTokenIndex === -1) {
@@ -157,7 +158,7 @@ export class ConversionPlayer extends React.Component {
         }
     }
 
-    animateRemoveHelpMsg = prevProps => {
+    animateRemoveHelpMsg = () => {
         const helpWindow = document.getElementById('helpWindow');
         if (this.helpMsg === null) {
             helpWindow.style.opacity = 0;
@@ -165,6 +166,16 @@ export class ConversionPlayer extends React.Component {
             helpWindow.style.opacity = 1;
         }
     };
+
+    resetActiveStructureAnimation = () => {
+        if (this.helpMsg === null){
+            document.getElementById('tokens').classList.remove('activeStructure');
+            document.getElementById('stack').classList.remove('activeStructure');
+            document.getElementById('output').classList.remove('activeStructure');
+            console.log('reset glowing structures');
+        }
+        console.log('attemp to remove: ', this.helpMsg);
+    }
 
     render = () => {
         const { selectedInstr, expression } = this.props;

@@ -2,9 +2,37 @@
 import React from 'react';
 import { prec } from './NotationCalc';
 
+const switchActiveStructures = (id = '') => {
+    const structures = [
+        document.getElementById('tokens'),
+        document.getElementById('stack'),
+        document.getElementById('output'),
+    ];
+    structures.forEach(structure => {
+        if (structure.classList.contains('activeStructure')) {
+            structure.classList.remove('activeStructure');
+        }
+    });
+    if (id !== '') {
+        document.getElementById(id).classList.add('activeStructure');
+    }
+}
+
 const helperMessages = {
-    inputTokensMsg: (data = {}) => <div>Have all the input tokens been scanned through?</div>,
-    tokenTypeMsg: (data = {}) => <div>Is <div className="helpItem">{data.selectedToken}<span className="helpText"><span>Prec</span>{prec(data.selectedToken)}</span></div> an OPERATOR or an OPERAND?</div>,
+    inputTokensMsg: (data = {}) => {
+        switchActiveStructures('tokens');
+        return (<div>Have all the input tokens been scanned through?</div>);
+    },
+    tokenTypeMsg: (data = {}) => {
+        switchActiveStructures();
+        return (
+            <div>
+                Is <div className="helpItem">{data.selectedToken}
+                    <span className="helpText"><span>Prec</span>{prec(data.selectedToken)}</span>
+                </div> an OPERATOR or an OPERAND?
+            </div>
+        );
+    },
     comparePrecMsg: (data = {}) => <div>Does <div className="helpItem">{data.selectedToken}</div> have a greater precendence than <div className="helpItem">{data.topOfStack}</div>?</div>,
 };
 
