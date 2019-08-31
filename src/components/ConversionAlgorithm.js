@@ -92,7 +92,8 @@ class ConversionAlgorithm extends React.Component {
                         <ConversionPlayer 
                             className='player' 
                             expression={expressions[selectedNotation]} 
-                            selectedInstr={this.state.selectedInstruction} />
+                            selectedInstr={this.state.selectedInstruction}
+                            toNotation={toNotation} />
                     </div>
                 </div>}
             </div>

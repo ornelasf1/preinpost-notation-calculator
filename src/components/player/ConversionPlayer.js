@@ -1,13 +1,19 @@
 
 import React from 'react';
 import './ConversionPlayer.css';
+import { lookupHelperMsgs, helpmsgInfixMappings } from '../NotationCalcInstructions';
 
 export class ConversionPlayer extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.latestTopStack = {};
+        this.lastestTopStack = {};
+        this.helpMsg = null;
+
+        this.state = {
+            helperMessage: null,
+        };
     }
 
     getSnapshotBeforeUpdate = prevProps => {
@@ -18,9 +24,15 @@ export class ConversionPlayer extends React.Component {
             top: topStackToken ? topStackToken.offsetTop : 0,
             node: topStackToken,
         };
+        
+        const topOutputIndex = prevProps.selectedInstr.outputTokens.length - 1;
+        this.lastTopOutputToken = document.getElementById('outputtoken-'+topOutputIndex);
+        return null;
     }
-
+    
     componentDidUpdate = prevProps => {
+        this.resetActiveStructureAnimation();
+        this.animateRemoveHelpMsg();
         if (prevProps.selectedInstr.selectedTokenIndex !==
             this.props.selectedInstr.selectedTokenIndex 
             || this.props.selectedInstr.selectedTokenIndex === -1) {
@@ -30,6 +42,10 @@ export class ConversionPlayer extends React.Component {
             this.animateTokens(prevProps.selectedInstr, this.props.selectedInstr);
         } catch(e) {
             console.log("Uh oh breaky", e);
+        }
+
+        if (prevProps.selectedInstr.index !== this.props.selectedInstr.index) {
+            // this.setState({helperMessage: });
         }
     }
 
@@ -133,6 +149,25 @@ export class ConversionPlayer extends React.Component {
         }
     }
 
+    animateRemoveHelpMsg = () => {
+        const helpWindow = document.getElementById('helpWindow');
+        if (this.helpMsg === null) {
+            helpWindow.style.opacity = 0;
+        } else {
+            helpWindow.style.opacity = 1;
+        }
+    };
+
+    resetActiveStructureAnimation = () => {
+        if (this.helpMsg === null){
+            document.getElementById('tokens').classList.remove('activeStructure');
+            document.getElementById('stack').classList.remove('activeStructure');
+            document.getElementById('output').classList.remove('activeStructure');
+            console.log('reset glowing structures');
+        }
+        console.log('attemp to remove: ', this.helpMsg);
+    }
+
     render = () => {
         const { selectedInstr, expression } = this.props;
 
@@ -142,8 +177,13 @@ export class ConversionPlayer extends React.Component {
         const divStackTokens = selectedInstr.stackTokens.map((token, idx) => <div key={idx} id={"stacktoken-"+idx} className='stacktoken'>{token}</div>);
         const divOutputTokens = selectedInstr.outputTokens.map((token, idx) => <div key={idx} id={"outputtoken-"+idx} className='outputtoken'>{token}</div>);
 
+        // TODO: Generalize for all type of conversions
+        const helpMsgFn = lookupHelperMsgs(selectedInstr.index, helpmsgInfixMappings);
+        this.helpMsg = helpMsgFn;
+
         return (
             <div className='player'>
+                <PrecendenceTable />
                 <div id='tokens' className='contentBox'>
                     {divInputTokens}
                     <div id='tokenCursor'></div>
@@ -156,7 +196,48 @@ export class ConversionPlayer extends React.Component {
                         {divOutputTokens}
                     </div>
                 </div>
+                <div id='helpWindow'>
+                    {helpMsgFn && helpMsgFn({
+                        selectedToken: expressionTokens[selectedInstr.selectedTokenIndex],
+                        seectedTokenIndex: selectedInstr.selectedTokenIndex, 
+                        topOfStack: selectedInstr.stackTokens[selectedInstr.stackTokens.length - 1],
+                        topOfStackIndex: selectedInstr.stackTokens.length - 1,
+                    })}
+                </div>
             </div>
         );
     };
 }
+
+const PrecendenceTable = () => {
+    return (
+        <table id='precTable'>
+            <tbody>
+                <tr>
+                    <th>Token</th>
+                    <th>Precedence</th>
+                </tr>
+                <tr>
+                    <td style={{fontSize: '15px', fontWeight: 'normal'}}>Operand</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>-  +</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>×  /</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>^</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>(  )</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
+    );
+};
