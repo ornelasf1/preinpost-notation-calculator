@@ -1,3 +1,46 @@
+
+@media screen and (max-width: 1200px) {
+    @keyframes dropdownBody {
+        from {
+            max-height: 0px;
+        }
+        to {
+            max-height: 3000px;
+        }
+    }
+
+    @keyframes dropdownButtons {
+        from {
+            height: 0px;
+        }
+        to {
+            height: 30px;
+        }
+    }
+
+    #toNotation-buttons button{
+        font-size: 30px;
+    }
+
+    .instruction, .instruction-selected {
+        font-size: 0.7em;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #body {
+        flex-direction: column;
+    }
+
+    #body .canvas {
+        width: 100%;
+    }
+    
+    #body .algorithm-display {
+        width: 100%;
+    }
+}
+
 .display {
     /* position: absolute; */
     background-color: var(--primary-color);

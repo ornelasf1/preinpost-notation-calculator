@@ -1,3 +1,19 @@
+
+@media screen and (max-width: 1200px) {
+    #tokens {
+        min-width: 250px;
+        height: 40px;
+    }
+
+    .inputtoken {
+        font-size: 30px;
+    }
+
+    #precTable {
+        transform: scale(0.7);
+    }
+}
+
 .player{
     background-color: white;
     height: 100%;
