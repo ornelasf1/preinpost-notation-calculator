@@ -192,18 +192,22 @@ export class ConversionPlayer extends React.Component {
 
         return (
             <div className='player'>
-                <PrecendenceTable />
-                <div id='tokens' className='contentBox'>
-                    {divInputTokens}
-                    <div id='tokenCursor'></div>
-                </div>
-                <div id='structures'>
-                    <div id='stack'>
-                        {divStackTokens}
+                <div className="row1">
+                    <div id="mainStructure">
+                        <div id='tokens' className='contentBox'>
+                            {divInputTokens}
+                            <div id='tokenCursor'></div>
+                        </div>
+                        <div id='structures'>
+                            <div id='stack'>
+                                {divStackTokens}
+                            </div>
+                            <div id='output'>
+                                {divOutputTokens}
+                            </div>
+                        </div>
                     </div>
-                    <div id='output'>
-                        {divOutputTokens}
-                    </div>
+                    <PrecendenceTable />
                 </div>
                 <div id='helpWindow'>
                     {helpMsgFn && helpMsgFn({

@@ -28,6 +28,10 @@
 }
 
 @media screen and (max-width: 800px) {
+    #toNotation-buttons button{
+        font-size: 30px;
+    }
+    
     #body {
         flex-direction: column;
     }
