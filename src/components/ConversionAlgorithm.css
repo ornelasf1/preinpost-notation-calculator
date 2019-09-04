@@ -28,7 +28,7 @@
 }
 
 @media screen and (max-width: 800px) {
-    #toNotation-buttons button{
+    .display #toNotation-buttons button{
         font-size: 30px;
     }
     
