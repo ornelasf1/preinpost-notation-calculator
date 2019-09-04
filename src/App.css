@@ -19,4 +19,17 @@ button {
   --activity-color: #205961;
   --instruction-color-1: darkslategrey;
   --instruction-color-2: rgb(37, 59, 59);
+
+  --pulseON: rgb(76, 124, 124);
+  --pulseOFF: rgb(97, 151, 151);
+
+  --lightcolor1: whitesmoke;
+  --lightcolor2: gray;
+  --lightcolor3: white;
+  --lightcolor4: lightgray;
+  --lightcolor5: rgb(211, 211, 211);
+  --lightcolor6: rgb(228, 228, 228);
+
+  --darkcolor1: black;
+  --darkcolor2: darkgray;
 }
