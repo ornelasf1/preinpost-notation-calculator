@@ -18,6 +18,7 @@ class ConversionPlayBar extends React.Component {
             disableForward: false,
         }
         this.playSeq = undefined;
+        this.instructionSequenceLimit = 0;
     }
 
     componentDidUpdate = (prevProps) => {
@@ -31,8 +32,7 @@ class ConversionPlayBar extends React.Component {
                 this.resetPlayer();
             }
 
-        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
-        const newInstructionIndex = this.state.instructionIndex < instructionSequence.length?
+        const newInstructionIndex = this.state.instructionIndex < this.instructionSequenceLimit?
             this.state.instructionIndex : 0;
         this.props.updateSelectedInstruction(newInstructionIndex);
     }
@@ -64,9 +64,6 @@ class ConversionPlayBar extends React.Component {
     }
 
     handlePlayBtn = () => {
-        const { selectedNotation, toNotation } = this.props;
-        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
-
         this.setState({
             isPlaying: !this.state.isPlaying,
             disableRewind: this.state.instructionIndex === -1,
@@ -82,15 +79,15 @@ class ConversionPlayBar extends React.Component {
                 }, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
-                        console.log('Compare outside: ', this.playSeq.getIndex(), instructionSequence.length);
-                        if (this.playSeq.getIndex() === instructionSequence.length) {
+                        console.log('Compare outside: ', this.playSeq.getIndex(), this.instructionSequenceLimit);
+                        if (this.playSeq.getIndex() === this.instructionSequenceLimit) {
                             console.log('reset');
                             this.resetPlayer();
                         }
 
                     }
                 });
-            }, instructionSequence.length, this.state.instructionIndex, 500);
+            }, this.instructionSequenceLimit, this.state.instructionIndex, 500);
 
         } else {
             if (this.state.isPlaying) {
@@ -104,14 +101,11 @@ class ConversionPlayBar extends React.Component {
     }
 
     handleForwardBtn = () => {
-        const { selectedNotation, toNotation} = this.props;
-        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
-        const instructionSequenceLimit = instructionSequence.length;
-        const newInstructionIndex = this.state.instructionIndex + 1 < instructionSequenceLimit?
+        const newInstructionIndex = this.state.instructionIndex + 1 < this.instructionSequenceLimit?
             this.state.instructionIndex + 1 : this.state.instructionIndex;
         this.setState({
             isPlaying: false,
-            disableForward: newInstructionIndex + 1 === instructionSequenceLimit,
+            disableForward: newInstructionIndex + 1 === this.instructionSequenceLimit,
             disableRewind: false,
             instructionIndex: newInstructionIndex,
         });
@@ -130,7 +124,9 @@ class ConversionPlayBar extends React.Component {
     render = () => {
         const { isPlaying, disableForward, disableRewind } = this.state;
         const { selectedNotation, toNotation,  conversion: { valid }} = this.props;
-        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
+        
+        this.instructionSequenceLimit = this.getInstructionSequence(selectedNotation, toNotation).length;
+
         if (this.playSeq && !isPlaying) {
             this.playSeq.pause();
         }
@@ -147,13 +143,13 @@ class ConversionPlayBar extends React.Component {
                         axis="x"
                         xstep={1}
                         xmin={-1}
-                        xmax={instructionSequence.length - 1}
+                        xmax={this.instructionSequenceLimit - 1}
                         x={this.state.instructionIndex}
                         onChange={({x}) => {
                             this.setState({
                                 isPlaying: false,
                                 disableRewind: x === -1,
-                                disableForward: x === instructionSequence.length - 1,
+                                disableForward: x === this.instructionSequenceLimit - 1,
                                 instructionIndex: x})
                         }}
                         styles={{
