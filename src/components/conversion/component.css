@@ -1,3 +1,14 @@
+
+@media screen and (max-width: 1200px) {
+    .component {
+        height: 170px;
+    }
+
+    .component-name{
+        font-size: 1.5em;
+    }
+}
+
 #conversion-comp {
     background: var(--primary-color);
     border-radius: 20px;
@@ -28,8 +39,8 @@
 }
 
 .input-comp{
-    display: inline-block;
-    margin-top: 20px;
+    /* display: inline-block; */
+    /* margin-top: 20px; */
     width: 80%;
     height: 50px;
     border: none;

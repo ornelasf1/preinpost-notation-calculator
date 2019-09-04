@@ -1,3 +1,41 @@
+
+@media screen and (max-width: 1200px) {
+    #tokens {
+        min-width: 250px;
+        height: 40px;
+    }
+
+    .inputtoken {
+        font-size: 30px;
+    }
+
+    .row1 #precTable {
+        display: block;
+        position: relative;
+        right: 0px;
+    }
+
+    #mainStructure #tokens {
+        width: 100%;
+        min-width: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    #structures {
+        width: 100%;
+    }
+
+    #structures #output {
+        min-width: 0px;
+        width: 100%;
+    }
+
+    #structures #stack {
+        min-width: 50px;
+    }
+}
+
 .player{
     background-color: white;
     height: 100%;
@@ -68,6 +106,16 @@
     50% {
         transform: translateY(0px);
     }
+}
+
+.row1 {
+    display: flex;
+    position: relative;
+}
+
+#mainStructure {
+    width: 100%;
+    margin: 0 10px;
 }
 
 #structures {
@@ -181,7 +229,7 @@
 #precTable {
     background-color: white;
     position: absolute;
-    left: 80%;
+    right: 20px;
     top: 20px;
 }
 
