@@ -21,7 +21,11 @@ class ConversionPlayBar extends React.Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const { selectedNotation, toNotation } = this.props;
+        const { selectedNotation, toNotation, conversion: {valid} } = this.props;
+        
+        if (this.playSeq && !valid) {
+            this.resetPlayer();
+        }
         if (prevProps.conversion.expressions[selectedNotation]
             !== this.props.conversion.expressions[selectedNotation]) {
                 this.resetPlayer();
@@ -34,10 +38,15 @@ class ConversionPlayBar extends React.Component {
     }
 
     resetPlayer = () => {
-        this.playSeq = undefined;
         this.setState({
             isPlaying: false,
             instructionIndex: -1,
+            disableRewind: true,
+            disableForward: false,
+        }, () => {
+            if (this.playSeq) {
+                this.playSeq = undefined;
+            }
         });
     }
 
@@ -76,13 +85,7 @@ class ConversionPlayBar extends React.Component {
                         console.log('Compare outside: ', this.playSeq.getIndex(), instructionSequence.length);
                         if (this.playSeq.getIndex() === instructionSequence.length) {
                             console.log('reset');
-                            this.setState({
-                                isPlaying: false, 
-                                instructionIndex: -1,
-                                disableRewind: true,
-                                disableForward: false,
-                            });
-                            this.playSeq = undefined;
+                            this.resetPlayer();
                         }
 
                     }
