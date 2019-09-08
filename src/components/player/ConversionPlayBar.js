@@ -23,7 +23,6 @@ class ConversionPlayBar extends React.Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const { selectedNotation, toNotation, conversion: {valid} } = this.props;
         const { selectedNotation, conversion: {valid} } = this.props;
         
         if (this.playSeq && !valid) {
@@ -73,16 +72,16 @@ class ConversionPlayBar extends React.Component {
         });
 
         if (this.playSeq === undefined) {
-            console.log('Initiated');
+            console.log('PLAYER: Initiate player');
             this.playSeq = new Timer(() => {
-                console.log('RUNNING');
+                console.log('PLAYER: RUNNING');
                 this.setState({
                     instructionIndex: this.state.instructionIndex + 1,
                     disableRewind: this.state.instructionIndex === -1,
                 }, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
-                        console.log('Compare outside: ', this.playSeq.getIndex(), this.instructionSequenceLimit);
+                        console.log('PLAYER: Compare sequence index to sequence length: ', this.playSeq.getIndex(), this.instructionSequenceLimit);
                         if (this.playSeq.getIndex() === this.instructionSequenceLimit) {
                             console.log('PLAYER: Reset player');
                             this.resetPlayer(true);
@@ -94,10 +93,10 @@ class ConversionPlayBar extends React.Component {
 
         } else {
             if (this.state.isPlaying) {
-                console.log('pausing')
+                console.log('PLAYER: Pause')
                 this.playSeq.pause();
             } else {
-                console.log('playing')
+                console.log('PLAYER: Resume')
                 this.playSeq.resume();
             }
         }
@@ -196,7 +195,7 @@ function Timer(callback, amountOfIntructions, initInstructionIndex, interval) {
     var instructionIndex = initInstructionIndex;
 
     this.setIndex = newInstructionIndex => {
-        console.log('index updated ', instructionIndex, newInstructionIndex);
+        console.log(`PLAYER: Update Index ${instructionIndex} with ${newInstructionIndex}`);
         instructionIndex = newInstructionIndex;
     };
 
@@ -207,15 +206,15 @@ function Timer(callback, amountOfIntructions, initInstructionIndex, interval) {
     };
 
     this.resume = () => {
-        console.log('INTERVAL: ', instructionIndex);
-        console.log('Compare: ', instructionIndex, amountOfIntructions)
+        console.log('PLAYER: INTERVAL - ', instructionIndex);
+        console.log('PLAYER: Compare index with # of instructions: ', instructionIndex, amountOfIntructions)
         if (instructionIndex < amountOfIntructions) {
             callback();
             timerId = setTimeout(() => {
                 this.resume();
             }, interval);
         } else {
-            console.log('END');
+            console.log('PLAYER: End');
             clearTimeout(timerId);
         }
     };
