@@ -58,9 +58,24 @@ class ConversionAlgorithm extends React.Component {
         }
     }
 
+    getInstructionSequence = (fromNotation, toNotation) => {
+        const instructionSetName = fromNotation + 'Instr';
+        const notationSequences = this.props.algorithm[instructionSetName];
+
+        if (toNotation === 'prefix') {
+            return notationSequences.toPreInstr;
+        }else if (toNotation === 'infix') {
+            return notationSequences.toInInstr;
+        }else if (toNotation === 'postfix') {
+            return notationSequences.toPostInstr;
+        }
+    }
+
     render = () => {
         const {selectedNotation, expressions, valid} = this.props.conversion;
         const {toNotation} = this.state;
+
+        const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
 
         const instructions = this.state.instructions.map(
             (instr, i) => (
@@ -88,12 +103,14 @@ class ConversionAlgorithm extends React.Component {
                         <ConversionPlayBar 
                             updateSelectedInstruction={this.updateSelectedInstruction}
                             selectedNotation={selectedNotation}
-                            toNotation={toNotation}/>
+                            toNotation={toNotation}
+                            instructionSequenceLimit={instructionSequence.length} />
                         <ConversionPlayer 
                             className='player' 
                             expression={expressions[selectedNotation]} 
                             selectedInstr={this.state.selectedInstruction}
-                            toNotation={toNotation} />
+                            toNotation={toNotation}
+                            instructionSequenceLimit={instructionSequence.length} />
                     </div>
                 </div>}
             </div>

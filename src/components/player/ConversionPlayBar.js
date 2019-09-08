@@ -19,11 +19,10 @@ class ConversionPlayBar extends React.Component {
         }
         this.playSeq = undefined;
         this.playSeqEnded = false;
-        this.instructionSequenceLimit = 0;
     }
 
     componentDidUpdate = (prevProps) => {
-        const { selectedNotation, conversion: {valid} } = this.props;
+        const { selectedNotation, instructionSequenceLimit, conversion: {valid} } = this.props;
         
         if (this.playSeq && !valid) {
             this.resetPlayer();
@@ -33,36 +32,23 @@ class ConversionPlayBar extends React.Component {
                 this.resetPlayer();
             }
 
-        const newInstructionIndex = this.state.instructionIndex < this.instructionSequenceLimit?
+        const newInstructionIndex = this.state.instructionIndex < instructionSequenceLimit?
             this.state.instructionIndex : 0;
-        this.props.updateSelectedInstruction(newInstructionIndex);
+        this.props.updateSelectedInstruction(newInstructionIndex, instructionSequenceLimit);
     }
 
     resetPlayer = (playEnded = false) => {
         this.setState({
             isPlaying: false,
-            instructionIndex: !this.playSeqEnded && playEnded ? this.instructionSequenceLimit - 1 : -1,
+            instructionIndex: !this.playSeqEnded && playEnded ? this.props.instructionSequenceLimit - 1 : -1,
             disableRewind: true,
             disableForward: false,
         }, () => {
             if (this.playSeq) {
                 this.playSeq = undefined;
             }
-            this.playSeqEnded = this.state.instructionIndex === this.instructionSequenceLimit - 1;
+            this.playSeqEnded = this.state.instructionIndex === this.props.instructionSequenceLimit - 1;
         });
-    }
-
-    getInstructionSequence = (fromNotation, toNotation) => {
-        const instructionSetName = fromNotation + 'Instr';
-        const notationSequences = this.props.algorithm[instructionSetName];
-
-        if (toNotation === 'prefix') {
-            return notationSequences.toPreInstr;
-        }else if (toNotation === 'infix') {
-            return notationSequences.toInInstr;
-        }else if (toNotation === 'postfix') {
-            return notationSequences.toPostInstr;
-        }
     }
 
     handlePlayBtn = () => {
@@ -81,15 +67,15 @@ class ConversionPlayBar extends React.Component {
                 }, () => {
                     if (this.playSeq !== undefined) {
                         this.playSeq.setIndex(this.state.instructionIndex);
-                        console.log('PLAYER: Compare sequence index to sequence length: ', this.playSeq.getIndex(), this.instructionSequenceLimit);
-                        if (this.playSeq.getIndex() === this.instructionSequenceLimit) {
+                        console.log('PLAYER: Compare sequence index to sequence length: ', this.playSeq.getIndex(), this.props.instructionSequenceLimit);
+                        if (this.playSeq.getIndex() === this.props.instructionSequenceLimit) {
                             console.log('PLAYER: Reset player');
                             this.resetPlayer(true);
                         }
 
                     }
                 });
-            }, this.instructionSequenceLimit, this.state.instructionIndex, 500);
+            }, this.props.instructionSequenceLimit, this.state.instructionIndex, 500);
 
         } else {
             if (this.state.isPlaying) {
@@ -103,11 +89,11 @@ class ConversionPlayBar extends React.Component {
     }
 
     handleForwardBtn = () => {
-        const newInstructionIndex = this.state.instructionIndex + 1 < this.instructionSequenceLimit?
+        const newInstructionIndex = this.state.instructionIndex + 1 < this.props.instructionSequenceLimit?
             this.state.instructionIndex + 1 : this.state.instructionIndex;
         this.setState({
             isPlaying: false,
-            disableForward: newInstructionIndex + 1 === this.instructionSequenceLimit,
+            disableForward: newInstructionIndex + 1 === this.props.instructionSequenceLimit,
             disableRewind: false,
             instructionIndex: newInstructionIndex,
         });
@@ -125,9 +111,7 @@ class ConversionPlayBar extends React.Component {
 
     render = () => {
         const { isPlaying, disableForward, disableRewind } = this.state;
-        const { selectedNotation, toNotation,  conversion: { valid }} = this.props;
-        
-        this.instructionSequenceLimit = this.getInstructionSequence(selectedNotation, toNotation).length;
+        const { instructionSequenceLimit,  conversion: { valid }} = this.props;
 
         if (this.playSeq && !isPlaying) {
             this.playSeq.pause();
@@ -145,13 +129,13 @@ class ConversionPlayBar extends React.Component {
                         axis="x"
                         xstep={1}
                         xmin={-1}
-                        xmax={this.instructionSequenceLimit - 1}
+                        xmax={instructionSequenceLimit - 1}
                         x={this.state.instructionIndex}
                         onChange={({x}) => {
                             this.setState({
                                 isPlaying: false,
                                 disableRewind: x === -1,
-                                disableForward: x === this.instructionSequenceLimit - 1,
+                                disableForward: x === instructionSequenceLimit - 1,
                                 instructionIndex: x})
                         }}
                         styles={{
