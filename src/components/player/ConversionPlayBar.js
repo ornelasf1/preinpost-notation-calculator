@@ -7,6 +7,7 @@ import {ReactComponent as PlayIcon} from '../../play.svg';
 import {ReactComponent as PauseIcon} from '../../pause.svg';
 import {ReactComponent as ForwardIcon} from '../../../src/imgs/forward_arrow.svg';
 import {ReactComponent as RewindIcon} from '../../../src/imgs/rewind_arrow.svg';
+import { ConversionPlayerSlide } from './ConversionPlayerSlide';
 
 class ConversionPlayBar extends React.Component {
     constructor(props){
@@ -118,41 +119,21 @@ class ConversionPlayBar extends React.Component {
         }
 
         return (
-            <div>
-                <div id='progressBar'>
-                    <button disabled={!valid} id='playBtn' onClick={this.handlePlayBtn}>
-                        {isPlaying? <PauseIcon /> : <PlayIcon />}
-                    </button>
-                    <Slider 
-                        id='slider'
-                        disabled={!valid}
-                        axis="x"
-                        xstep={1}
-                        xmin={-1}
-                        xmax={instructionSequenceLimit - 1}
-                        x={this.state.instructionIndex}
-                        onChange={({x}) => {
-                            this.setState({
-                                isPlaying: false,
-                                disableRewind: x === -1,
-                                disableForward: x === instructionSequenceLimit - 1,
-                                instructionIndex: x})
-                        }}
-                        styles={{
-                            track: {
-                                backgroundColor: '#143c41'
-                              },
-                              active: {
-                                backgroundColor: '#1a484e'
-                              },
-                              thumb: {
-                                width: 10,
-                                height: 10,
-                                top: '50%',
-                              }
-                        }}
-                        />
-                </div>
+            <div className='playerHeader'>
+                <ConversionPlayerSlide 
+                    disabled={!valid}
+                    min={-1}
+                    max={instructionSequenceLimit - 1}
+                    value={this.state.instructionIndex}
+                    onChange={value => 
+                        this.setState({
+                            isPlaying: false,
+                            disableRewind: value === -1,
+                            disableForward: value === instructionSequenceLimit - 1,
+                            instructionIndex: parseInt(value)})
+                    }
+                    handlePlayBtn={this.handlePlayBtn}
+                    isPlaying={isPlaying}/>
                 <div id="playerToolbar">
                       <button 
                         id='rewindBtn' 

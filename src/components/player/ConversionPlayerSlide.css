@@ -1,0 +1,33 @@
+#progressBar{
+    display: flex;
+  }
+
+.slideContainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    background-color: var(--alt-color);
+    outline: none;
+
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 44px;
+    background: var(--lightcolor1);
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 100px;
+    background: var(--instruction-color-1);
+    cursor: pointer;
+}
