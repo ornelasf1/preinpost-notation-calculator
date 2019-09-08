@@ -9,7 +9,21 @@ h1 {
 }
 
 button {
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 50px;
+  background-color: var(--alt-color);
   cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: var(--activity-color);
+}
+
+svg {
+  fill: white;
 }
 
 :root{
