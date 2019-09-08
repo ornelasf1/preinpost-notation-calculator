@@ -1,3 +1,20 @@
+@media screen and (max-width: 1200px) {
+    #progressBar #playBtn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .slideContainer .slider::-webkit-slider-thumb {
+        width: 8px;
+        height: 40px;
+    }
+    
+    .slideContainer .slider::-moz-range-thumb {
+        width: 8px;
+        height: 40px;
+    }
+}
+
 #progressBar{
     display: flex;
 }
@@ -32,8 +49,11 @@
 }
 
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 100px;
-    background: var(--instruction-color-1);
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 50px;
+    background: var(--lightcolor1);
     cursor: pointer;
+    border-radius: 3px;
 }
