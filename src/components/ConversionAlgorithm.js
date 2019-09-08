@@ -25,6 +25,7 @@ class ConversionAlgorithm extends React.Component {
             toNotation: '',
             instructions: [],
             selectedInstruction: this.defaultSelectedInstr,
+            selectedInstructionIndex: -1,
         };
     }
 
@@ -32,9 +33,11 @@ class ConversionAlgorithm extends React.Component {
     updateSelectedInstruction = selectedInstructionIndex => {
         const { toPostInstr } = this.props.algorithm.infixInstr;
         if (selectedInstructionIndex === -1) {
-            this.setState({selectedInstruction: this.defaultSelectedInstr});
+            this.setState({selectedInstruction: this.defaultSelectedInstr, 
+                selectedInstructionIndex });
         } else {
-            this.setState({selectedInstruction: toPostInstr[selectedInstructionIndex]});
+            this.setState({selectedInstruction: toPostInstr[selectedInstructionIndex],
+                selectedInstructionIndex });
         }
     }
 
@@ -73,7 +76,7 @@ class ConversionAlgorithm extends React.Component {
 
     render = () => {
         const {selectedNotation, expressions, valid} = this.props.conversion;
-        const {toNotation} = this.state;
+        const { toNotation, selectedInstructionIndex } = this.state;
 
         const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
 
@@ -110,6 +113,7 @@ class ConversionAlgorithm extends React.Component {
                             expression={expressions[selectedNotation]} 
                             selectedInstr={this.state.selectedInstruction}
                             toNotation={toNotation}
+                            selectedInstructionIndex={selectedInstructionIndex}
                             instructionSequenceLimit={instructionSequence.length} />
                     </div>
                 </div>}

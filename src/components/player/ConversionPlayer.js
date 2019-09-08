@@ -169,7 +169,7 @@ export class ConversionPlayer extends React.Component {
     }
 
     render = () => {
-        const { selectedInstr, expression } = this.props;
+        const { selectedInstr, expression, instructionSequenceLimit, selectedInstructionIndex } = this.props;
 
         //Expects all expressions in state to be demilimited by spaces
         const expressionTokens = expression.split(' ');
@@ -178,7 +178,9 @@ export class ConversionPlayer extends React.Component {
         const divOutputTokens = selectedInstr.outputTokens.map((token, idx) => <div key={idx} id={"outputtoken-"+idx} className='outputtoken'>{token}</div>);
 
         // TODO: Generalize for all type of conversions
-        const helpMsgFn = lookupHelperMsgs(selectedInstr.index, helpmsgInfixMappings);
+        const helpMsgFn = lookupHelperMsgs(
+            selectedInstr.index, helpmsgInfixMappings, 
+            selectedInstructionIndex === instructionSequenceLimit - 1);
         this.helpMsg = helpMsgFn;
 
         return (

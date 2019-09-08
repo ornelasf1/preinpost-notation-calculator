@@ -77,6 +77,7 @@ const helperMessages = {
     },
     finishMsg: (data = {}) => {
         switchActiveStructures('output');
+        return (<div>Over!</div>);
     },
 };
 
@@ -111,17 +112,26 @@ export const helpmsgInfixMappings = {
     comparePrecMsg: [11, 12, 13],
     stackEmptyOrTopMsg: [3, 4],
     outputRemaingTokensMsg: [20],
+    finishMsg: [-1],
 };
 
 
-export const lookupHelperMsgs = (instructionIndex, helpmsgMappings) => {
+export const lookupHelperMsgs = (instructionIndex, helpmsgMappings, condition) => {
     var selectedMsg = null;
     Object.keys(helpmsgMappings).forEach(msg => {
         if (helpmsgMappings[msg].includes(instructionIndex)) {
             selectedMsg = msg;
         }
     });
-    return selectedMsg !== null ? helperMessages[selectedMsg] : null;
+    if (selectedMsg !== null){
+        if (instructionIndex === -1 && condition) {
+            return helperMessages[selectedMsg];
+        } else if (instructionIndex !== -1){
+            return helperMessages[selectedMsg];
+        } else {
+            return null;
+        }
+    }
 }
 
 export const instructionIndents = instr => {
