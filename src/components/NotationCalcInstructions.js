@@ -77,7 +77,7 @@ const helperMessages = {
     },
     finishMsg: (data = {}) => {
         switchActiveStructures('output');
-        return (<div>Over!</div>);
+        return (<div>Done!</div>);
     },
 };
 
