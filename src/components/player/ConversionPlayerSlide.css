@@ -22,6 +22,8 @@
 #playBtn {
     margin-right: 5px;
     margin-bottom: 5px;
+    border-radius: 0px;
+    border-top-left-radius: 15px;
 }
 
 .slideContainer {
@@ -34,7 +36,8 @@
     width: 100%;
     background-color: var(--alt-color);
     outline: none;
-    border-radius: 3px;
+    border-radius: 0px;
+    border-top-right-radius: 15px;
 
 }
 

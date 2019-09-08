@@ -44,6 +44,8 @@
 
     /* Position relative in order to have children to be absolute positioned */
     position: relative;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .contentBox {
