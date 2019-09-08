@@ -9,7 +9,7 @@ import {ReactComponent as ForwardIcon} from '../../../src/imgs/forward_arrow.svg
 import {ReactComponent as RewindIcon} from '../../../src/imgs/rewind_arrow.svg';
 import { ConversionPlayerSlide } from './ConversionPlayerSlide';
 
-class ConversionPlayBar extends React.Component {
+export class ConversionPlayBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
