@@ -135,25 +135,12 @@
 
 #toNotation-buttons button{
     text-align: center;
-    border: none;
-    text-decoration: none;
-    background-color: var(--primary-color);
     margin: 0 auto;
     padding: 5px 0;
     width: 50%;
-    border-radius: 8px;
-    outline-width: 0;
     color: var(--lightcolor3);
     font-weight: 600;
     font-size: 40px;
-}
-
-#toNotation-buttons button:focus {
-    background-color: var(--primary-color);
-}
-
-#toNotation-buttons button:hover{
-    background-color: var(--activity-color);
 }
 
 .instruction {
