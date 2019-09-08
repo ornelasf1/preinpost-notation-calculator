@@ -18,11 +18,13 @@ class ConversionPlayBar extends React.Component {
             disableForward: false,
         }
         this.playSeq = undefined;
+        this.playSeqEnded = false;
         this.instructionSequenceLimit = 0;
     }
 
     componentDidUpdate = (prevProps) => {
         const { selectedNotation, toNotation, conversion: {valid} } = this.props;
+        const { selectedNotation, conversion: {valid} } = this.props;
         
         if (this.playSeq && !valid) {
             this.resetPlayer();
@@ -37,16 +39,17 @@ class ConversionPlayBar extends React.Component {
         this.props.updateSelectedInstruction(newInstructionIndex);
     }
 
-    resetPlayer = () => {
+    resetPlayer = (playEnded = false) => {
         this.setState({
             isPlaying: false,
-            instructionIndex: -1,
+            instructionIndex: !this.playSeqEnded && playEnded ? this.instructionSequenceLimit - 1 : -1,
             disableRewind: true,
             disableForward: false,
         }, () => {
             if (this.playSeq) {
                 this.playSeq = undefined;
             }
+            this.playSeqEnded = this.state.instructionIndex === this.instructionSequenceLimit - 1;
         });
     }
 
@@ -81,8 +84,8 @@ class ConversionPlayBar extends React.Component {
                         this.playSeq.setIndex(this.state.instructionIndex);
                         console.log('Compare outside: ', this.playSeq.getIndex(), this.instructionSequenceLimit);
                         if (this.playSeq.getIndex() === this.instructionSequenceLimit) {
-                            console.log('reset');
-                            this.resetPlayer();
+                            console.log('PLAYER: Reset player');
+                            this.resetPlayer(true);
                         }
 
                     }
