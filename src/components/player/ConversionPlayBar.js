@@ -41,8 +41,8 @@ class ConversionPlayBar extends React.Component {
         this.setState({
             isPlaying: false,
             instructionIndex: !this.playSeqEnded && playEnded ? this.props.instructionSequenceLimit - 1 : -1,
-            disableRewind: true,
-            disableForward: false,
+            disableRewind: this.playSeqEnded && playEnded,
+            disableForward: !this.playSeqEnded && playEnded,
         }, () => {
             if (this.playSeq) {
                 this.playSeq = undefined;
