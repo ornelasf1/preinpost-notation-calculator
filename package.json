@@ -39,5 +39,8 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "jest-enzyme": "^7.1.1",
     "react-test-renderer": "^16.9.0"
+  },
+  "jest": {
+    "watchPathIgnorePatterns": ["<rootDir>/src/components/__tests__/utils/"]
   }
 }
