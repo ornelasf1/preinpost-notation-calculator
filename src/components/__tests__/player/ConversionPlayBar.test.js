@@ -180,5 +180,34 @@ describe('ConversionPlayBar', () => {
         expect(instance.playSeq.pause).toBeCalled();
     });
 
-    it("should ");
+    it("should initialize Timer sequence if playSeq is undefined", () => {
+        instance.playSeq = undefined;
+        instance.handlePlayBtn();
+
+        expect(instance.playSeq).toBeTruthy();
+    });
+    
+    it('should play when playSeq is initialized', () => {
+        instance.playSeq = undefined;
+        instance.handlePlayBtn();
+
+        expect(instance.state.isPlaying).toBe(true);
+    });
+
+    it("should increment instruction index when player is played", () => {
+        instance.setState({ instructionIndex: mockInstructionIndex });
+        instance.playSeq = undefined;
+        instance.handlePlayBtn();
+
+        expect(instance.state.instructionIndex).toBe(mockInstructionIndex + 1);
+    });
+
+    // it("should set player bar index to instruction index when played", () => {
+    //     instance.setState({ instructionIndex: mockInstructionIndex });
+    //     instance.playSeq = undefined;
+    //     instance.handlePlayBtn();
+    //     const playbarIndex = instance.playSeq.getIndex();
+
+    //     expect(playbarIndex).toBe(mockInstructionIndex + 1);
+    // });
 });
