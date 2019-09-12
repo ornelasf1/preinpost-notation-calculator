@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import Slider from 'react-input-slider';
 import './ConversionPlayBar.css';
 import {ReactComponent as PlayIcon} from '../../play.svg';
@@ -9,7 +10,26 @@ import {ReactComponent as ForwardIcon} from '../../../src/imgs/forward_arrow.svg
 import {ReactComponent as RewindIcon} from '../../../src/imgs/rewind_arrow.svg';
 import { ConversionPlayerSlide } from './ConversionPlayerSlide';
 
-class ConversionPlayBar extends React.Component {
+export class ConversionPlayBar extends React.Component {
+
+    static propTypes = {
+        updateSelectedInstruction: PropTypes.func,
+        selectedNotation: PropTypes.string,
+        toNotation: PropTypes.string,
+        instructionSequenceLimit: PropTypes.number,
+
+        conversionNotat: PropTypes.shape({
+            expressions: PropTypes.object,
+            selectedNotation: PropTypes.string,
+            valid: PropTypes.bool,  
+        }),
+        algorithms: PropTypes.shape({
+            infixInstr: PropTypes.object,
+            postfixInstr: PropTypes.object,
+            prefixInstr: PropTypes.object,
+        }),
+    };
+
     constructor(props){
         super(props);
         this.state = {
@@ -20,6 +40,7 @@ class ConversionPlayBar extends React.Component {
         }
         this.playSeq = undefined;
         this.playSeqEnded = false;
+        this.playInterval = 500;
     }
 
     componentDidUpdate = (prevProps) => {
@@ -60,23 +81,11 @@ class ConversionPlayBar extends React.Component {
 
         if (this.playSeq === undefined) {
             console.log('PLAYER: Initiate player');
-            this.playSeq = new Timer(() => {
-                console.log('PLAYER: RUNNING');
-                this.setState({
-                    instructionIndex: this.state.instructionIndex + 1,
-                    disableRewind: this.state.instructionIndex === -1,
-                }, () => {
-                    if (this.playSeq !== undefined) {
-                        this.playSeq.setIndex(this.state.instructionIndex);
-                        console.log('PLAYER: Compare sequence index to sequence length: ', this.playSeq.getIndex(), this.props.instructionSequenceLimit);
-                        if (this.playSeq.getIndex() === this.props.instructionSequenceLimit) {
-                            console.log('PLAYER: Reset player');
-                            this.resetPlayer(true);
-                        }
-
-                    }
-                });
-            }, this.props.instructionSequenceLimit, this.state.instructionIndex, 500);
+            this.playSeq = new Timer(
+                this.handlePlayerStepThrough, 
+                this.props.instructionSequenceLimit, 
+                this.state.instructionIndex, 
+                this.playInterval);
 
         } else {
             if (this.state.isPlaying) {
@@ -87,6 +96,23 @@ class ConversionPlayBar extends React.Component {
                 this.playSeq.resume();
             }
         }
+    }
+
+    handlePlayerStepThrough = () => {
+        console.log('PLAYER: RUNNING');
+        this.setState({
+            instructionIndex: this.state.instructionIndex + 1,
+            disableRewind: this.state.instructionIndex === -1,
+        }, () => {
+            if (this.playSeq !== undefined) {
+                this.playSeq.setIndex(this.state.instructionIndex);
+                console.log('PLAYER: Compare sequence index to sequence length: ', this.playSeq.getIndex(), this.props.instructionSequenceLimit);
+                if (this.playSeq.getIndex() === this.props.instructionSequenceLimit) {
+                    console.log('PLAYER: Reset player');
+                    this.resetPlayer(true);
+                }
+            }
+        });
     }
 
     handleForwardBtn = () => {
@@ -155,7 +181,7 @@ class ConversionPlayBar extends React.Component {
     }
 }
 
-function Timer(callback, amountOfIntructions, initInstructionIndex, interval) {
+export function Timer(callback, amountOfIntructions, initInstructionIndex, interval) {
     var timerId;
     var instructionIndex = initInstructionIndex;
 
