@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import * as ConversionAlgoActions from './ConversionAlgoActions';
+import * as ConversionActions from './conversion/ConversionActions';
 
 import './ConversionAlgorithm.css';
 import { instructionIndents, getInstructionSet } from './NotationCalcInstructions';
@@ -42,6 +43,7 @@ class ConversionAlgorithm extends React.Component {
     }
 
     handleNotationButtons = (_, selected, toNotation) => {
+        this.props.updateToNotation(toNotation);
         this.setState({toNotation, instructions: getInstructionSet(selected, toNotation)});
         const notationComps = document.getElementById('conversion-comp');
         if (notationComps.style.animationName === '') {
@@ -112,6 +114,7 @@ class ConversionAlgorithm extends React.Component {
                             className='player' 
                             expression={expressions[selectedNotation]} 
                             selectedInstr={this.state.selectedInstruction}
+                            selectedNotation={selectedNotation}
                             toNotation={toNotation}
                             selectedInstructionIndex={selectedInstructionIndex}
                             instructionSequenceLimit={instructionSequence.length} />
@@ -163,4 +166,9 @@ const mapStateToProps = state => ({
     conversion: state.conversionNotat,
 });
 
-export default connect(mapStateToProps, ConversionAlgoActions)(ConversionAlgorithm);
+export const actionCreators = {
+    ...ConversionActions,
+    ...ConversionAlgoActions,
+}
+
+export default connect(mapStateToProps, actionCreators)(ConversionAlgorithm);
