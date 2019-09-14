@@ -7,7 +7,7 @@ export const switchActiveStructures = (id = '') => {
     while (activeTokens.length !== 0) {
         activeTokens[0].classList.remove('activeStructure');
     }
-    if (id !== '') {
+    if (id !== '' && document.getElementById(id) !== null) {
         document.getElementById(id).classList.add('activeStructure');
     }
 }
@@ -106,12 +106,47 @@ export const infixToPostfixInstructions = [
     'XXOutput the selected token',
     'Output all remaining tokens from the operator stack when out of tokens'
 ];
-export const helpmsgInfixMappings = {
+const helpmsgInfixToPostfixMappings = {
     inputTokensMsg: [0],
     tokenTypeMsg: [1, 2, 18, 19],
     comparePrecMsg: [11, 12, 13],
     stackEmptyOrTopMsg: [3, 4],
     outputRemaingTokensMsg: [20],
+    finishMsg: [-1],
+};
+
+
+export const infixToPrefixInstructions = [
+    'Reverse the infix expression',
+    'Replace all \'(\' with \')\' and all \')\' with \'(\'',
+    'Is the list of tokens empty?',
+    'XConsider token from the set of tokens',
+    'XIf the token is an operator:',
+    'XXIf the operator stack is empty OR the top of the operator stack is a \'(\'',
+    'XXXPush the selected token to the operator stack',
+    'XXIf the selected token is a \'(\'',
+    'XXXPush the selected token to the operator stack',
+    'XXIf the selected token is \')\'',
+    'XXXWhile the top of the operator stack is not a \'(\'',
+    'XXXXPop the token from the top of the operator stack AND output it',
+    'XXXRemove the \'(\' from the top of the operator stack',
+    'XXIf the selected token has a higher precedence than the token on the top of the operator stack',
+    'XXXPush the selected token to the operator stack',
+    'XXIf the selected token has a lower OR equal precedence than the token on the top of the operator stack',
+    'XXXPop the token from the top of the operator stack AND output it',
+    'XXXWhile the operator stack is not empty AND the top of the operator stack is not a \'(\' AND the selected token has a lower OR equal precedence than the token on the top of the operator stack',
+    'XXXXPop the token from the top of the operator stack AND output it',
+    'XXXPush the selected token to the operator stack',
+    'XIf the token is an operand:',
+    'XXOutput the selected token',
+    'Output all remaining tokens from the operator stack when out of tokens'
+];
+const helpmsgInfixToPrefixMappings = {
+    inputTokensMsg: [2],
+    tokenTypeMsg: [3, 4, 20, 21],
+    comparePrecMsg: [13, 14, 15],
+    stackEmptyOrTopMsg: [5, 6],
+    outputRemaingTokensMsg: [22],
     finishMsg: [-1],
 };
 
@@ -146,9 +181,23 @@ export const instructionIndents = instr => {
 export const getInstructionSet = (notation, toNotation) => {
     if(notation === 'infix'){
         if (toNotation === 'prefix') {
-            return [];
+            return infixToPrefixInstructions;
         } else if (toNotation === 'postfix') {
             return infixToPostfixInstructions;
         }
     }
 };
+
+export const getHelpMsgMappings = (selectedNotation, toNotation) => {
+    if (selectedNotation === 'infix') {
+        if (toNotation === 'postfix') {
+            return helpmsgInfixToPostfixMappings;
+        } else if (toNotation === 'prefix') {
+            return helpmsgInfixToPrefixMappings;
+        }
+    } else if (selectedNotation === 'postfix') {
+
+    } else if (selectedNotation === 'prefix') {
+        
+    }
+}

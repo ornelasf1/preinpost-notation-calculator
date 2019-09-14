@@ -1,7 +1,10 @@
 
 import React from 'react';
 import './ConversionPlayer.css';
-import { lookupHelperMsgs, helpmsgInfixMappings } from '../NotationCalcInstructions';
+import { 
+    lookupHelperMsgs, 
+    getHelpMsgMappings
+} from '../NotationCalcInstructions';
 
 export class ConversionPlayer extends React.Component {
 
@@ -169,7 +172,14 @@ export class ConversionPlayer extends React.Component {
     }
 
     render = () => {
-        const { selectedInstr, expression, instructionSequenceLimit, selectedInstructionIndex } = this.props;
+        const { 
+            selectedInstr, 
+            expression, 
+            instructionSequenceLimit, 
+            selectedInstructionIndex,
+            selectedNotation,
+            toNotation
+        } = this.props;
 
         //Expects all expressions in state to be demilimited by spaces
         const expressionTokens = expression.split(' ');
@@ -177,9 +187,8 @@ export class ConversionPlayer extends React.Component {
         const divStackTokens = selectedInstr.stackTokens.map((token, idx) => <div key={idx} id={"stacktoken-"+idx} className='stacktoken'>{token}</div>);
         const divOutputTokens = selectedInstr.outputTokens.map((token, idx) => <div key={idx} id={"outputtoken-"+idx} className='outputtoken'>{token}</div>);
 
-        // TODO: Generalize for all type of conversions
         const helpMsgFn = lookupHelperMsgs(
-            selectedInstr.index, helpmsgInfixMappings, 
+            selectedInstr.index, getHelpMsgMappings(selectedNotation, toNotation), 
             selectedInstructionIndex === instructionSequenceLimit - 1);
         this.helpMsg = helpMsgFn;
 
