@@ -13,10 +13,13 @@ const rootReducers = {
   algorithmInstructions
 };
 
+const composeEnhancers = typeof window === 'object' && 
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? 
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+
 const store = createStore(
   combineReducers(rootReducers), 
-  compose(applyMiddleware(thunk), 
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+  composeEnhancers(applyMiddleware(thunk)));
 
 function App() {
 
