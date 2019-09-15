@@ -5,8 +5,13 @@ import { infixToPostfixInstructions } from './NotationCalcInstructions';
 export const validateExpression = (notation, expression) => {
     if (notation === 'infix') {
         const infixToPostfixResult = infixToPostfix(expression);
+        const infixToPrefixResult = infixToPrefix(expression);
+
         const infixDelimitedBySpaces = toTokens(expression).filter(token => token !== '(' && token !== ')').join(' ');
-        return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces;
+
+        console.log(`Orig. Infix: ${infixDelimitedBySpaces} PostfixToInfix: ${postfixToInfix(infixToPostfixResult)} PrefixToInfix: ${prefixToInfix(infixToPrefixResult)}`);
+        return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces
+            && prefixToInfix(infixToPrefixResult) === infixDelimitedBySpaces;
     } else if (notation === 'postfix') {
 
     } else if (notation === 'prefix') {
@@ -213,4 +218,15 @@ const swapParentheses = expression => {
         }
     }
     return expression;
+}
+
+//Input: string prefix expression. user input has to be delimited by space
+//Output: string delimimted by spaces
+export const prefixToInfix = (prefix, seq = []) => {
+    let prefixTokens = toTokens(prefix).reverse();
+    prefixTokens = prefixTokens.join(' ');
+
+    let infixExpr = postfixToInfix(prefixTokens).split(' ').reverse().join(' ');
+    console.log(`Prefix ${prefix} To Infix: ${infixExpr}`);
+    return infixExpr;
 }
