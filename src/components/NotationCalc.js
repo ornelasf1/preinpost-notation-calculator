@@ -169,3 +169,37 @@ export const postfixToInfix = postfix => {
     console.log('postfix to infix result: ', stack.reverse().join(' '));
     return stack.reverse().join(' ');
 };
+
+//Input: string infix expression. doesn't have to be delimited by a space
+//Output: string delimimted by spaces
+export const infixToPrefix = (infix, seq = []) => {
+    
+    let infixTokens = toTokens(infix).reverse();
+    infixTokens = swapParentheses(infixTokens);
+
+    let prefixExpr = infixToPostfix(infixTokens.join(' '), seq);
+    
+    seq.forEach(capturedState => {
+        if (capturedState.index !== -1) {
+            capturedState.index += 2;
+        }
+    });
+    prefixExpr = prefixExpr.split(' ').reverse().join(' ');
+    console.log(`Prefix expression: ${prefixExpr}`);
+    return prefixExpr;
+};
+
+const swapParentheses = expression => {
+    if (!Array.isArray(expression)) {
+        return expression;
+    }
+
+    for (let i = 0; i < expression.length; i++) {
+        if (expression[i] === ')') {
+            expression[i] = '(';
+        } else if (expression[i] === '(') {
+            expression[i] = ')';
+        }
+    }
+    return expression;
+}
