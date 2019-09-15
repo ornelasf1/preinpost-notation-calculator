@@ -2,10 +2,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Slider from 'react-input-slider';
 import './ConversionPlayBar.css';
-import {ReactComponent as PlayIcon} from '../../play.svg';
-import {ReactComponent as PauseIcon} from '../../pause.svg';
 import {ReactComponent as ForwardIcon} from '../../../src/imgs/forward_arrow.svg';
 import {ReactComponent as RewindIcon} from '../../../src/imgs/rewind_arrow.svg';
 import { ConversionPlayerSlide } from './ConversionPlayerSlide';
