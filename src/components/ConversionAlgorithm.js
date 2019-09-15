@@ -149,13 +149,13 @@ const ToNotationButtons = props => {
                 disabled={props.disabled} 
                 style={{marginRight: '10px'}}
                 onClick={(e => props.handleClick(e, props.selected, notations[0]))}>
-                    To {notations[0]}
+                    Show steps to {notations[0]}
             </button>
             <button 
                 disabled={props.disabled} 
                 style={{marginLeft: '10px'}}
                 onClick={(e => props.handleClick(e, props.selected, notations[1]))}>
-                    To {notations[1]}
+                    Show steps to {notations[1]}
             </button>
         </div>
     );
