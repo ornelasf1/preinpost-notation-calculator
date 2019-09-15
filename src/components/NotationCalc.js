@@ -152,10 +152,11 @@ export const infixToPostfix = (infix, seq = []) => {
     return postfixExpr.join(' ');
 };
 
-//Input: string postfix expression. has to be delimited by a space
+//Input: string postfix expression. user input has to be delimited by space
 //Output: string delimimted by spaces
-export const postfixToInfix = postfix => {
-    const postfixTokens = postfix.split(' ').reverse();
+export const postfixToInfix = (postfix, seq = []) => {
+    console.log(`Convert postfix to infix: ${postfix}`);
+    const postfixTokens = toTokens(postfix).reverse();
     const stack = [];
     let infixExpr = [];
 
