@@ -18,6 +18,16 @@ export const toTokens = input => {
     if(typeof input !== 'string') return '';
     let tokens = input.trim();
 
+    //Check if input is already delimited by spaces
+    let tokensDelimitedBySpaces = tokens.split(" ");
+    for (let i = 0; i < tokensDelimitedBySpaces.length; i++) {
+        if (tokensDelimitedBySpaces[i].length !== 1) {
+            break;
+        } else if (i === tokensDelimitedBySpaces.length - 1){
+            return tokensDelimitedBySpaces;
+        }
+    }
+
     tokens = tokens.split('').reduce((acc, curr) => {
         if (acc.length === 0) {
             acc.push(curr);
