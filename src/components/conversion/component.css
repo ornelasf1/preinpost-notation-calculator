@@ -14,19 +14,7 @@
     border-radius: 20px;
     display: flex;
     justify-content: space-evenly;
-    margin: 300px 10px 0 10px;
-    animation-timing-function: ease-in-out;
-    animation-duration: .5s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes elevateBoxes {
-    from {
-        margin-top: 300px;
-    }
-    to {
-        margin-top: 10px;
-    }
+    margin: 0 10px 0 10px;
 }
 
 .component {
