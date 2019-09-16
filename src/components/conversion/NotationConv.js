@@ -32,7 +32,10 @@ export class NotationConv extends React.Component{
                     this.props.setInfixToPostfixSeq(sequence));
             } else {
                 this.props.updateNotationValidation(false);
-                this.setState({postfix: ''});
+                this.setState({
+                    postfix: '',
+                    prefix: '',
+                });
             }
         }
 
