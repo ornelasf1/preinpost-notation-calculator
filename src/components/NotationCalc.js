@@ -229,3 +229,34 @@ export const prefixToInfix = (prefix, seq = []) => {
     console.log(`Prefix ${prefix} To Infix: ${infixExpr}`);
     return infixExpr;
 }
+
+export const postfixToPrefix = (postfix, seq = [], includeParentheses = false) => {
+    console.log('POSTFIX TO PREFIX: Start with ', postfix);
+    let postfixTokens = toTokens(postfix).reverse();
+    const stack = [];
+    let prefixExpr = [];
+
+    console.log('postfix being converted to prefix: ', postfixTokens);
+    while (postfixTokens.length > 0) {
+        const token = postfixTokens.pop();
+        if (prec(token) > 0) {
+            const secondOperand = stack.pop();
+            prefixExpr.push(secondOperand);
+
+            prefixExpr.push(token);
+
+            const firstOperand = stack.pop();
+            prefixExpr.push(firstOperand);
+            if (includeParentheses) {
+                stack.push('(' + token + ' ' + firstOperand + ' ' + secondOperand + ')');
+            } else {
+                stack.push(token + ' ' + firstOperand + ' ' + secondOperand);
+            }
+            prefixExpr = [];
+        } else {
+            stack.push(token);
+        }
+    }
+    console.log('Postfix to prefix result: ', stack.reverse().join(' '));
+    return stack.reverse().join(' ');
+}
