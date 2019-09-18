@@ -3,6 +3,7 @@ import { infixToPostfixInstructions } from './NotationCalcInstructions';
 
 
 export const validateExpression = (notation, expression) => {
+    console.log('Validating expression: ', expression);
     if (notation === 'infix') {
         const infixToPostfixResult = infixToPostfix(expression);
         const infixToPrefixResult = infixToPrefix(expression);
@@ -13,7 +14,15 @@ export const validateExpression = (notation, expression) => {
         return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces
             && prefixToInfix(infixToPrefixResult) === infixDelimitedBySpaces;
     } else if (notation === 'postfix') {
+        const postfixToInfixResult = postfixToInfix(expression);
+        const postfixToPrefixResult = postfixToPrefix(expression);
+        console.log('POSTFIX: PostfixToInfix: ', postfixToInfixResult, ' PostfixToPrefix: ', postfixToPrefixResult);
 
+        const postfixDelimitedBySpaces = toTokens(expression).filter(token => token !== '(' && token !== ')').join(' ');
+
+        console.log(`Orig. Postfix: ${postfixDelimitedBySpaces} InfixToPostfix: ${infixToPostfix(postfixToInfixResult)} PrefixToPostfix: ${prefixToPostfix(postfixToPrefixResult)}`);
+        return infixToPostfix(postfixToInfixResult) === postfixDelimitedBySpaces
+            && prefixToPostfix(postfixToPrefixResult) === postfixDelimitedBySpaces;
     } else if (notation === 'prefix') {
         
     }
@@ -258,5 +267,36 @@ export const postfixToPrefix = (postfix, seq = [], includeParentheses = false) =
         }
     }
     console.log('Postfix to prefix result: ', stack.reverse().join(' '));
+    return stack.reverse().join(' ');
+}
+
+export const prefixToPostfix = (prefix, seq = [], includeParentheses = false) => {
+    console.log(`Convert prefix to postfix: ${prefix}`);
+    const prefixTokens = toTokens(prefix);
+    const stack = [];
+    let postfixExpr = [];
+
+    console.log('prefix being converted to postfix: ', prefixTokens);
+    while (prefixTokens.length > 0) {
+        const token = prefixTokens.pop();
+        if (prec(token) > 0) {
+            const secondOperand = stack.pop();
+            postfixExpr.push(secondOperand);
+
+            postfixExpr.push(token);
+
+            const firstOperand = stack.pop();
+            postfixExpr.push(firstOperand);
+            if (includeParentheses) {
+                stack.push('(' + secondOperand + ' ' + firstOperand + ' ' + token + ')');
+            } else {
+                stack.push(secondOperand + ' ' + firstOperand + ' ' + token);
+            }
+            postfixExpr = [];
+        } else {
+            stack.push(token);
+        }
+    }
+    console.log('prefix to postfix result: ', stack.reverse().join(' '));
     return stack.reverse().join(' ');
 }
