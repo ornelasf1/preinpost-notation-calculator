@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as ConversionActions from './ConversionActions';
 import * as ConversionAlgoActions from '../ConversionAlgoActions';
 import {NotationFix} from './NotationFix';
-import {infixToPostfix, toTokens, validateExpression, infixToPrefix} from '../NotationCalc';
+import {infixToPostfix, toTokens, validateExpression, infixToPrefix, postfixToInfix, postfixToPrefix} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
 
@@ -34,6 +34,23 @@ export class NotationConv extends React.Component{
                 this.props.updateNotationValidation(false);
                 this.setState({
                     postfix: '',
+                    prefix: '',
+                });
+            }
+        } else if (notationFix === 'postfix') {
+            //Valdation of postfix expression
+            if (validateExpression(notationFix, event.target.value)) {
+                this.props.updateNotationValidation(true);
+                this.setState({
+                    infix: postfixToInfix(event.target.value),
+                    prefix: postfixToPrefix(event.target.value),
+                },
+                // this.props.setInfixToPostfixSeq(sequence) For v2.
+                );
+            } else {
+                this.props.updateNotationValidation(false);
+                this.setState({
+                    infix: '',
                     prefix: '',
                 });
             }
