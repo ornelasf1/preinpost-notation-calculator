@@ -154,7 +154,7 @@ export const infixToPostfix = (infix, seq = []) => {
 
 //Input: string postfix expression. user input has to be delimited by space
 //Output: string delimimted by spaces
-export const postfixToInfix = (postfix, seq = []) => {
+export const postfixToInfix = (postfix, seq = [], includeParentheses = false) => {
     console.log(`Convert postfix to infix: ${postfix}`);
     const postfixTokens = toTokens(postfix).reverse();
     const stack = [];
@@ -171,7 +171,11 @@ export const postfixToInfix = (postfix, seq = []) => {
 
             const firstOperand = stack.pop();
             infixExpr.push(firstOperand);
-            stack.push(firstOperand + ' ' + token + ' ' + secondOperand);
+            if (includeParentheses) {
+                stack.push('(' + firstOperand + ' ' + token + ' ' + secondOperand + ')');
+            } else {
+                stack.push(firstOperand + ' ' + token + ' ' + secondOperand);
+            }
             infixExpr = [];
         } else {
             stack.push(token);
