@@ -26,6 +26,7 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
+        <h1 id="app-title">Notation Converter</h1>
         <NotationConv></NotationConv>
         <ConversionAlgorithm></ConversionAlgorithm>
       </Provider>

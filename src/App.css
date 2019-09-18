@@ -26,6 +26,13 @@ svg {
   fill: white;
 }
 
+#app-title {
+  font-size: 100px;
+  margin-left: 100px;
+  margin-bottom: 25px;
+  color: var(--lightcolor3);
+}
+
 :root{
   --primary-color: #133337;
   --secondary-color: #143c41;

@@ -15,7 +15,7 @@ code {
 .App {
   position: absolute;
   width: 100%;
-  top: 30%;
+  top: 15%;
   animation-timing-function: ease-in-out;
   animation-duration: .5s;
   animation-fill-mode: forwards;
@@ -23,7 +23,7 @@ code {
 
 @keyframes elevateBoxes {
   from {
-      top: 30%;
+      top: 15%;
   }
   to {
       top: 0%;
