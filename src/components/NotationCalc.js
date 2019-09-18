@@ -7,7 +7,7 @@ export const validateExpression = (notation, expression) => {
         const infixToPostfixResult = infixToPostfix(expression);
         const infixToPrefixResult = infixToPrefix(expression);
 
-        const infixDelimitedBySpaces = toTokens(expression).filter(token => token !== '(' && token !== ')').join(' ');
+        const infixDelimitedBySpaces = toTokens(expression, 'infix').filter(token => token !== '(' && token !== ')').join(' ');
 
         console.log(`Orig. Infix: ${infixDelimitedBySpaces} PostfixToInfix: ${postfixToInfix(infixToPostfixResult)} PrefixToInfix: ${prefixToInfix(infixToPrefixResult)}`);
         return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces
@@ -19,37 +19,32 @@ export const validateExpression = (notation, expression) => {
     }
 }
 
-export const toTokens = input => {
+export const toTokens = (input, toNotation = '') => {
     if(typeof input !== 'string') return '';
     let tokens = input.trim();
 
-    //Check if input is already delimited by spaces
-    let tokensDelimitedBySpaces = tokens.split(" ");
-    for (let i = 0; i < tokensDelimitedBySpaces.length; i++) {
-        if (tokensDelimitedBySpaces[i].length !== 1) {
-            break;
-        } else if (i === tokensDelimitedBySpaces.length - 1){
-            return tokensDelimitedBySpaces;
-        }
-    }
-
-    tokens = tokens.split('').reduce((acc, curr) => {
-        if (acc.length === 0) {
-            acc.push(curr);
-        } else {
-            const top = acc[acc.length - 1];
-            if (prec(top) === 4 && prec(curr) === 4){
+    // Only works for infix expressions that are seperated by operators in between of operands
+    if (toNotation === 'infix') {
+        tokens = tokens.split('').reduce((acc, curr) => {
+            if (acc.length === 0) {
                 acc.push(curr);
-            } else if (prec(top) === prec(curr)){
-                acc[acc.length - 1] = top + curr;
             } else {
-                acc.push(curr);
+                const top = acc[acc.length - 1];
+                if (prec(top) === 4 && prec(curr) === 4){
+                    acc.push(curr);
+                } else if (prec(top) === prec(curr)){
+                    acc[acc.length - 1] = top + curr;
+                } else {
+                    acc.push(curr);
+                }
             }
-        }
-        return acc;
-    }, []);
-
+            return acc;
+        }, []);
+    } else { // Requires postfix and prefix expressions to be delmited by spaces
+        tokens = tokens.split(' ');
+    }
     tokens = tokens.map(s => s.trim()).filter(s => s.trim().length > 0);
+    console.log('toTokens return: ', toNotation, tokens);
 
     return tokens;
 };
@@ -88,7 +83,7 @@ const captureState = (index, selectedToken, selectedTokenIndex, inputTokens, ope
 //Input: string infix expression. doesn't have to be delimited by space
 //Output: string delimimted by spaces
 export const infixToPostfix = (infix, seq = []) => {
-    let infixTokens = toTokens(infix).reverse();
+    let infixTokens = toTokens(infix, 'infix').reverse();
 
     var token = '';
     var tokenIndex = -1;
@@ -190,7 +185,7 @@ export const postfixToInfix = (postfix, seq = []) => {
 //Output: string delimimted by spaces
 export const infixToPrefix = (infix, seq = []) => {
     
-    let infixTokens = toTokens(infix).reverse();
+    let infixTokens = toTokens(infix, 'infix').reverse();
     infixTokens = swapParentheses(infixTokens);
 
     let prefixExpr = infixToPostfix(infixTokens.join(' '), seq);
