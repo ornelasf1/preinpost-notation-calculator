@@ -59,7 +59,8 @@ export class NotationConv extends React.Component{
         this.props.updateSelectedNotation(event.target.value !== '' ? notationFix : '');
         this.setState({}, () => this.props.updateExpressions({
             ...this.state,
-            infix: toTokens(this.state.infix).join(' '),
+            infix: toTokens(this.state.infix, 'infix').join(' '),
+            //TODO: postfix, prefix, for v2
         }));
 
     };
