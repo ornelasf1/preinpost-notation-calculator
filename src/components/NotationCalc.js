@@ -180,7 +180,7 @@ export const postfixToInfix = (postfix, seq = [], includeParentheses = false) =>
 
             const firstOperand = stack.pop();
             infixExpr.push(firstOperand);
-            if (includeParentheses) {
+            if (includeParentheses && postfixTokens.length !== 0) {
                 stack.push('(' + firstOperand + ' ' + token + ' ' + secondOperand + ')');
             } else {
                 stack.push(firstOperand + ' ' + token + ' ' + secondOperand);
