@@ -42,7 +42,7 @@ export class NotationConv extends React.Component{
             if (validateExpression(notationFix, event.target.value)) {
                 this.props.updateNotationValidation(true);
                 this.setState({
-                    infix: postfixToInfix(event.target.value),
+                    infix: postfixToInfix(event.target.value, [], true), // Postfix to Infix conversion requires parentheses because there is no ambiguity with postfix
                     prefix: postfixToPrefix(event.target.value),
                 },
                 // this.props.setInfixToPostfixSeq(sequence) For v2.

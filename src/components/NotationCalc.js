@@ -14,7 +14,12 @@ export const validateExpression = (notation, expression) => {
         return postfixToInfix(infixToPostfixResult) === infixDelimitedBySpaces
             && prefixToInfix(infixToPrefixResult) === infixDelimitedBySpaces;
     } else if (notation === 'postfix') {
-        const postfixToInfixResult = postfixToInfix(expression);
+        /* 
+        Postfix to Infix conversion requires parentheses because there is no ambiguity with postfix
+         4 6 + 8 -  -->  4 + 6 - 8
+         4 6 + 8 *  -->  (4 + 6) * 8
+        */
+        const postfixToInfixResult = postfixToInfix(expression, [], true);
         const postfixToPrefixResult = postfixToPrefix(expression);
         console.log('POSTFIX: PostfixToInfix: ', postfixToInfixResult, ' PostfixToPrefix: ', postfixToPrefixResult);
 
