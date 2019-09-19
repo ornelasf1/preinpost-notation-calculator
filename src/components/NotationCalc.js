@@ -29,7 +29,15 @@ export const validateExpression = (notation, expression) => {
         return infixToPostfix(postfixToInfixResult) === postfixDelimitedBySpaces
             && prefixToPostfix(postfixToPrefixResult) === postfixDelimitedBySpaces;
     } else if (notation === 'prefix') {
-        
+        const prefixToInfixResult = prefixToInfix(expression, [], true);
+        const prefixToPostfixResult = prefixToPostfix(expression);
+        console.log('PREFIX: PrefixToInfix: ', prefixToInfixResult, ' PrefixToPostfix: ', prefixToPostfixResult);
+
+        const prefixDelimitedBySpaces = toTokens(expression).filter(token => token !== '(' && token !== ')').join(' ');
+
+        console.log(`Orig. Prefix: ${prefixDelimitedBySpaces} PostfixToPrefix: ${postfixToPrefix(prefixToPostfixResult)} InfixToPrefix: ${infixToPrefix(prefixToInfixResult)}`);
+        return infixToPrefix(prefixToInfixResult) === prefixDelimitedBySpaces
+            && postfixToPrefix(prefixToPostfixResult) === prefixDelimitedBySpaces;
     }
 }
 
@@ -202,7 +210,7 @@ export const postfixToInfix = (postfix, seq = [], includeParentheses = false) =>
 //Input: string infix expression. doesn't have to be delimited by a space
 //Output: string delimimted by spaces
 export const infixToPrefix = (infix, seq = []) => {
-    
+    console.log(`Convert INFIX to PREFIX: ${infix}`);
     let infixTokens = toTokens(infix, 'infix').reverse();
     infixTokens = swapParentheses(infixTokens);
 
@@ -235,13 +243,34 @@ const swapParentheses = expression => {
 
 //Input: string prefix expression. user input has to be delimited by space
 //Output: string delimimted by spaces
-export const prefixToInfix = (prefix, seq = []) => {
-    let prefixTokens = toTokens(prefix).reverse();
-    prefixTokens = prefixTokens.join(' ');
+export const prefixToInfix = (prefix, seq = [], includeParentheses = false) => {
+    console.log(`Convert PREFIX to INFIX: ${prefix}`);
+    let prefixTokens = toTokens(prefix);
+    const stack = [];
+    let infixExpr = [];
 
-    let infixExpr = postfixToInfix(prefixTokens).split(' ').reverse().join(' ');
-    console.log(`Prefix ${prefix} To Infix: ${infixExpr}`);
-    return infixExpr;
+    while (prefixTokens.length > 0) {
+        const token = prefixTokens.pop();
+        if (prec(token) > 0) {
+            const secondOperand = stack.pop();
+            infixExpr.push(secondOperand);
+
+            infixExpr.push(token);
+
+            const firstOperand = stack.pop();
+            infixExpr.push(firstOperand);
+            if (includeParentheses && prefixTokens.length !== 0) {
+                stack.push('(' + secondOperand + ' ' + token + ' ' + firstOperand + ')');
+            } else {
+                stack.push(secondOperand + ' ' + token + ' ' + firstOperand);
+            }
+            infixExpr = [];
+        } else {
+            stack.push(token);
+        }
+    }
+    console.log(`Prefix ${prefix} To Infix: ${stack.reverse().join(' ')}`);
+    return stack.reverse().join(' ');
 }
 
 export const postfixToPrefix = (postfix, seq = [], includeParentheses = false) => {
