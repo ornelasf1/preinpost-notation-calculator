@@ -4,6 +4,10 @@ html {
   background-color: var(--secondary-color);
 }
 
+.App {
+  height: inherit;
+}
+
 h1 {
   color: rgba(53, 53, 53, 0.986);
 }
