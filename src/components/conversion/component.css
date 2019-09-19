@@ -9,6 +9,21 @@
     }
 }
 
+@media screen and (max-width: 600px) {
+    #conversion-comp .component {
+        height: 170px;
+        width: auto;
+    }
+
+    .component-name{
+        font-size: 1.5em;
+    }
+
+    .App #conversion-comp {
+        flex-direction: column;
+    }
+}
+
 #conversion-comp {
     background: var(--primary-color);
     border-radius: 20px;
