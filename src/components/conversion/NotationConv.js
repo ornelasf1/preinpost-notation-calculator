@@ -83,18 +83,23 @@ export class NotationConv extends React.Component{
     };
 
     render = () => {
+        const { valid } = this.props.conversion;
+
         return (
             <div id='conversion-comp'>
                 <NotationFix 
                     type='Prefix' 
+                    valid={valid}
                     expr={this.state.prefix} 
                     handleChange={this.handleChange}/>
                 <NotationFix 
                     type='Infix' 
+                    valid={valid}
                     expr={this.state.infix} 
                     handleChange={this.handleChange}/>
                 <NotationFix 
-                    type='Postfix' 
+                    type='Postfix'
+                    valid={valid} 
                     expr={this.state.postfix} 
                     handleChange={this.handleChange}/>
             </div>

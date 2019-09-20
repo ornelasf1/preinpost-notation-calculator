@@ -14,7 +14,7 @@ export const defaultState = {
     },
     selectedNotation: '',
     toNotation: '',
-    valid: false,
+    valid: true,
 }
 
 export const conversionNotat = (state = defaultState, action) => {

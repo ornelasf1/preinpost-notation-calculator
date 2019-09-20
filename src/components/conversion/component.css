@@ -69,3 +69,17 @@
 .input-comp:focus + span{
     transform: scaleX(1);
 }
+
+.error-outline {
+    box-shadow: 0 0 .2em 1px var(--errorcolor1);
+    /* animation: red-glow 1s alternate ease-in-out infinite; */
+}
+
+@keyframes red-glow {
+    from {
+        box-shadow: 0 0 .2em 0px var(--errorcolor1);
+    }
+    to {
+        box-shadow: 0 0 .3em 0px var(--errorcolor1);
+    }
+}
