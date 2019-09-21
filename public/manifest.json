@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Notation Converter",
+  "name": "Convert notations between: prefix - infix - postfix",
   "icons": [
     {
       "src": "favicon.ico",
