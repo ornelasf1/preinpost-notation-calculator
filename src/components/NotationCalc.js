@@ -63,7 +63,30 @@ export const toTokens = (input, toNotation = '') => {
             return acc;
         }, []);
     } else { // Requires postfix and prefix expressions to be delmited by spaces
-        tokens = tokens.split(' ');
+        const splitOperatorTokens = [];
+        tokens.split(' ').forEach(token => {
+            if (token.length > 1) {
+                let splitToken = token.split('').reduce((acc, curr) => {
+                    if (acc.length === 0) {
+                        acc.push(curr);
+                    } else {
+                        const top = acc[acc.length - 1];
+                        if (prec(curr) > 0){
+                            acc.push(curr);
+                        } else if (prec(top) === prec(curr)){
+                            acc[acc.length - 1] = top + curr;
+                        } else {
+                            acc.push(curr);
+                        }
+                    }
+                    return acc;
+                }, []);
+                splitOperatorTokens.push(...splitToken);
+            } else {
+                splitOperatorTokens.push(token);
+            }
+        });
+        tokens = splitOperatorTokens;
     }
     tokens = tokens.map(s => s.trim()).filter(s => s.trim().length > 0);
     console.log('toTokens return: ', toNotation, tokens);
