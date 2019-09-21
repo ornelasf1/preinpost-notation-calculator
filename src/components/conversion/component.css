@@ -83,3 +83,16 @@
         box-shadow: 0 0 .3em 0px var(--errorcolor1);
     }
 }
+
+.helpTip {
+    animation: displayTip .25s ease-in-out forwards;
+}
+
+@keyframes displayTip {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

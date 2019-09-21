@@ -83,7 +83,7 @@ export class NotationConv extends React.Component{
     };
 
     render = () => {
-        const { valid } = this.props.conversion;
+        const { valid, selectedNotation } = this.props.conversion;
 
         return (
             <div id='conversion-comp'>
@@ -91,7 +91,11 @@ export class NotationConv extends React.Component{
                     type='Prefix' 
                     valid={valid}
                     expr={this.state.prefix} 
-                    handleChange={this.handleChange}/>
+                    handleChange={this.handleChange}>
+                    {this.state.prefix.length > 2 && selectedNotation === 'prefix'? 
+                        <span className="helpTip">Remember to split your operands with SPACES</span> 
+                        : null}
+                </NotationFix>
                 <NotationFix 
                     type='Infix' 
                     valid={valid}
@@ -101,7 +105,11 @@ export class NotationConv extends React.Component{
                     type='Postfix'
                     valid={valid} 
                     expr={this.state.postfix} 
-                    handleChange={this.handleChange}/>
+                    handleChange={this.handleChange}>
+                    {this.state.postfix.length > 2 && selectedNotation === 'postfix'? 
+                    <span className="helpTip">Remember to split your operands with SPACES</span> 
+                    : null}
+                </NotationFix>
             </div>
         );
     };

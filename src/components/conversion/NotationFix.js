@@ -5,7 +5,6 @@ import './component.css';
 
 
 export class NotationFix extends React.Component{
-
     render = () => {
         return (
             <div className='component'>
@@ -18,6 +17,7 @@ export class NotationFix extends React.Component{
                         onChange={this.props.handleChange} 
                         value={this.props.expr}/>
                     <span className='input-underline'></span>
+                    {this.props.children}
                 </form>
             </div>
         );
