@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import ReactGA from 'react-ga';
 
 import * as ConversionActions from './ConversionActions';
 import * as ConversionAlgoActions from '../ConversionAlgoActions';
@@ -15,15 +16,30 @@ export class NotationConv extends React.Component{
             prefix: '',
             postfix: '',
         };
+        this.expressionConvertedTimeout = null;
+    }
+
+    sendGAExpressionConvertedFrom = (notation, expression, expressionValidGA) => {
+        clearTimeout(this.expressionConvertedTimeout);
+        if (expression.trim('') !== '') {
+            this.expressionConvertedTimeout = setTimeout(() => {
+                ReactGA.event({
+                    category: 'Converted - ' + (expressionValidGA? 'Valid' : 'Invalid'),
+                    action: 'Expression converted from ' + notation,
+                    label: notation + ': [ ' + expression + ' ]',
+                });
+            }, 10000);
+        }
     }
 
     handleChange = event => {
         const notationFix = event.target.name.toLowerCase();
         this.setState({[notationFix]: event.target.value});
         let sequence = [];
+        let isExpressionValid = validateExpression(notationFix, event.target.value);
         if (notationFix === 'infix') {
             //Valdation of infix expression
-            if (validateExpression(notationFix, event.target.value)) {
+            if (isExpressionValid) {
                 this.props.updateNotationValidation(true);
                 this.setState({
                     postfix: infixToPostfix(event.target.value, sequence),
@@ -39,7 +55,7 @@ export class NotationConv extends React.Component{
             }
         } else if (notationFix === 'postfix') {
             //Valdation of postfix expression
-            if (validateExpression(notationFix, event.target.value)) {
+            if (isExpressionValid) {
                 this.props.updateNotationValidation(true);
                 this.setState({
                     infix: postfixToInfix(event.target.value, [], true), // Postfix to Infix conversion requires parentheses because there is no ambiguity with postfix
@@ -56,7 +72,7 @@ export class NotationConv extends React.Component{
             }
         } else if (notationFix === 'prefix') {
             //Valdation of prefix expression
-            if (validateExpression(notationFix, event.target.value)) {
+            if (isExpressionValid) {
                 this.props.updateNotationValidation(true);
                 this.setState({
                     infix: prefixToInfix(event.target.value, [], true), // Prefix to Infix conversion requires parentheses because there is no ambiguity with prefix
@@ -73,6 +89,7 @@ export class NotationConv extends React.Component{
             }
         }
 
+        this.sendGAExpressionConvertedFrom(notationFix, event.target.value, isExpressionValid);
         this.props.updateSelectedNotation(event.target.value.trim() !== '' ? notationFix : '');
         this.setState({}, () => this.props.updateExpressions({
             ...this.state,

@@ -7,6 +7,10 @@ import {algorithmInstructions} from './components/ConversionAlgoReducer';
 import './App.css';
 import NotationConv from './components/conversion/NotationConv';
 import ConversionAlgorithm from './components/ConversionAlgorithm';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-144025519-2');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const rootReducers = {
   conversionNotat,
