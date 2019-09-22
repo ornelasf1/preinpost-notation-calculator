@@ -73,6 +73,8 @@ svg {
 :root{
   --primary-color: #133337;
   --secondary-color: #143c41;
+  --darker-secondary-color: #0d272b;
+  --ligher-secondary-color: #2b7983;
   --alt-color: #1a484e;
   --activity-color: #205961;
   --instruction-color-1: darkslategrey;
