@@ -44,6 +44,10 @@ h1 {
   color: rgba(53, 53, 53, 0.986);
 }
 
+a {
+  color: var(--ligher-secondary-color);
+}
+
 button {
   border: none;
   outline: none;
