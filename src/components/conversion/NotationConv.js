@@ -105,7 +105,8 @@ export class NotationConv extends React.Component{
         return (
             <div id='conversion-comp'>
                 <NotationFix 
-                    type='Prefix' 
+                    type='Prefix'
+                    placeholder={'+ A B'} 
                     valid={valid}
                     expr={this.state.prefix} 
                     handleChange={this.handleChange}>
@@ -114,12 +115,14 @@ export class NotationConv extends React.Component{
                         : null}
                 </NotationFix>
                 <NotationFix 
-                    type='Infix' 
+                    type='Infix'
+                    placeholder={'A + B'}
                     valid={valid}
                     expr={this.state.infix} 
                     handleChange={this.handleChange}/>
                 <NotationFix 
                     type='Postfix'
+                    placeholder={'A B +'}
                     valid={valid} 
                     expr={this.state.postfix} 
                     handleChange={this.handleChange}>
