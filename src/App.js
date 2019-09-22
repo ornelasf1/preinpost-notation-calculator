@@ -9,7 +9,9 @@ import NotationConv from './components/conversion/NotationConv';
 import ConversionAlgorithm from './components/ConversionAlgorithm';
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('UA-144025519-2');
+if (process.env.NODE_ENV === 'production') {
+  ReactGA.initialize('UA-144025519-2');
+}
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 const rootReducers = {
@@ -18,7 +20,7 @@ const rootReducers = {
 };
 
 const composeEnhancers = typeof window === 'object' && 
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? 
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && process.env.NODE_ENV !== 'production'? 
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
 
 const store = createStore(
