@@ -44,6 +44,10 @@ h1 {
   color: rgba(53, 53, 53, 0.986);
 }
 
+a {
+  color: var(--ligher-secondary-color);
+}
+
 button {
   border: none;
   outline: none;
@@ -70,9 +74,27 @@ svg {
   transition-duration: .5s;
 }
 
+.footer {
+  height: 40px;
+  width: 100%;
+  bottom: -40px;
+  position: absolute;
+}
+
+.footer > div {
+  box-shadow: inset 0px 4px 15px -2px var(--darkcolor1);
+  color: var(--lightcolor3);
+  height: 100%;
+  background-color: var(--darker-secondary-color);
+  padding: 20px;
+  text-align: center;
+}
+
 :root{
   --primary-color: #133337;
   --secondary-color: #143c41;
+  --darker-secondary-color: #0d272b;
+  --ligher-secondary-color: #2b7983;
   --alt-color: #1a484e;
   --activity-color: #205961;
   --instruction-color-1: darkslategrey;

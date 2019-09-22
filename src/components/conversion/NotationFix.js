@@ -12,6 +12,7 @@ export class NotationFix extends React.Component{
                 <form name={this.props.type} onSubmit={e => e.preventDefault()}>
                     <input 
                         name={this.props.type}
+                        placeholder={this.props.placeholder}
                         className={'input-comp' + (!this.props.valid ? ' error-outline' : '')} 
                         onKeyDown={this.props.handleKeyDown} 
                         onChange={this.props.handleChange} 
