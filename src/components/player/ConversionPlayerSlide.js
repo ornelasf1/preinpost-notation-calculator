@@ -1,7 +1,7 @@
 
 import React from 'react';
-import {ReactComponent as PlayIcon} from '../../play.svg';
-import {ReactComponent as PauseIcon} from '../../pause.svg';
+import {ReactComponent as PlayIcon} from '../../imgs/play.svg';
+import {ReactComponent as PauseIcon} from '../../imgs/pause.svg';
 
 import './ConversionPlayerSlide.css';
 
