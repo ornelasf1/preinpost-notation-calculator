@@ -6,7 +6,6 @@ import {conversionNotat} from './components/conversion/ConversionReducer';
 import {algorithmInstructions} from './components/ConversionAlgoReducer';
 import './App.css';
 import NotationConv from './components/conversion/NotationConv';
-import ConversionAlgorithm from './components/ConversionAlgorithm';
 import ReactGA from 'react-ga';
 
 if (process.env.NODE_ENV === 'production') {
@@ -34,7 +33,6 @@ function App() {
       <Provider store={store}>
         <h1 id="app-title">Notation Converter</h1>
         <NotationConv></NotationConv>
-        <ConversionAlgorithm></ConversionAlgorithm>
       </Provider>
     </div>
   );
