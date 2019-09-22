@@ -1,6 +1,6 @@
 {
   "name": "inprepostfix",
-  "version": "1.0",
+  "version": "v1.0.0",
   "private": true,
   "dependencies": {
     "react": "^16.8.6",
@@ -39,6 +39,8 @@
     "react-test-renderer": "^16.9.0"
   },
   "jest": {
-    "watchPathIgnorePatterns": ["<rootDir>/src/components/__tests__/utils/"]
+    "watchPathIgnorePatterns": [
+      "<rootDir>/src/components/__tests__/utils/"
+    ]
   }
 }
