@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import {conversionNotat} from './components/conversion/ConversionReducer';
 import {algorithmInstructions} from './components/ConversionAlgoReducer';
 import './App.css';
+import './components/player/ConversionPlayer.css';
 import NotationConv from './components/conversion/NotationConv';
 import ReactGA from 'react-ga';
 
