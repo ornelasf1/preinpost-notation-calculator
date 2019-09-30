@@ -40,11 +40,13 @@ function App() {
             utilizes a data structure known as a stack.
             Computers process postfix/prefix notation expressions easier since there's no ambiguity
             of precedence, unlike infix expressions where <b>4 * 3 - 7</b> and <b>4 * (3 - 7)</b> can have different
-            results.<br /><br />
+            results.
+            <br /><br />
             Conversion in between notations can be helpful to eliminate ambiguity for infix expressions.
             For example, it's not immediately obvious how to evaluate the expression, <b>8/2*(2+2)</b>. If we
             convert it to postfix to get <b>8 2 / 2 2 + *</b>, and convert it back to infix, we can see more
             clearly when it results back to <b>(8 / 2) * (2 + 2)</b>.
+            <p>Example Inputs</p> <ExampleInputs />
           </h3>
           <NotationConv></NotationConv>
           <ConversionAlgorithm></ConversionAlgorithm>
@@ -55,6 +57,28 @@ function App() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ExampleInputs() {
+  return (
+    <table id="texamples">
+      <tr>
+        <td>Prefix expressions:</td>
+        <td>/ - A B * C / E / F ^ G H</td>
+        <td>- / ^ 13 / 231 4 9 * 19 + 4 2</td>
+      </tr>
+      <tr>
+        <td>Infix expressions:</td>
+        <td>(A - B) / C * ( E / F / (G ^ H))</td>
+        <td>13 ^ (231 / 4) / 9 - 19 * (4 + 2)</td>
+      </tr>
+      <tr>
+        <td>Postfix expressions:</td>
+        <td>A B - C / E F / G H ^ / *</td>
+        <td>13 231 4 / ^ 9 / 19 4 2 + * -</td>
+      </tr>
+    </table>
   );
 }
 

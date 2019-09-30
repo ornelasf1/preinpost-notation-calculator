@@ -31,6 +31,14 @@
     color: var(--lightcolor3);
     text-align: center;
   }
+
+  #texamples {
+    margin: auto;
+  }
+
+  #texamples td {
+    display: block;
+  }
 }
 
 html {
@@ -110,6 +118,12 @@ svg {
   margin: 0 100px 25px 100px;
   color: var(--lightcolor3);
   text-align: justify;
+}
+
+#texamples td {
+  font-weight: normal;
+  font-size: 20px;
+  padding: 10px;
 }
 
 .footer {
