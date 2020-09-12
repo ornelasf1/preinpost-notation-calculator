@@ -8,6 +8,7 @@ import './App.css';
 import './components/player/ConversionPlayer.css';
 import NotationConv from './components/conversion/NotationConv';
 import ReactGA from 'react-ga';
+import ConversionAlgorithm from './components/ConversionAlgorithm';
 
 if (process.env.NODE_ENV === 'production') {
   ReactGA.initialize('UA-144025519-2');
@@ -49,6 +50,7 @@ function App() {
             <p>Example Inputs</p> <ExampleInputs />
           </h3>
           <NotationConv></NotationConv>
+          <ConversionAlgorithm />
         </Provider>
       </div>
       <div className="footer">

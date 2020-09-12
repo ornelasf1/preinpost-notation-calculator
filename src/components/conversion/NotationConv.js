@@ -107,6 +107,7 @@ export class NotationConv extends React.Component{
                 <NotationFix 
                     type='Prefix'
                     placeholder={'+ A B'} 
+                    selectedNotation={selectedNotation}
                     valid={valid}
                     expr={this.state.prefix} 
                     handleChange={this.handleChange}>
@@ -117,12 +118,14 @@ export class NotationConv extends React.Component{
                 <NotationFix 
                     type='Infix'
                     placeholder={'A + B'}
+                    selectedNotation={selectedNotation}
                     valid={valid}
                     expr={this.state.infix} 
                     handleChange={this.handleChange}/>
                 <NotationFix 
                     type='Postfix'
                     placeholder={'A B +'}
+                    selectedNotation={selectedNotation}
                     valid={valid} 
                     expr={this.state.postfix} 
                     handleChange={this.handleChange}>

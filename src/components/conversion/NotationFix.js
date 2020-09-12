@@ -20,8 +20,44 @@ export class NotationFix extends React.Component{
                     <span className='input-underline'></span>
                     {this.props.children}
                 </form>
+                {this.props.selectedNotation === this.props.type.toLowerCase() && <HowToButtons type={this.props.type} valid={this.props.valid}/>}
             </div>
         );
     }
 };
+
+function HowToButtons (props) {
+    let howToText = null;
+    if (props.type === 'Infix') {
+        howToText = {
+            convertToOne: 'Prefix',
+            convertToTwo: 'Postfix',
+        }
+    } else if (props.type === 'Postfix') {
+        howToText = {
+            convertToOne: 'Prefix',
+            convertToTwo: 'Infix',
+        }
+    } else if (props.type === 'Prefix') {
+        howToText = {
+            convertToOne: 'Infix',
+            convertToTwo: 'Postfix',
+        }
+    }
+
+    if (howToText && props.type === 'Infix') { //WIP: Remove only Infix when other instructions are done
+        return (
+            <div className='how-to-buttons'>
+                {false && <button className={props.valid ? '' : 'button-disabled'}>
+                    Steps to {howToText.convertToOne}
+                </button>}
+                <button className={props.valid ? '' : 'button-disabled'}>
+                    Steps to {howToText.convertToTwo}
+                </button>
+            </div>
+        );
+    } else {
+        return null;
+    }
+}
 
