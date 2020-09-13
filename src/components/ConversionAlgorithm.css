@@ -37,7 +37,7 @@
     }
 
     #body .canvas {
-        width: 100%;
+        width: 95%; /* This keeps from canvas spilling over when in mobile */
     }
     
     #body .algorithm-display {
@@ -46,23 +46,40 @@
 }
 
 .display {
-    /* position: absolute; */
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    padding-top: 5%;
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+#content {
+    position: relative;
     background-color: var(--primary-color);
-    margin: 10px;
-    /* height: 70%; */
-    border-radius: 10px;
-    /* overflow: auto; */
-    transition: opacity .5s ease-in-out;
+    margin: auto;
+    padding: 0;
+    width: 90%;
+    overflow: hidden;
 }
 
 #body {
     display: flex;
-    overflow: hidden;
-    max-height: 0px;
-    animation-duration: 1s;
-    animation-timing-function: ease-in-out;
-    animation-delay: .25s;
-    animation-fill-mode: forwards;
+}
+
+#header {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+}
+
+#header button {
+    color: var(--lightcolor3);
+    width: 5%;
+    font-size: medium;
 }
 
 @keyframes dropdownBody {
@@ -168,4 +185,14 @@
 .instruction:nth-child(even) {
     
     background-color: var(--instruction-color-2);
+}
+
+@media screen and (max-width: 1200px) {
+    #header button {
+        width: 50%;
+    }
+
+    #header {
+        justify-content: center;
+    }
 }

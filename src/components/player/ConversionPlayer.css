@@ -9,10 +9,12 @@
         font-size: 30px;
     }
 
+    .row1 {
+        flex-direction: column;
+    }
+
     .row1 #precTable {
-        display: block;
         position: relative;
-        right: 0px;
     }
 
     #mainStructure #tokens {
@@ -255,4 +257,13 @@ tr:nth-child(odd) {
 }
 tr:nth-child(even) {
     background-color: var(--instruction-color-2);
+}
+
+@media screen and (max-width: 1200px) {
+    #precTable {
+        background-color: var(--lightcolor3);
+        position: relative;
+        right: 0;
+        top: 0;
+    }
 }

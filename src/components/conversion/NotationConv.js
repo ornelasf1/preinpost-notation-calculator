@@ -4,7 +4,7 @@ import ReactGA from 'react-ga';
 
 import * as ConversionActions from './ConversionActions';
 import * as ConversionAlgoActions from '../ConversionAlgoActions';
-import {NotationFix} from './NotationFix';
+import NotationFix from './NotationFix';
 import {infixToPostfix, toTokens, validateExpression, infixToPrefix, postfixToInfix, postfixToPrefix, prefixToInfix, prefixToPostfix} from '../NotationCalc';
 
 export class NotationConv extends React.Component{
@@ -37,6 +37,7 @@ export class NotationConv extends React.Component{
         this.setState({[notationFix]: event.target.value});
         let sequence = [];
         let isExpressionValid = validateExpression(notationFix, event.target.value);
+        this.props.updateToNotation('');
         if (notationFix === 'infix') {
             //Valdation of infix expression
             if (isExpressionValid) {

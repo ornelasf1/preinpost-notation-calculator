@@ -30,6 +30,12 @@ class ConversionAlgorithm extends React.Component {
         };
     }
 
+    componentDidUpdate() {
+        const {selectedNotation, toNotation} = this.props.conversion;
+        if (selectedNotation && toNotation && this.state.instructions.length === 0) {
+            this.setState({instructions: getInstructionSet(selectedNotation, toNotation)});
+        }
+    }
 
     updateSelectedInstruction = selectedInstructionIndex => {
         const { toPostInstr } = this.props.algorithm.infixInstr;
@@ -80,9 +86,13 @@ class ConversionAlgorithm extends React.Component {
         }
     }
 
+    resetToNotation = () => {
+        this.props.updateToNotation('');
+    }
+
     render = () => {
-        const {selectedNotation, expressions, valid} = this.props.conversion;
-        const { toNotation, selectedInstructionIndex } = this.state;
+        const {selectedNotation, expressions, valid, toNotation} = this.props.conversion;
+        const { selectedInstructionIndex } = this.state;
 
         const instructionSequence = this.getInstructionSequence(selectedNotation, toNotation);
 
@@ -95,35 +105,37 @@ class ConversionAlgorithm extends React.Component {
                 {instr}
                 </Instruction>));
 
+        if (!toNotation) {
+            return null;
+        }
+
         return (
-            <div className='display' style={!valid ? {opacity: '0.1'} : {}}>
-                {selectedNotation !== '' && 
-                <ToNotationButtons 
-                    selected={selectedNotation}
-                    disabled={!valid} 
-                    toNotation={toNotation} 
-                    handleClick={this.handleNotationButtons}/>}
-                {this.state.toNotation !== '' && 
-                <div id='body' style={selectedNotation !== '' && {animationName: 'dropdownBody'}}>
-                    <div className='algorithm-display' >
-                        {instructions}
+            <div className='display'>
+                <div id='content'>
+                    <div id='header'>
+                        <button onClick={this.resetToNotation}>Close</button>
                     </div>
-                    <div className='canvas'>
-                        <ConversionPlayBar 
-                            updateSelectedInstruction={this.updateSelectedInstruction}
-                            selectedNotation={selectedNotation}
-                            toNotation={toNotation}
-                            instructionSequenceLimit={instructionSequence.length} />
-                        <ConversionPlayer 
-                            className='player' 
-                            expression={expressions[selectedNotation]} 
-                            selectedInstr={this.state.selectedInstruction}
-                            selectedNotation={selectedNotation}
-                            toNotation={toNotation}
-                            selectedInstructionIndex={selectedInstructionIndex}
-                            instructionSequenceLimit={instructionSequence.length} />
+                    <div id='body'>
+                        <div className='algorithm-display'>
+                            {instructions}
+                        </div>
+                        <div className='canvas'>
+                            <ConversionPlayBar 
+                                updateSelectedInstruction={this.updateSelectedInstruction}
+                                selectedNotation={selectedNotation}
+                                toNotation={toNotation}
+                                instructionSequenceLimit={instructionSequence.length} />
+                            <ConversionPlayer 
+                                className='player' 
+                                expression={expressions[selectedNotation]} 
+                                selectedInstr={this.state.selectedInstruction}
+                                selectedNotation={selectedNotation}
+                                toNotation={toNotation}
+                                selectedInstructionIndex={selectedInstructionIndex}
+                                instructionSequenceLimit={instructionSequence.length} />
+                        </div>
                     </div>
-                </div>}
+                </div>
             </div>
         );
     };
@@ -139,28 +151,6 @@ const Instruction = props => {
     return (
         <div className={'instruction' + selectedStyle} style={pad}>
             {props.children.substr(indents)}
-        </div>
-    );
-};
-
-const ToNotationButtons = props => {
-    let notations = ['prefix', 'infix', 'postfix'];
-    notations = notations.filter(fix => fix !== props.selected);
-    
-    return (
-        <div id='toNotation-buttons'>
-            <button 
-                disabled={props.disabled} 
-                style={{marginRight: '10px'}}
-                onClick={(e => props.handleClick(e, props.selected, notations[0]))}>
-                    Show steps to {notations[0]}
-            </button>
-            <button 
-                disabled={props.disabled} 
-                style={{marginLeft: '10px'}}
-                onClick={(e => props.handleClick(e, props.selected, notations[1]))}>
-                    Show steps to {notations[1]}
-            </button>
         </div>
     );
 };
