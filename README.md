@@ -1,7 +1,6 @@
 # Prefix - Infix - Postfix Converter
 An educational web app that demonstrates how to convert between the different types of mathematical notations
 
-### Demo
 ![image](notation_conv.gif)
 
 ### Dev
